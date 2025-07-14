@@ -281,6 +281,7 @@ namespace tripplechance
         {
             loadingPanel?.SetActive(false);
             string s = packet.RemoveEventName(true);
+            Debug.Log("timer :" + int.Parse(s));
             timer.UpdateTimer(int.Parse(s));
             // Debug.Log("Timer " + int.Parse(s) + "isGameStarted = " + isGameStart);
             if (int.Parse(s) > 5 /*&& int.Parse(s) <= 90*/)

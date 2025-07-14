@@ -1108,8 +1108,8 @@ IEnumerator sendbetdataAPI(string jsonData)
         //OnStartAllWheel();
         // ShowMessage("Place your chip");// close by prabir
 
-        //added by shivamfusion07
-        ResetPlayValue();
+//added by shivamfusion07
+      ResetPlayValue();
         Debug.Log("play value rest from here shivammmmmm");
         if (singleWinValueText != null)
         {
@@ -1124,7 +1124,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         Debug.Log("Reset All Data finished");
         playValue = 0;
         // timerScript.StartTimer(90);// close by prabir
-        //OnStartAllWheel();
+        OnStartAllWheel();
     }
   
 
@@ -1214,7 +1214,7 @@ IEnumerator sendbetdataAPI(string jsonData)
 #if !UNITY_ANDROID
         clickPopUp.gameObject.SetActive(false);
 #endif
-        BlockData _blockData = lstAllBlockData.Find((BlockData obj) => (obj.game_number == _block.tNormalStateNumber.text));
+        BlockData _blockData = lstAllBlockData.Find((BlockData obj) => (obj.game_number == _block.normalStateNum.text));
         if (_blockData != null)
         {
 
@@ -1268,7 +1268,7 @@ IEnumerator sendbetdataAPI(string jsonData)
     public void AddDataToList(Transform _trans, int _iExtraAmount)
     {
         Block _block = _trans.GetComponent<Block>();
-        BlockData _blockData = lstAllBlockData.Find((BlockData obj) => (obj.game_number == _block.tNormalStateNumber.text));
+        BlockData _blockData = lstAllBlockData.Find((BlockData obj) => (obj.game_number == _block.normalStateNum.text));
         if (_blockData != null)
         {
             _blockData.game_amount += _iExtraAmount;
@@ -1277,7 +1277,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         }
         else
         {
-            _blockData = new BlockData(_block, _block.tNormalStateNumber.text, _iExtraAmount);
+            _blockData = new BlockData(_block, _block.normalStateNum.text, _iExtraAmount);
             lstAllBlockData.Add(_blockData);
             bClear.interactable = true;
             Debug.Log("clear buton still activated");
@@ -1289,16 +1289,16 @@ IEnumerator sendbetdataAPI(string jsonData)
         }
 
 #if !UNITY_ANDROID
-        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.tNormalStateNumber.text, _blockData.game_amount);
+        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _blockData.game_amount);
 #else
 
-        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.tNormalStateNumber.text, _blockData.game_amount);
+        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _blockData.game_amount);
         //Block.BlockType type = _trans.GetComponent<Block>().blockType;
         //allBlockDetails[(int)type].tPlayValue.text = "PLAY : " + GetPlayValueFromBlock(type);
         //allBlockDetails[(int)_block.blockType].tPlayBG.sprite = sSelectedBGForPlay;
 
 #endif
-
+        Debug.Log("custom: "+_blockData.game_amount);
         _trans.GetComponent<Block>().OnSelectSuccess(_blockData.game_amount);
         bRepeat.interactable = false;
         //#if UNITY_ANDROID
@@ -1457,7 +1457,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         SetPositionOfPopUp(_trans);
 
         Block _block = _trans.GetComponent<Block>();
-        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.tNormalStateNumber.text, _block.iBetAmount);
+        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _block.iBetAmount);
 #endif
     }
 
@@ -2002,7 +2002,7 @@ IEnumerator sendbetdataAPI(string jsonData)
                 {
                     if (lstBlockDataForRepeat[i].game_number[0] == lstAllTab[j].gameObject.name[0])
                     {
-                        Debug.Log("Block Normal State text 0 : " + block.tNormalStateNumber.text[0] + ",Game Object Name 0 : " + lstAllTab[j].gameObject.name[0]);
+                        Debug.Log("Block Normal State text 0 : " + block.normalStateNum.text[0] + ",Game Object Name 0 : " + lstAllTab[j].gameObject.name[0]);
                         lstAllTab[j].TurnSelectedTabGreenRepeat(true);
                         //Select The last Tab
                         if (i == lstBlockDataForRepeat.Count - 1)

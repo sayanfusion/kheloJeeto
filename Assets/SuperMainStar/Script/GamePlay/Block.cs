@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,10 +29,12 @@ public class Block : InputDetection
 
     public GameObject gNormalButton;
     public GameObject gClickedButton;
-
-    public Text tNormalStateNumber;
-    public Text tClickedStateNumber;
-    public Text tBetAmount;
+    public GameObject winState;
+    public TMP_Text winStateNum;
+    public TMP_Text winStateBet;
+    public TMP_Text normalStateNum;
+    public TMP_Text clickedStateNum;
+    public TMP_Text betAmount;
 
     public Sprite sHighliteSprite;
     public Sprite sPressedSprite;
@@ -109,8 +112,8 @@ public class Block : InputDetection
 
     public void UpdateText(string number)
     {
-        tNormalStateNumber.text = number;
-        tClickedStateNumber.text = number;
+        normalStateNum.text = number;
+        clickedStateNum.text = number;
 
         iBetAmount = 0;
         image.sprite = sDefaultSprite;
@@ -139,9 +142,10 @@ public class Block : InputDetection
             blockState = BlockState.CLICKED;
 
             gNormalButton.SetActive(false);
+            clickedStateNum.text = normalStateNum.text;
             gClickedButton.SetActive(true);
 
-            tBetAmount.text = iBetAmount.ToString();
+            betAmount.text = iBetAmount.ToString();
             GamePlay.instance.OnBetData(blockType, iBetAmount, gameObject.name);
             if (blockType == BlockType.TRIPLE && onSelectTripleBlock != null)
             {
@@ -153,7 +157,7 @@ public class Block : InputDetection
     public override void LeftClick()
     {
         base.LeftClick();
-       // Audio_Manager.instance.PlayAudio(Audio_Manager.instance.clickSound);
+        // Audio_Manager.instance.PlayAudio(Audio_Manager.instance.clickSound);
 
         if (onSelectBlock != null)
         {
@@ -164,7 +168,7 @@ public class Block : InputDetection
     public override void RightClick()
     {
         base.RightClick();
-      //  Audio_Manager.instance.PlayAudio(Audio_Manager.instance.unselectSound);
+        //  Audio_Manager.instance.PlayAudio(Audio_Manager.instance.unselectSound);
 
         if (onDeSelectBlock != null)
         {
@@ -224,14 +228,33 @@ public class Block : InputDetection
         {
             Destroy(instantiatedWinEffectObject);
         }
+        if (winState.activeSelf)
+        {
+            winStateNum.text = normalStateNum.text;
+            winStateBet.text = "";
+            winState.SetActive(false);
+        }
+
     }
 
-
+    void SetWinState()
+    {
+        winStateNum.text = normalStateNum.text;
+        winStateBet.text = betAmount.text;
+        winState.SetActive(true);
+        if (winEffect)
+        {
+            instantiatedWinEffectObject = Instantiate(winEffect, this.transform);
+            instantiatedWinEffectObject.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+            instantiatedWinEffectObject.transform.SetAsLastSibling();
+            Debug.Log("Instantiated winEffect Object");
+        }
+    }
     public void OnDecideResult(string _sNum)
     {
-        if ((blockType == BlockType.TRIPLE && (_sNum == tNormalStateNumber.text))
-           || (blockType == BlockType.DOUBLE && (_sNum.Substring(1, 2) == tNormalStateNumber.text))
-           || (blockType == BlockType.SINGLE && (_sNum.Substring(2, 1) == tNormalStateNumber.text)))
+        if ((blockType == BlockType.TRIPLE && (_sNum == normalStateNum.text))
+           || (blockType == BlockType.DOUBLE && (_sNum.Substring(1, 2) == normalStateNum.text))
+           || (blockType == BlockType.SINGLE && (_sNum.Substring(2, 1) == normalStateNum.text)))
 
         {
             GamePlay.instance.lstResultBlock.Add(this);
@@ -241,14 +264,9 @@ public class Block : InputDetection
             }
             else
             {
-                image.sprite = sWinSprite;
-                if (winEffect)
-                {
-                    instantiatedWinEffectObject = Instantiate(winEffect, this.transform);
-                    instantiatedWinEffectObject.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
-                    instantiatedWinEffectObject.transform.SetAsLastSibling();
-                    Debug.Log("Instantiated winEffect Object");
-                }
+                Debug.Log("number:" + _sNum.Substring(2, 1));
+                // image.sprite = sWinSprite;
+                SetWinState();
 
                 gNormalButton.SetActive(true);
                 gClickedButton.SetActive(false);

@@ -103,9 +103,9 @@ public class Tab : MonoBehaviour
 
     void OnSelectBlock(Block _block)
     {
-        if (_block.tNormalStateNumber.text[0] == gameObject.name[0])
+        if (_block.normalStateNum.text[0] == gameObject.name[0])
         {
-            BlockData _blockData = allBlockData.Find((BlockData obj) => (obj.game_number == _block.tNormalStateNumber.text));
+            BlockData _blockData = allBlockData.Find((BlockData obj) => (obj.game_number == _block.normalStateNum.text));
             if (_blockData != null)
             {
                 _blockData.game_amount = _block.iBetAmount;
@@ -113,7 +113,7 @@ public class Tab : MonoBehaviour
             }
             else
             {
-                allBlockData.Add(new BlockData(_block, _block.tNormalStateNumber.text, _block.iBetAmount));
+                allBlockData.Add(new BlockData(_block, _block.normalStateNum.text, _block.iBetAmount));
             }
             image.sprite = sSelectedBlockTab;
             TurnSelectedTabGreen(true);
@@ -168,10 +168,10 @@ public class Tab : MonoBehaviour
     void OnDeSelectBlock(Block _block)
     {
 
-        if (_block.tNormalStateNumber.text[0] == gameObject.name[0])
+        if (_block.normalStateNum.text[0] == gameObject.name[0])
         {
-            Debug.Log("Block Normal State text 0 : " + _block.tNormalStateNumber.text[0] + ",Game Object Name 0 : " + gameObject.name[0]);
-            BlockData _blockData = allBlockData.Find((BlockData obj) => (obj.game_number == _block.tNormalStateNumber.text));
+            Debug.Log("Block Normal State text 0 : " + _block.normalStateNum.text[0] + ",Game Object Name 0 : " + gameObject.name[0]);
+            BlockData _blockData = allBlockData.Find((BlockData obj) => (obj.game_number == _block.normalStateNum.text));
             allBlockData.Remove(_blockData);
             if (allBlockData.Count == 0)
             {
@@ -234,8 +234,8 @@ public class Tab : MonoBehaviour
         {
             Transform _trans = buttonPanel.transform.GetChild(i);
             _trans.name = (_startingValue + (i)).ToString("000");
-            _trans.GetChild(0).GetChild(0).GetComponent<Text>().text = (_startingValue + (i)).ToString("000");
-            _trans.GetChild(1).GetChild(0).GetComponent<Text>().text = (_startingValue + (i)).ToString("000");
+            _trans.GetComponent<Block>().normalStateNum.text=(_startingValue + (i)).ToString("000");
+            _trans.GetComponent<Block>().clickedStateNum.text=(_startingValue + (i)).ToString("000");
             _trans.GetComponent<Block>().OnDeselectSuccess(0);
         }
 

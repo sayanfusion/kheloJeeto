@@ -15,12 +15,14 @@ public class TabManager : MonoBehaviour
 
     public void SwitchTab(int TabID)
     {
-        foreach (GameObject go in Tabs)
-        {
-            go.SetActive(false);
-        }
+        if (Tabs[TabID].activeSelf) return;
         Tabs[TabID].SetActive(true);
+        for (int i = 0; i < Tabs.Length; i++)
+        {
+            if (TabID == i) continue;
+            Tabs[i].SetActive(false);
 
+        }
         foreach (Image im in TabButtons)
         {
             im.color = Color.grey;

@@ -72,6 +72,7 @@ public class Timer : MonoBehaviour
     }
     public void UpdateTimer(int timeValue)
     {
+        Debug.Log("time value called: " + timeValue);
         canStart = true;
         timeLeft = timeValue;
         // Debug.Log("timer for window version: "+timeLeft);
@@ -87,10 +88,12 @@ public class Timer : MonoBehaviour
             {
                 timerText.text = timeValue.ToString();
             }
+
             if (timeValue <= 15 && timeValue >= 06)
             {
                 timerText.color = cWarningColor;
             }
+
             if (timeValue <= 05 && !playAnimOnce)
             {
                 GamePlay.instance.CloseInfo();
