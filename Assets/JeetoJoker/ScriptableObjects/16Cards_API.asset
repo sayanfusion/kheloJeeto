@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4012a02f6e7d72a408de80f0d90206d3, type: 3}
+  m_Name: 16Cards_API
+  m_EditorClassIdentifier: 
+  gameName: 16cards
+  loginApi: https://smart.smartwingames.com/api/login
+  logOutApi: https://smart.smartwingames.com/api/user-log-outs
+  userDetailsApi: https://smart.smartwingames.com/api/user-details
+  gameDataInsertApi: https://smart.smartwingames.com/api/game_data_insert
+  reportApi: https://smart.smartwingames.com/api/game-reports
+  historyApi: https://smart.smartwingames.com/api/sixteencards-history
+  hotListApi: https://smart.smartwingames.com/api/winning-hotlist
+  hotListGamewiseApi: 
+  ipAndPortApi: https://smart.smartwingames.com/api/sixteencard-port-get
+  winnerHotListUpdateApi: https://smart.smartwingames.com/api/winner-hotlist-posts

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4012a02f6e7d72a408de80f0d90206d3, type: 3}
+  m_Name: 12CardsAPI_IPL
+  m_EditorClassIdentifier: 
+  gameName: 12cards
+  loginApi: https://mplgames.in/admin/api/user-logins
+  logOutApi: https://mplgames.in/admin/api/user-log-outs
+  userDetailsApi: https://mplgames.in/admin/api/user-details-all
+  gameDataInsertApi: https://mplgames.in/admin/api/game_data_inserts
+  reportApi: https://mplgames.in/admin/api/twelvecards-reports
+  historyApi: https://mplgames.in/admin/api/twelvecards-history
+  hotListApi: https://mplgames.in/admin/api/winning-hotlists
+  hotListGamewiseApi: https://mplgames.in/admin/api/user-winnerhotlist
+  ipAndPortApi: https://mplgames.in/admin/api/port-get
+  winnerHotListUpdateApi: https://mplgames.in/admin/api/winner-hotlist-execution
