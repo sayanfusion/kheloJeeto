@@ -101,6 +101,7 @@ public sealed class SpinWheelNew : MonoBehaviour
         {
             if (!haveError())
             {
+                Debug.Log("started spinning: ");
                 destinationState = EDestinationState.PostAssigned;
                 //onFinishSpinCallback = a_OnFinishSpinCallback;
                 spinState = ESpinState.Spinning;

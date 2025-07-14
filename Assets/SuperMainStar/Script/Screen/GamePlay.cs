@@ -1108,8 +1108,8 @@ IEnumerator sendbetdataAPI(string jsonData)
         //OnStartAllWheel();
         // ShowMessage("Place your chip");// close by prabir
 
-//added by shivamfusion07
-      ResetPlayValue();
+        //added by shivamfusion07
+        ResetPlayValue();
         Debug.Log("play value rest from here shivammmmmm");
         if (singleWinValueText != null)
         {
@@ -1124,7 +1124,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         Debug.Log("Reset All Data finished");
         playValue = 0;
         // timerScript.StartTimer(90);// close by prabir
-        OnStartAllWheel();
+        //OnStartAllWheel();
     }
   
 

@@ -62,7 +62,6 @@ public class UserLogOut : MonoBehaviour
             JSONNode loginInfo = JSON.Parse(uwr.downloadHandler.text);
             string msg = loginInfo["message"];
             if (msg.Equals("Logged Out"))
-               // if (loginInfo["message"] == "Logged Out")
             {
                 print("yes");
                 PlayerPrefs.SetInt(Constants.LoginStatus, 0);
