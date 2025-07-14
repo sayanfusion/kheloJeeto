@@ -1124,7 +1124,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         Debug.Log("Reset All Data finished");
         playValue = 0;
         // timerScript.StartTimer(90);// close by prabir
-        OnStartAllWheel();
+        // OnStartAllWheel();
     }
   
 
