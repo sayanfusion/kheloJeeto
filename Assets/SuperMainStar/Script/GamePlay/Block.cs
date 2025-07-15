@@ -249,6 +249,14 @@ public class Block : InputDetection
             instantiatedWinEffectObject.transform.SetAsLastSibling();
             Debug.Log("Instantiated winEffect Object");
         }
+        GamePlay.instance.EnablePopupForBlock(this.transform);
+        Invoke(nameof(disablePopup),2);
+    }
+
+    void disablePopup()
+    { 
+        GamePlay.instance.DisablePopUp();
+        
     }
     public void OnDecideResult(string _sNum)
     {

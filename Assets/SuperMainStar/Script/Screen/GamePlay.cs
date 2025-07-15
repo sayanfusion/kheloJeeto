@@ -65,7 +65,7 @@ private HashSet<string> usedTicketIds = new HashSet<string>();
 
     public int currentSelectedChip;
     public TextMeshProUGUI tPointBalance;
-    public Text tPlayValue;
+    public TMP_Text tPlayValue;
     public TextMeshProUGUI tUserName;
 
     public double previousPlayPoint;
@@ -1445,7 +1445,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         clickPopUp.gameObject.SetActive(true);
 
         clickPopUp.transform.SetParent(_trans);
-        clickPopUp.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        // clickPopUp.transform.localScale = new Vector3(0.7f, 0.7f,0.7f);
         clickPopUp.anchoredPosition = Vector3.one;
         clickPopUp.transform.SetParent(this.transform.GetChild(0));
 

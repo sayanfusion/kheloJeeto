@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,11 +14,13 @@ public class PopUp : MonoBehaviour {
     }
     public Image iPopUp;
     public RectTransform tAllTexts;
-    public Text tNumber;
-    public Text tBetAmount;
-    public Text tTotalPay;
-    public Text tWinText;
-    public Text tRedPopUp;
+
+    public TMP_Text number;
+    public TMP_Text betAmount;
+    public TMP_Text totalPay;
+    public TMP_Text winText;
+    public TMP_Text redPopUp;
+
 
     public Sprite sNormal;
     public Sprite sInsufficient;
@@ -55,12 +58,12 @@ public class PopUp : MonoBehaviour {
         DisableAllTexts();
         tAllTexts.GetChild(0).gameObject.SetActive(true);
         iPopUp.sprite = sNormal;
-        tNumber.text = _number;
-        tBetAmount.text = _betAmount.ToString();
+        number.text = _number;
+        betAmount.text = _betAmount.ToString();
         //Debug.LogError("--"+ Constant.GetWinValue(_blockType, _number, _betAmount));
         float _winValue = Constant.GetWinValue(_blockType, _number, _betAmount);
 
-        tWinText.text = _winValue.ToString();
+        winText.text = _winValue.ToString();
 
         SetBlockPosition(_blockType);
     }
@@ -72,7 +75,7 @@ public class PopUp : MonoBehaviour {
         DisableAllTexts();
         tAllTexts.GetChild(2).gameObject.SetActive(true);
         iPopUp.sprite = sNormal;
-        tTotalPay.text = _betAmount;
+        totalPay.text = _betAmount;
 
         SetBlockPosition(_blockType);
     }
@@ -86,8 +89,8 @@ public class PopUp : MonoBehaviour {
         SetBlockPosition(_blockType);
 
         if(_error == ERROR.Insufficient_Balance)
-            tRedPopUp.text = "Insufficient Balance";
+            redPopUp.text = "Insufficient Balance";
         else
-            tRedPopUp.text = "Limit Exceed";
+            redPopUp.text = "Limit Exceed";
     }
 }
