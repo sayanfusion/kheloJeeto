@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,19 +39,32 @@ public class PopUp : MonoBehaviour {
     {
         Vector3 pos = tAllTexts.anchoredPosition;
         pos.x = Mathf.Abs(pos.x);
-
+        Vector2 position = iPopUp.transform.localPosition;
         if (_blockType == Block.BlockType.TRIPLE)
         {
             pos.x = -Mathf.Abs(pos.x);
-            iPopUp.transform.localScale = new Vector3(-1, 1, 1);
+            iPopUp.transform.rotation = Quaternion.Euler(0, 180, 0);
+            position.x = Mathf.Abs(position.x);
+            foreach (Transform item in iPopUp.transform.GetChild(0))
+            {
+                item.localRotation = Quaternion.Euler(0, 180, 0);
+            }
+            iPopUp.transform.localPosition = position;
         }
         else
         {
-            iPopUp.transform.localScale = new Vector3(1, 1, 1);
+            position.x = -Mathf.Abs(position.x);
+            iPopUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+            foreach (Transform item in iPopUp.transform.GetChild(0))
+            {
+                item.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            iPopUp.transform.localPosition = position;
+
 
         }
 
-        tAllTexts.anchoredPosition = pos;
+        // tAllTexts.anchoredPosition = pos;
     }
 
     public void SetBlockData(Block.BlockType _blockType, string _number, int _betAmount)

@@ -14,6 +14,15 @@ public class Timer : MonoBehaviour
     public Color cWarningColor;
     [SerializeField] private GamePlay gamePlay;
     public AudioClip AudioClip, placeyourbet;
+
+    public Image zeroth;
+    public Image oneth;
+
+    public Sprite[] red0_5;
+    public Sprite[] orange0_10;
+
+    public Sprite[] yellow0_10;
+    // public Sprite[] digits;
     private void OnEnable()
     {
         cDefaultCol = timerText.color;
@@ -72,9 +81,28 @@ public class Timer : MonoBehaviour
     }
     public void UpdateTimer(int timeValue)
     {
-        Debug.Log("time value called: " + timeValue);
         canStart = true;
         timeLeft = timeValue;
+
+        int ones = timeValue % 10;
+        int tens = (timeValue / 10) % 10;
+        
+        if (timeValue < 6)
+        {
+            zeroth.sprite = red0_5[ones];
+            oneth.sprite = red0_5[tens];
+
+        }
+        else if (timeValue < 16)
+        {
+            zeroth.sprite = orange0_10[ones];
+            oneth.sprite = orange0_10[tens];
+        }
+        else if (timeValue < 91)
+        {
+            zeroth.sprite = yellow0_10[ones];
+            oneth.sprite = yellow0_10[tens];
+        }
         // Debug.Log("timer for window version: "+timeLeft);
         timerText.text = timeValue.ToString();
         if (canStart && timeValue >= 0)

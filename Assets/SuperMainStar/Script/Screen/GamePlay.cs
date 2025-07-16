@@ -20,24 +20,25 @@ using tripplechance;
 
 public class GamePlay : UIPage
 {
-    
+
     public GameObject MessagePanel;
     public Text MessageTxt;
-private HashSet<string> usedTicketIds = new HashSet<string>();
- public class GameData
+    private HashSet<string> usedTicketIds = new HashSet<string>();
+    public class GameData
     {
         public string gameId;
         public string userId;
         public List<CardData> cardValueSet;
     }
-     public string getCardData;
+    public string getCardData;
     public static GamePlay instance;
     public GameObject Logo;
     public GameObject ResultP;
     public TextMeshProUGUI resulttext;
     public RandomClickParent leftRandomClick;
     public RandomClickParent rightRandomClick;
-    public RectTransform clickPopUp;
+    public RectTransform[] clickPopUp;
+
     //public GameObject gWinPanel;
     public GameObject gWinData;
     public GameObject gJewel;
@@ -114,10 +115,10 @@ private HashSet<string> usedTicketIds = new HashSet<string>();
 
     public TabParent tabParent;
     public double playValue;
-    public long totalbetamountget=0;
+    public long totalbetamountget = 0;
 
 
-   public double IPointBalance
+    public double IPointBalance
     {
         get
         {
@@ -134,17 +135,17 @@ private HashSet<string> usedTicketIds = new HashSet<string>();
             }
             tPointBalance.text = value.ToString("#0.00");
             playValue = firstPointBalance - IPointBalance;
-            Debug.Log("play value:"+playValue);
+            Debug.Log("play value:" + playValue);
             tPlayValue.text = playValue.ToString();
-            Debug.Log("playe value11:"+ tPlayValue.text);
+            Debug.Log("playe value11:" + tPlayValue.text);
 
             // Debug.Log("play value : " + playValue);
         }
     }
-  
 
-   
-    
+
+
+
     public bool IsRemoveClicked
     {
         get
@@ -225,7 +226,7 @@ private HashSet<string> usedTicketIds = new HashSet<string>();
     public Text singlePlayText, doublePlayText, TriplePlayText;
     public Text singleWinText, doubleWinText, TripleWinText;
     private int singlePlayValue, doublePlayValue, triplePlayValue;
-//added by shivamfusion07 to check bet button click
+    //added by shivamfusion07 to check bet button click
     public static bool isbetclicked = false;
     private void Awake()
     {
@@ -310,127 +311,127 @@ private HashSet<string> usedTicketIds = new HashSet<string>();
             GetAllResults(true);
         }
     }
-   public void Betdata()
-{
-    isbetclicked = true;
-    List<string> keys = new List<string>();
-    List<long> values = new List<long>();
-
-    foreach (var item in allDatas.singleDatas)
+    public void Betdata()
     {
-        if (item.value > 0)
+        isbetclicked = true;
+        List<string> keys = new List<string>();
+        List<long> values = new List<long>();
+
+        foreach (var item in allDatas.singleDatas)
         {
-            keys.Add(item.card);
-            values.Add(item.value);
+            if (item.value > 0)
+            {
+                keys.Add(item.card);
+                values.Add(item.value);
+            }
+        }
+        foreach (var item in allDatas.doubleDatas)
+        {
+            if (item.value > 0)
+            {
+                keys.Add(item.card);
+                values.Add(item.value);
+            }
+        }
+        foreach (var item in allDatas.tripleDatas)
+        {
+            if (item.value > 0)
+            {
+                keys.Add(item.card);
+                values.Add(item.value);
+            }
+        }
+
+        long totalBetAmount = values.Sum();
+        KeyBet = string.Join(",", keys);
+        ValueBet = string.Join(",", values);
+        TotalBet = totalBetAmount.ToString();
+
+        // Prepare cardValueSet as a list of dictionaries
+        List<CardData> cardValueSet = keys.Select((key, index) => new CardData
+        {
+            card = key,
+            value = (int)values[index]
+        }).ToList();
+
+        // Generate unique ticket ID
+        ticketId = GenerateUniqueTicketId();
+
+        // Create Data_TCP object
+        Data_TCP dataTCP = new Data_TCP
+        {
+            ticketId = ticketId,
+            gameId = gameId,
+            userId = PlayerPrefs.GetInt(Constant.STOKIESID).ToString(),
+            gamename = "tripleChance",
+            cardValueSet = cardValueSet
+        };
+
+        // Serialize the object to JSON
+        string jsonData = JsonConvert.SerializeObject(dataTCP, Formatting.Indented);
+
+        Debug.Log("SendDataToAPI " + jsonData);
+        StartCoroutine(sendbetdataAPI(jsonData));
+    }
+
+    IEnumerator sendbetdataAPI(string jsonData)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("data", jsonData);
+
+        Debug.Log("Sending Data to API: " + jsonData);
+
+        UnityWebRequest request = UnityWebRequest.Post(testCardData, form);
+        request.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("TCP Request failed: " + request.error);
+            StartCoroutine(DisplayBetNOTAcceptedMessage());
+        }
+        else
+        {
+            Debug.Log("TCP Request successful: " + request.downloadHandler.text);
+            Printer_TCP.Instance.PrintPdf();
         }
     }
-    foreach (var item in allDatas.doubleDatas)
+
+    public void ClearClickedforBET()
     {
-        if (item.value > 0)
+        Debug.Log("clear clicked for bet works");
+
+        // Reset each block's game amount
+        for (int i = 0; i < lstAllBlockData.Count; i++)
         {
-            keys.Add(item.card);
-            values.Add(item.value);
+            lstAllBlockData[i].game_amount = 0;
+            AddToBalance(lstAllBlockData[i].game_amount);
+            lstAllBlockData[i].block.OnDeselectSuccess(0);
         }
-    }
-    foreach (var item in allDatas.tripleDatas)
-    {
-        if (item.value > 0)
-        {
-            keys.Add(item.card);
-            values.Add(item.value);
-        }
-    }
 
-    long totalBetAmount = values.Sum();
-    KeyBet = string.Join(",", keys);
-    ValueBet = string.Join(",", values);
-    TotalBet = totalBetAmount.ToString();
+        // Reset the play value and update the UI
+        playValue = 0;
+        tPlayValue.text = playValue.ToString(); // Ensure UI reflects the reset
+        Debug.Log("tplay value reset: " + tPlayValue.text);
 
-    // Prepare cardValueSet as a list of dictionaries
-    List<CardData> cardValueSet = keys.Select((key, index) => new CardData
-    {
-        card = key,
-        value = (int)values[index]
-    }).ToList();
+        // Reset firstPointBalance and IPointBalance here
+        firstPointBalance = IPointBalance;  // Ensures new balance starts correctly
+        Debug.Log("firstPointBalance reset: " + firstPointBalance);
 
-    // Generate unique ticket ID
-    ticketId = GenerateUniqueTicketId();
+        // Clear data and update UI
+        allDatas.ClearAllData();
+        lstAllBlockData.Clear();
 
-    // Create Data_TCP object
-    Data_TCP dataTCP = new Data_TCP
-    {
-        ticketId = ticketId,
-        gameId = gameId,
-        userId = PlayerPrefs.GetInt(Constant.STOKIESID).ToString(),
-        gamename = "tripleChance",
-        cardValueSet = cardValueSet
-    };
+        // Disable buttons and additional actions
+        bClear.interactable = false;
+        bDoubleUp.interactable = false;
+        bRepeat.interactable |= (lstBlockDataForRepeat != null && lstBlockDataForRepeat.Count > 0);
 
-    // Serialize the object to JSON
-    string jsonData = JsonConvert.SerializeObject(dataTCP, Formatting.Indented);
-
-    Debug.Log("SendDataToAPI " + jsonData);
-    StartCoroutine(sendbetdataAPI(jsonData));
-}
-
-IEnumerator sendbetdataAPI(string jsonData)
-{
-    WWWForm form = new WWWForm();
-    form.AddField("data", jsonData);
-
-    Debug.Log("Sending Data to API: " + jsonData);
-
-    UnityWebRequest request = UnityWebRequest.Post(testCardData, form);
-    request.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    yield return request.SendWebRequest();
-
-    if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-    {
-        Debug.LogError("TCP Request failed: " + request.error);
-        StartCoroutine(DisplayBetNOTAcceptedMessage());
-    }
-    else
-    {
-        Debug.Log("TCP Request successful: " + request.downloadHandler.text);
-        Printer_TCP.Instance.PrintPdf();
-    }
-}
-
-  public void ClearClickedforBET()
-{
-    Debug.Log("clear clicked for bet works");
-
-    // Reset each block's game amount
-    for (int i = 0; i < lstAllBlockData.Count; i++)
-    {
-        lstAllBlockData[i].game_amount = 0;
-        AddToBalance(lstAllBlockData[i].game_amount);
-        lstAllBlockData[i].block.OnDeselectSuccess(0);
+        ResetPlayValue();
     }
 
-    // Reset the play value and update the UI
-    playValue = 0;
-    tPlayValue.text = playValue.ToString(); // Ensure UI reflects the reset
-    Debug.Log("tplay value reset: " + tPlayValue.text);
-
-    // Reset firstPointBalance and IPointBalance here
-    firstPointBalance = IPointBalance;  // Ensures new balance starts correctly
-    Debug.Log("firstPointBalance reset: " + firstPointBalance);
-
-    // Clear data and update UI
-    allDatas.ClearAllData();
-    lstAllBlockData.Clear();
-
-    // Disable buttons and additional actions
-    bClear.interactable = false;
-    bDoubleUp.interactable = false;
-    bRepeat.interactable |= (lstBlockDataForRepeat != null && lstBlockDataForRepeat.Count > 0);
-
-    ResetPlayValue();
-}
-
-     private IEnumerator DisplayBetNOTAcceptedMessage()
+    private IEnumerator DisplayBetNOTAcceptedMessage()
     {
         MessagePanel.SetActive(true);
         MessageTxt.text = "Your Bet Declined! Try again";
@@ -441,8 +442,8 @@ IEnumerator sendbetdataAPI(string jsonData)
     }
     public void GETbetData()
     {
-       // ClearClicked();
-      // ClearClickedfrprinttriplechance();
+        // ClearClicked();
+        // ClearClickedfrprinttriplechance();
         StartCoroutine(GetBetDataAPI());
     }
     IEnumerator GetBetDataAPI()
@@ -474,22 +475,22 @@ IEnumerator sendbetdataAPI(string jsonData)
             Debug.Log("Response Get Card data: " + request.downloadHandler.text);
             string jsonResponse = request.downloadHandler.text;
             GameData gameData = JsonConvert.DeserializeObject<GameData>(jsonResponse);
-            totalbetamountget=0;
+            totalbetamountget = 0;
             for (int i = 0; i < gameData.cardValueSet.Count; i++)
             {
                 CardData cardData = gameData.cardValueSet[i];
-               // SendData.CardValueSet datanew = new SendData.CardValueSet();
+                // SendData.CardValueSet datanew = new SendData.CardValueSet();
                 string key = cardData.card;
-              //  datanew.card=key;
+                //  datanew.card=key;
                 int value = cardData.value;
-              //  datanew.value=value;
-               // playValue += value;
-               totalbetamountget+=value;
+                //  datanew.value=value;
+                // playValue += value;
+                totalbetamountget += value;
                 BlockType blockType = GetBlockType(key);
                 OnBetData(blockType, value, key);
-            }  
-           // tPlayValue.text = playValue.ToString();
-           // Debug.Log("tplay value33:"+tPlayValue.text);
+            }
+            // tPlayValue.text = playValue.ToString();
+            // Debug.Log("tplay value33:"+tPlayValue.text);
         }
     }
     public BlockType GetBlockType(string key)
@@ -514,7 +515,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         }
     }
 
-     private string GenerateUniqueTicketId()
+    private string GenerateUniqueTicketId()
     {
         const int maxAttempts = 100;
 
@@ -916,7 +917,7 @@ IEnumerator sendbetdataAPI(string jsonData)
     public void betreset()
     {
         totalbetamountget = 0;
-        Debug.Log("restart bet value:"+totalbetamountget);
+        Debug.Log("restart bet value:" + totalbetamountget);
     }
     public void RestartGame()
     {
@@ -1108,8 +1109,8 @@ IEnumerator sendbetdataAPI(string jsonData)
         //OnStartAllWheel();
         // ShowMessage("Place your chip");// close by prabir
 
-//added by shivamfusion07
-      ResetPlayValue();
+        //added by shivamfusion07
+        ResetPlayValue();
         Debug.Log("play value rest from here shivammmmmm");
         if (singleWinValueText != null)
         {
@@ -1126,14 +1127,14 @@ IEnumerator sendbetdataAPI(string jsonData)
         // timerScript.StartTimer(90);// close by prabir
         // OnStartAllWheel();
     }
-  
+
 
     void ResetPlayValue()
     {
         for (int i = 0; i < allBlockDetails.Count; i++)
         {
             allBlockDetails[i].tPlayValue.text = "PLAY : 0";
-            Debug.Log("play value:"+allBlockDetails[i].tPlayValue.text);
+            Debug.Log("play value:" + allBlockDetails[i].tPlayValue.text);
             allBlockDetails[i].tWinValue.text = "WIN : 0";
 
             allBlockDetails[i].tPlayBG.sprite = sNormalBGForPlay;
@@ -1212,7 +1213,7 @@ IEnumerator sendbetdataAPI(string jsonData)
     {
         //SoundController.instance.PlayAudio(SoundController.ClipType.BUTTON);
 #if !UNITY_ANDROID
-        clickPopUp.gameObject.SetActive(false);
+        clickPopUp[0].gameObject.SetActive(false);
 #endif
         BlockData _blockData = lstAllBlockData.Find((BlockData obj) => (obj.game_number == _block.normalStateNum.text));
         if (_blockData != null)
@@ -1288,17 +1289,12 @@ IEnumerator sendbetdataAPI(string jsonData)
 #endif
         }
 
-#if !UNITY_ANDROID
-        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _blockData.game_amount);
-#else
-
-        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _blockData.game_amount);
+        clickPopUp[0].GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _blockData.game_amount);
         //Block.BlockType type = _trans.GetComponent<Block>().blockType;
         //allBlockDetails[(int)type].tPlayValue.text = "PLAY : " + GetPlayValueFromBlock(type);
         //allBlockDetails[(int)_block.blockType].tPlayBG.sprite = sSelectedBGForPlay;
 
-#endif
-        Debug.Log("custom: "+_blockData.game_amount);
+        Debug.Log("custom: " + _blockData.game_amount);
         _trans.GetComponent<Block>().OnSelectSuccess(_blockData.game_amount);
         bRepeat.interactable = false;
         //#if UNITY_ANDROID
@@ -1340,7 +1336,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         {
             _blockData = new BlockData(_perviousBlockData.block, _perviousBlockData.game_number, _iExtraAmount);
             lstAllBlockData.Add(_blockData);
-            bClear.interactable = true;        
+            bClear.interactable = true;
             bDoubleUp.interactable = true;
 #if UNITY_ANDROID
             //bRemove.interactable = true;
@@ -1440,33 +1436,51 @@ IEnumerator sendbetdataAPI(string jsonData)
     }
 
 
-    void SetPositionOfPopUp(Transform _trans)
+    int SetPositionOfPopUp(Transform _trans, bool onWin = false)
     {
-        clickPopUp.gameObject.SetActive(true);
+        int index = 0;
 
-        clickPopUp.transform.SetParent(_trans);
+        if (onWin)
+        {
+            foreach (var item in clickPopUp)
+            {
+                if (!item.gameObject.activeSelf)
+                {
+                    break;
+                }
+                index++;
+            }
+        }
+
+        Debug.Log(index);
+        clickPopUp[index].transform.SetParent(_trans);
         // clickPopUp.transform.localScale = new Vector3(0.7f, 0.7f,0.7f);
-        clickPopUp.anchoredPosition = Vector3.one;
-        clickPopUp.transform.SetParent(this.transform.GetChild(0));
+        clickPopUp[index].anchoredPosition = Vector3.one;
+        clickPopUp[index].transform.SetParent(this.transform.GetChild(0));
+
+        clickPopUp[index].gameObject.SetActive(true);
+        return index;
 
     }
 
-    public void EnablePopupForBlock(Transform _trans)
+    public void EnablePopupForBlock(Transform _trans,bool win=false)
     {
+
 #if !UNITY_ANDROID
-        SetPositionOfPopUp(_trans);
+        int popup=SetPositionOfPopUp(_trans,win);
 
         Block _block = _trans.GetComponent<Block>();
-        clickPopUp.GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _block.iBetAmount);
+        clickPopUp[popup].GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _block.iBetAmount);
 #endif
     }
 
 
     public void EnablePopUpForRowColoum(Transform _trans, string _betAmount)
     {
+
 #if !UNITY_ANDROID
-        SetPositionOfPopUp(_trans);
-        clickPopUp.GetComponent<PopUp>().SetBlockDataForRow(_trans.GetComponent<RowColumPickBlock>().blockType, _betAmount);
+        int popup=SetPositionOfPopUp(_trans);
+        clickPopUp[popup].GetComponent<PopUp>().SetBlockDataForRow(_trans.GetComponent<RowColumPickBlock>().blockType, _betAmount);
 #endif
     }
 
@@ -1474,8 +1488,8 @@ IEnumerator sendbetdataAPI(string jsonData)
     public void EnablePopUpForInsufficient(Transform _trans, Block.BlockType _blockType, PopUp.ERROR _error)
     {
 #if !UNITY_ANDROID
-        SetPositionOfPopUp(_trans);
-        clickPopUp.GetComponent<PopUp>().ShowInsufficientPopUp(_blockType, _error);
+        int popup=SetPositionOfPopUp(_trans);
+        clickPopUp[popup].GetComponent<PopUp>().ShowInsufficientPopUp(_blockType, _error);
         // alertPanel.SetActive(true);
 #else
         //// Show Insufficient popup
@@ -1498,7 +1512,11 @@ IEnumerator sendbetdataAPI(string jsonData)
     public void DisablePopUp()
     {
 #if !UNITY_ANDROID
-        clickPopUp.gameObject.SetActive(false);
+        foreach (var item in clickPopUp)
+        {
+            item.gameObject.SetActive(false);
+        }
+        // clickPopUp.gameObject.SetActive(false);
 #endif
     }
 
@@ -1667,15 +1685,15 @@ IEnumerator sendbetdataAPI(string jsonData)
             ShowMessage("You Win");
             StartCoroutine(winEffect(5f));
         }
-       
-      //  coinEffectForLessWin.Play();
+
+        //  coinEffectForLessWin.Play();
         if (onResultSuccess != null)
         {
             onResultSuccess(Constant.ResultNumber);
         }
         //viewBalance();
         // Invoke("ResetAllData", 10f);
-    isbetclicked=false;
+        isbetclicked = false;
     }
 
     public void testWinEffect(float fadeOutDuration)
@@ -1686,12 +1704,12 @@ IEnumerator sendbetdataAPI(string jsonData)
     private IEnumerator winEffect(float fadeOutDuration)
     {
         winAnimationGameObject.SetActive(true);
-       // Animator animator;
-       // float waitDuration = 0.0f;
-       // animator = winAnimationGameObject.GetComponent<Animator>();
-       // if (animator != null)
+        // Animator animator;
+        // float waitDuration = 0.0f;
+        // animator = winAnimationGameObject.GetComponent<Animator>();
+        // if (animator != null)
         //{
-          //  AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        //  AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
         //     if (clipInfo.Length > 0)
         //     {
 
@@ -1703,22 +1721,22 @@ IEnumerator sendbetdataAPI(string jsonData)
         //     yield return new WaitForSeconds(waitDuration);
 
         // Image image = winAnimationGameObject.GetComponent<Image>();
-       // if (image != null)
+        // if (image != null)
         //{
-          //  image.DOFade(0, fadeOutDuration).OnComplete(() =>
-           // {
-           yield return new WaitForSeconds(7f);
-                winAnimationGameObject.gameObject.SetActive(false);
-               // Color color = image.color;
-               // color.a = 1.0f;
-              //  image.color = color;
-    //         });
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("Image Component not found on Win Animation");
-    //     }
-    // }
+        //  image.DOFade(0, fadeOutDuration).OnComplete(() =>
+        // {
+        yield return new WaitForSeconds(7f);
+        winAnimationGameObject.gameObject.SetActive(false);
+        // Color color = image.color;
+        // color.a = 1.0f;
+        //  image.color = color;
+        //         });
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError("Image Component not found on Win Animation");
+        //     }
+        // }
     }
 
     void EnableWinPanel()
@@ -1894,30 +1912,30 @@ IEnumerator sendbetdataAPI(string jsonData)
         ResetPlayValue();
         playValue = 0;
     }
-       public void ClearClickedfrprinttriplechance()
+    public void ClearClickedfrprinttriplechance()
     {
         Debug.Log("clear clicked for print works");
         //SoundController.instance.PlayAudio (SoundController.ClipType.CHIP);
         for (int i = 0; i < lstAllBlockData.Count; i++)
         {
-          //  AddToBalance(lstAllBlockData[i].game_amount);
+            //  AddToBalance(lstAllBlockData[i].game_amount);
             lstAllBlockData[i].block.OnDeselectSuccess(0);
         }
-            Debug.Log("bet clicked true by bet button click play value reset...");
-         bRepeat.interactable |= (lstBlockDataForRepeat != null && lstBlockDataForRepeat.Count > 0);
+        Debug.Log("bet clicked true by bet button click play value reset...");
+        bRepeat.interactable |= (lstBlockDataForRepeat != null && lstBlockDataForRepeat.Count > 0);
         ResetPlayValue();
         playValue = 0;
-         tPlayValue.text = playValue.ToString();
-         Debug.Log("tplay valuee77:"+tPlayValue.text);
+        tPlayValue.text = playValue.ToString();
+        Debug.Log("tplay valuee77:" + tPlayValue.text);
         allDatas.ClearAllData();
-       /* foreach (var tab in lstAllTab)
-        {
-            tab.TurnSelectedTabGreen(false);
-            tab.ResetTab();
-        }*/
+        /* foreach (var tab in lstAllTab)
+         {
+             tab.TurnSelectedTabGreen(false);
+             tab.ResetTab();
+         }*/
         lstAllBlockData.Clear();
         bClear.interactable = false;
-        bDoubleUp.interactable = false;   
+        bDoubleUp.interactable = false;
         //#if UNITY_ANDROID
         //        //bRemove.interactable = false;
         //        if (lstBlockDataForRepeat!= null && lstBlockDataForRepeat.Count > 0)
@@ -1927,15 +1945,15 @@ IEnumerator sendbetdataAPI(string jsonData)
         //        }
         //#endif
 
-      /*  if (onClearClicked != null)
-            onClearClicked();
+        /*  if (onClearClicked != null)
+              onClearClicked();
 
-        bRepeat.interactable |= (lstBlockDataForRepeat != null && lstBlockDataForRepeat.Count > 0);
+          bRepeat.interactable |= (lstBlockDataForRepeat != null && lstBlockDataForRepeat.Count > 0);
 
-        ResetPlayValue();
-        playValue = 0;
-         tPlayValue.text = playValue.ToString();
-         Debug.Log("tplay valuee77:"+tPlayValue.text);*/
+          ResetPlayValue();
+          playValue = 0;
+           tPlayValue.text = playValue.ToString();
+           Debug.Log("tplay valuee77:"+tPlayValue.text);*/
     }
 
 
@@ -2041,7 +2059,7 @@ IEnumerator sendbetdataAPI(string jsonData)
     public void InfoClicked()
     {
         if (clickPopUp != null)
-            clickPopUp.gameObject.SetActive(false);
+            clickPopUp[0].gameObject.SetActive(false);
         //SoundController.instance.PlayAudio (SoundController.ClipType.CHIP);
         gInfoPanel.SetActive(true);
     }
@@ -2107,7 +2125,7 @@ IEnumerator sendbetdataAPI(string jsonData)
         delayBetweenResultCallback = Time.time;
         //  Debug.Log(timerScript.timeLeft + " send ");
         if (clickPopUp != null)
-            clickPopUp.gameObject.SetActive(false);
+            clickPopUp[0].gameObject.SetActive(false);
 #if UNITY_ANDROID
         // To close Panel if it is opened
 
