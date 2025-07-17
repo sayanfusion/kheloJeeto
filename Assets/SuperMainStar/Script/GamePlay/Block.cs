@@ -157,7 +157,7 @@ public class Block : InputDetection
     public override void LeftClick()
     {
         base.LeftClick();
-        // Audio_Manager.instance.PlayAudio(Audio_Manager.instance.clickSound);
+        Audio_Manager.instance.PlayCLickAudio();
 
         if (onSelectBlock != null)
         {

@@ -60,6 +60,7 @@ public class Timer : MonoBehaviour
     {
         Debug.Log("timer data:" + totalTime);
         gamePlay.ShowMessage("Place your chips");
+        Audio_Manager.instance.PLayPlaceYourChips();
         timeLeft = totalTime;
         canStart = true;
         playAnimOnce = false;
@@ -87,6 +88,11 @@ public class Timer : MonoBehaviour
         int ones = timeValue % 10;
         int tens = (timeValue / 10) % 10;
         
+        if(timeValue>10) zeroth.transform.localPosition=new Vector2(35, zeroth.transform.localPosition.y);
+        else zeroth.transform.localPosition = new Vector2(38, zeroth.transform.localPosition.y);
+
+        if(timeValue==15) Audio_Manager.instance.PLayLastChance();
+
         if (timeValue < 6)
         {
             zeroth.sprite = red0_5[ones];
