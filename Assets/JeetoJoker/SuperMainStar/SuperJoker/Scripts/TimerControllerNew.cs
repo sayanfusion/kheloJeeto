@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
+using TMPro;
 
 namespace khelojeetonew
 {
@@ -11,7 +12,7 @@ namespace khelojeetonew
     {
         public static TimerControllerNew inst;
         [SerializeField]private float timeLeft = 25f;
-        public Text timerText;
+        public TMP_Text timerText;
         private bool canStart = false;
         public Text placeyourbet;
         public Color cDefaultCol;
@@ -62,60 +63,13 @@ namespace khelojeetonew
         }
 
         // Update is called once per frame
-        void Update()
-        {
-            return;
-            if (canStart && timeLeft > 0)
-            {
-                //Debug.Log(((STartDateTime - DateTime.Now).Duration().Seconds));
-                timeSpend = timeLeft-(float)((DateTime.Now - STartDateTime).Duration().TotalSeconds);
-                
-                //timeLeft -= Time.deltaTime;
-               
-                //string min = ((int)timeLeft / 60).ToString("00");
-                //string sec = (timeLeft % 60).ToString("00");
-                //timerText.text = min + ":" + sec;
-
-
-                timerText.text = timeSpend.ToString("00");
-                if (timeSpend <= 10 && timeSpend > 07)
-                {
-                    timerText.color = cWarningColor;
-                }
-
-
-                if (timeSpend <= 07)
-                {
-                    if (!stopBetting)
-                    {
-                        stopBetting = true;
-                       // StartCoroutine(SocketController.Instance.DownloadX());
-                       // UIManager.inst.StopTheWonCorutine();
-                        //SoundController.instance.PlayAudio(SoundController.ClipType.NO_MORE_BET);
-                        timerText.color = Color.red;
-                        placeyourbet.text = "NO MORE PLAY!";
-                        placeyourbet.fontSize = 30;
-
-                        TimeUp?.Invoke();
-
-                        JeetoJokerManager.instance.TimerEnd();
-                    }
-                }
-                if (timeSpend <= 0)
-                {
-                    timeSpend = 0;
-                    //JeetoJokerManager.instance.StartSpinning();
-                    canStart = false;
-                    WheelSpinTime?.Invoke();
-                }
-            }
-        }
+    
 
         public void UpdateTimer(float time)
         {
             if ( innerSpinWheel != null && !innerSpinWheel.isWheelSpinning())
             {
-                timerText.text = time.ToString("00");
+                timerText.text = time.ToString();
                 if (time > 10)
                 {
                     timerText.color = cDefaultCol;
@@ -163,7 +117,7 @@ namespace khelojeetonew
         {
             _inputBlocker.SetActive(false);
             stopBetting = false;
-            //Debug.Log("Timer start");
+            Debug.Log("Timer start");
             STartDateTime = DateTime.Now;
             timeLeft = totalTime;
             canStart = true;

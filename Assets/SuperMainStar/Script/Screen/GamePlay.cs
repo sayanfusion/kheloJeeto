@@ -228,6 +228,8 @@ public class GamePlay : UIPage
     private int singlePlayValue, doublePlayValue, triplePlayValue;
     //added by shivamfusion07 to check bet button click
     public static bool isbetclicked = false;
+
+    public GameObject[] trippleBlocker;
     private void Awake()
     {
         getResultHistory = false;
@@ -1120,7 +1122,7 @@ public class GamePlay : UIPage
         }
 
         // DisableWinPanel();
-        gJewel.GetComponent<Animator>().SetBool("blink", false);
+        //gJewel.GetComponent<Animator>().SetBool("blink", false);
         tabParent.ResetAllTabs();
         Debug.Log("Reset All Data finished");
         playValue = 0;
@@ -1532,8 +1534,22 @@ public class GamePlay : UIPage
     {
         lastSelectedChip = chip;
         currentSelectedChip = int.Parse(chipName);
+
+        if (currentSelectedChip == 500 || currentSelectedChip == 1000)
+        {
+            trippleBlocker[0].SetActive(true);
+            trippleBlocker[1].SetActive(true);
+
+        }
+        else {
+
+            trippleBlocker[0].SetActive(false);
+            trippleBlocker[1].SetActive(false);
+
+        }
         Debug.LogError("currentSelectedChip " + currentSelectedChip);
         IsRemoveClicked = false;
+
 
 #if UNITY_ANDROID
         if (lstAllBlockData.Count > 0)

@@ -160,7 +160,7 @@ public class SocketController : Singleton<SocketController>
     private void OnTimer(Socket socket, Packet packet, object[] args)
     {
         string json = packet.RemoveEventName(true);
-        // Debug.LogError("OnTimer " + packet);
+         Debug.LogError("OnTimer " + packet);
         json = json.Replace("\"", "");
         TimerControllerNew.inst.UpdateTimer(int.Parse(json));
     }
