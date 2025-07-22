@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
 using TMPro;
-
+using JeetoJoker;
 namespace khelojeetonew
 {
     public class TimerControllerNew : MonoBehaviour
@@ -16,10 +16,10 @@ namespace khelojeetonew
         private bool canStart = false;
         public Text placeyourbet;
         public Color cDefaultCol;
-        public Color cWarningColor;
 
         public UnityAction TimeUp;
         public UnityAction WheelSpinTime;
+
         //public LevelManager level;
         float timeSpend;
 
@@ -70,17 +70,8 @@ namespace khelojeetonew
             if ( innerSpinWheel != null && !innerSpinWheel.isWheelSpinning())
             {
                 timerText.text = time.ToString();
-                if (time > 10)
-                {
-                    timerText.color = cDefaultCol;
-
-                }
-                if (time <= 10 && time > 07)
-                {
-                    timerText.color = cWarningColor;
-                }
-
-
+                if (time == 15) JeetoJoker.SoundController.Instance.PlayLastchance();
+                if (time == 10) JeetoJoker.SoundController.Instance.PlayNoMoreBet();
                 if (time <= 10)
                 {
                     _inputBlocker.SetActive(true);
@@ -105,7 +96,7 @@ namespace khelojeetonew
                     time = 0;
                     //JeetoJokerManager.instance.StartSpinning();
                     canStart = false;
-                    WheelSpinTime?.Invoke();
+                    // WheelSpinTime?.Invoke();
                 }
             }
 
@@ -121,11 +112,12 @@ namespace khelojeetonew
             STartDateTime = DateTime.Now;
             timeLeft = totalTime;
             canStart = true;
-            timerText.color = cDefaultCol;
+            // timerText.color = cDefaultCol;
+            JeetoJoker.SoundController.Instance.PlayPlaceyourChips();
             //UIManager.inst.SetWinAmount();
-            if(totalTime == 87)
+            if (totalTime == 87)
             {
-               placeyourbet.text = "PLACE YOUR CHIPS!";
+                placeyourbet.text = "PLACE YOUR CHIPS!";
             }
          
             //placeyourbet.fontSize = 30;
@@ -135,7 +127,7 @@ namespace khelojeetonew
 
         public void SetDefaultColor()
         {
-            timerText.color = cDefaultCol;
+            // timerText.color = cDefaultCol;
         }
 
 

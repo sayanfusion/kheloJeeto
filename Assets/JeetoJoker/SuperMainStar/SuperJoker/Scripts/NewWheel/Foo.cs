@@ -20,7 +20,7 @@ public class Foo : MonoBehaviour
     int t_InnerWheelSlotId;
 
     Action onAssignSlotId;
-
+    [SerializeField] GameObject winHighlighter;
 
     
     //public void StartSpinningWithData(int cardID, int suitID)
@@ -126,17 +126,17 @@ public class Foo : MonoBehaviour
 
     public void spinWheel()
     {
+        winHighlighter.SetActive(false);
+        outerSpinWheel.audioSourcerunning.Play();
+        innerSpinWheel.audioSourcerunning.Stop();
         outerSpinWheel.SpinTheWheel(totalSlots, onOuterWheelSpinComplete);
         innerSpinWheel.SpinTheWheel(totalSlots, onInnerWheelSpinComplete);
     }
-    public void Freeze()
-    {
-        outerSpinWheel.FreezeWheel();
-        innerSpinWheel.FreezeWheel();
-    }
+
     private void onOuterWheelSpinComplete(int a_WinningSlot)
     {
         Debug.Log("first");
+        outerSpinWheel.audioSourcerunning.Stop();
        
         //Debug.Log($"Outer Winning Slot: {a_WinningSlot}");
         outerSpinWheel.WheelSpinStoppped();       
@@ -145,12 +145,13 @@ public class Foo : MonoBehaviour
 
     private void onInnerWheelSpinComplete(int a_WinningSlot)
     {
-       // audiostop.Play();
+        // audiostop.Play();
         //Debug.Log($"Inner Winning Slot: {a_WinningSlot}");
+        winHighlighter.SetActive(true);
+        innerSpinWheel.audioSourcerunning.Play();
         innerSpinWheel.WheelSpinStoppped();
         //StartCoroutine(JeetoJokerManager.instance.startSpinWheelWithData());
         //innerSpinWheel.StopInnerWheel();       
-        Debug.Log("final");
         //LevelManager.inst.SetStopEffects();
         //anim.B();
     }

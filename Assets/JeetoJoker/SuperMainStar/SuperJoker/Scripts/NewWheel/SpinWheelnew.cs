@@ -33,7 +33,13 @@ public class SpinWheelnew : MonoBehaviour
     public UnityAction OnWheelStart;
     public UnityAction OnWheelStop;
     public bool isStop = true;
+    public enum type
+    {
+        innerwheel,
+        outerwheel
+    }
 
+    public type wheeltype;
     public void DirectlySetDestination(int a_TotalSlots, int a_WinningSlot)
     {
         Debug.Log($"TotalSlots: {a_TotalSlots}, WinningSlot: {a_WinningSlot}");
@@ -53,7 +59,7 @@ public class SpinWheelnew : MonoBehaviour
         {
             t_FinalProgress = (finalRotation + 360);
         }
-
+        Debug.Log("finalRotation rotation" + t_FinalProgress);
         wheel.eulerAngles = new Vector3(0, 0, t_FinalProgress);
     }
 
@@ -184,13 +190,6 @@ public class SpinWheelnew : MonoBehaviour
         }
     }
 
-    public void FreezeWheel()
-    {
-        isSpinning = false;
-        isSpinningFinal = false;
-        wheel.eulerAngles =new Vector3(0,0,15);
-        WheelSpinStoppped();
-    }
 
     private void setItemChances(int a_TotalSlots, int a_WinningSlot)
     {
@@ -253,7 +252,8 @@ public class SpinWheelnew : MonoBehaviour
             TimerControllerNew.inst.isWheelRunning = false;
         else
             sixteencard_Timer.inst.isWheelRunning = false;
-        audioSourcerunning.Stop();
+
+
         OnWheelStop?.Invoke();
     }
 
@@ -269,7 +269,9 @@ public class SpinWheelnew : MonoBehaviour
             TimerControllerNew.inst.isWheelRunning = false;
         else
             sixteencard_Timer.inst.isWheelRunning = false;
-        audioSourcerunning.Play();
+
+
+            
         OnWheelStart?.Invoke();
     }
 }

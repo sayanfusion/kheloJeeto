@@ -102,6 +102,7 @@ namespace tripplechance
 
         }
 
+
         private void SetGameId(Socket socket, Packet packet, object[] args)
         {
             string s = packet.RemoveEventName(true);
@@ -279,7 +280,9 @@ namespace tripplechance
         public bool isGameStart;
         private void Timer(Socket socket, Packet packet, params object[] args)
         {
-            loadingPanel?.SetActive(false);
+            if(loadingPanel)
+            loadingPanel.SetActive(false);
+
             string s = packet.RemoveEventName(true);
             Debug.Log("timer :" + int.Parse(s));
             timer.UpdateTimer(int.Parse(s));

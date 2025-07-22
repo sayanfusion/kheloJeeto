@@ -5,10 +5,15 @@ namespace JeetoJoker
 {
     public class SoundController : Singleton<SoundController>
     {
-         public AudioSource audioSource;
-           public AudioClip unselectSound;
-         public AudioClip clickSound;
-         public AudioClip coinsound;
+        public AudioSource audioSource;
+        public AudioSource voiceAudioSource;
+
+        public AudioClip placeyourchips;
+        public AudioClip lastChance;
+        public AudioClip noMorebetPlease;
+        public AudioClip unselectSound;
+        public AudioClip clickSound;
+        public AudioClip coinsound;
 
         private AudioClip[] allAudioClips;
 
@@ -34,17 +39,37 @@ namespace JeetoJoker
                 allAudioClips[soundIndex] = Resources.Load<AudioClip>($"Audios/{soundType}");
             audioSource.PlayOneShot(allAudioClips[soundIndex]);
         }
-       
-     public void PlayAudiojeetojoker(AudioClip selectunselect)
-    {
-        audioSource.clip = selectunselect;
-        audioSource.Play();
+
+        public void PlayAudiojeetojoker(AudioClip selectunselect)
+        {
+            audioSource.clip = selectunselect;
+            audioSource.Play();
+        }
+        public void playcoinsound(AudioClip coinsoundArg)
+        {
+            audioSource.clip = coinsoundArg;
+            audioSource.Play();
+        }
+
+
+        public void PlayPlaceyourChips()
+        {
+            voiceAudioSource.Stop();
+            voiceAudioSource.clip = placeyourchips;
+            voiceAudioSource.Play();
+        }
+        public void PlayNoMoreBet()
+        {
+            voiceAudioSource.Stop();
+            voiceAudioSource.clip = noMorebetPlease;
+            voiceAudioSource.Play();
+        }
+        public void PlayLastchance()
+        {
+            voiceAudioSource.Stop();
+            voiceAudioSource.clip = lastChance;
+            voiceAudioSource.Play();
+        }
     }
-    public void playcoinsound(AudioClip coinsound)
-    {
-        audioSource.clip=coinsound;
-        audioSource.Play();
-    }
-    }
-    
+
 }

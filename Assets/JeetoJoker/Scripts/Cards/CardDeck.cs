@@ -37,7 +37,7 @@ namespace khelojeetonew
             playNormal   = Resources.Load<Sprite>("SJ_Resources/play_normal");
             playSelected = Resources.Load<Sprite>("SJ_Resources/play_selected");
            // chipImages   = Resources.LoadAll<Sprite>("SJ_Resources/ChipImages/newChipImages");
-            chipImages   = Resources.LoadAll<Sprite>("SJ_Resources/ChipImages");
+            // chipImages   = Resources.LoadAll<Sprite>("SJ_Resources/ChipImages");
             chipSelected = 5;
             //DataCollector.instance.SetCards(deckCards, groupCard);
             //DataCollector.instance.SetCardCollectingButtons(cardSelectingButtons);
@@ -67,12 +67,12 @@ namespace khelojeetonew
         {
             for (int i = 0; i < chipImages.Length; i++)
             {
-                if(chipImages[i].name == value.ToString())
+                if(chipImages[i].name == value.ToString()+"_chip")
                 {
                     return chipImages[i];
                 }
             }
-Debug.Log("Chip image get in 12 card in get chip images");
+        
             return chipImages[0];
         }
 
