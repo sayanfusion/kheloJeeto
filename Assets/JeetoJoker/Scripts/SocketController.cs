@@ -83,6 +83,7 @@ public class SocketController : Singleton<SocketController>
         builder.Append(address.EndsWith("/") ? "socket.io/" : "/socket.io/");
         SocketOptions option = new SocketOptions();
 
+        Debug.Log("url _socket: "+builder.ToString());
         Core = new BestHTTP.SocketIO.SocketManager(new Uri(builder.ToString()));
         Core.Socket.AutoDecodePayload = false;
         Core.Socket.On(SocketIOEventTypes.Connect, OnConnected);
@@ -438,33 +439,13 @@ public class SocketController : Singleton<SocketController>
     {
         Leave();
     }
-    void RemoveAllListeners()
-    {
-        Core.Socket.Off(SocketIOEventTypes.Connect, OnConnected);
-        Core.Socket.Off(SocketIOEventTypes.Disconnect, OnDisconnected);
-        Core.Socket.Off(SocketIOEventTypes.Error, OnConnectedError);
-        Core.Socket.Off(SocketIOEventTypes.Unknown, OnUnknownError);
-        Core.Socket.Off(Constants.betting, OnBetting);
-        Core.Socket.Off(Constants.createRoomSuccess, OnCreateRoomeSuccess);
-        Core.Socket.Off(Constants.errorOccured, OnErrorOccured);
-        Core.Socket.Off(Constants.mode, OnMode);
-        Core.Socket.Off(Constants.roomData, OnRoomData);
-        Core.Socket.Off(Constants.roomMessage, OnRoomMessage);
-        Core.Socket.Off(Constants.slot, OnSlot);
-        Core.Socket.Off(Constants.startGame, OnStartGame);
-        Core.Socket.Off(Constants.timer, OnTimer);
-        Core.Socket.Off(Constants.updatedPlayer, OnUpdatedPlayer);
-        Core.Socket.Off(Constants.updatedPlayers, OnUpdatedPlayers);
-        Core.Socket.Off(Constants.updatedRoom, OnUpdatedRoom);
-        Core.Socket.Off(Constants.gameId,GameIddata);
-    }
+
     public void Leave()
     {
         leaveData.roomId = Constants.ROOMID;
         leaveData.playerId = PlayerPrefs.GetInt(Constant.UID).ToString();
         string rawJson = JsonConvert.SerializeObject(leaveData);
         Debug.LogError("leave " + rawJson);
-        RemoveAllListeners();
         Dictionary<string, string> keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(rawJson);
         try
         {

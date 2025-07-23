@@ -31,6 +31,7 @@ namespace khelojeetonew
         public string userbetdata;
         [SerializeField] private GameType _gameType;
         [SerializeField] private Text WinAmount;
+        [SerializeField] private Text totalBetAmountText;
 
         [SerializeField] private GameObject WinPopUp;
         [SerializeField] private Sprite cardSelected;
@@ -115,6 +116,8 @@ namespace khelojeetonew
         [SerializeField]
         private GameObject _heavyWinAnimation;
         public AudioSource Winsound12;
+
+        public GameObject blast;
         private void Awake()
         {
             if (instance == null)
@@ -522,11 +525,13 @@ namespace khelojeetonew
             }
             if (string.IsNullOrEmpty(multiplier) || multiplier == "1x")
             {
-                multiplierObject.SetActive(false);
+                multiplierObject.SetActive(true);
+                multiplierText.gameObject.SetActive(false);
             }
             else
             {
-                multiplierObject.SetActive(true);
+                multiplierObject.SetActive(false);
+                multiplierText.gameObject.SetActive(true);
                 multiplierText.text = multiplier;
                 StartCoroutine(WinnerHotlistUpdate());
 
@@ -692,6 +697,7 @@ namespace khelojeetonew
             StartCoroutine(GameDataInsert(winAmount, "win"));
 
             WinAmount.text = winAmount.ToString();
+            totalBetAmountText.text =totalBet.ToString();
             totalWinText.text = winAmount.ToString();
             totalUserCoins += winAmount;
             userCoinsText.text = totalUserCoins.ToString("#0.00");
@@ -708,7 +714,7 @@ namespace khelojeetonew
             }
             else
             {
-                StartCoroutine(ShowWinPopupCoroutine(6f));
+                StartCoroutine(ShowWinPopupCoroutine(10f));
             }
         }
         private IEnumerator ShowCoinEffectAndPopup(float coinEffectDuration, float popupDuration)
@@ -727,8 +733,6 @@ namespace khelojeetonew
             Debug.Log("win popup showing after win");
             yield return new WaitForSeconds(delay);
             Winsound12.Play();
-            // if(totalWinText.text != "0")  // Check if totalWinText is not zero
-            // {
             WinPopUp.SetActive(true);
             yield return new WaitForSeconds(2f);
             WinPopUp.SetActive(false);
@@ -1110,8 +1114,16 @@ Debug.Log("win amount greater then 1000");
             ShowXMultiplierText();
             cardImage.sprite = Resources.Load<Sprite>("SJ_Resources/" + itemCard);
             suiteImage.sprite = Resources.Load<Sprite>("SJ_Resources/" + itemSuite);
+            
             cardImage.gameObject.SetActive(true);
             suiteImage.gameObject.SetActive(true);
+            blast.SetActive(true);
+            Invoke(nameof(stopBlast),3f);
+        }
+
+        void stopBlast() {
+
+            blast.SetActive(false);
         }
         private void ShowXMultiplierText()
         {
@@ -1122,11 +1134,13 @@ Debug.Log("win amount greater then 1000");
             }
             if (string.IsNullOrEmpty(multiplier) || multiplier == "1x")
             {
-                multiplierObject.SetActive(false);
+                multiplierObject.SetActive(true);
+                multiplierText.gameObject.SetActive(false);
             }
             else
             {
-                multiplierObject.SetActive(true);
+                multiplierObject.SetActive(false);
+                multiplierText.gameObject.SetActive(true);
                 multiplierText.text = multiplier;
                 if (totalBetAmount == 0)
                     StartCoroutine(WinnerHotlistUpdate());

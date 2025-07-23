@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: JeetoJokerAPI
   m_EditorClassIdentifier: 
   gameName: jeetoJoker
-  loginApi: https://smart.smartwingames.com/api/user-logins
-  logOutApi: https://smart.smartwingames.com/api/user-log-outs
-  userDetailsApi: https://smart.smartwingames.com /api/user-details
-  gameDataInsertApi: https://smart.smartwingames.com/api/game_data_inserts
-  reportApi: https://smart.smartwingames.com/api/game-reports
-  historyApi: https://smart.smartwingames.com/api/jeetojoker-history
-  hotListApi: https://smart.smartwingames.com/api/winning-hotlist
+  loginApi: https://admin.khelojeetogame.com/api/user-logins
+  logOutApi: https://admin.khelojeetogame.com/api/user-log-outs
+  userDetailsApi: https://admin.khelojeetogame.com/api/user-details
+  gameDataInsertApi: https://admin.khelojeetogame.com/api/game_data_inserts
+  reportApi: https://admin.khelojeetogame.com/api/game-reports
+  historyApi: https://admin.khelojeetogame.com/api/jeetojoker-history
+  hotListApi: https://admin.khelojeetogame.com/api/winning-hotlist
   hotListGamewiseApi: 
-  ipAndPortApi: https://smart.smartwingames.com/api/port-get
-  winnerHotListUpdateApi: https://smart.smartwingames.com/api/winner-hotlist-posts
+  ipAndPortApi: https://admin.khelojeetogame.com/api/port-get
+  winnerHotListUpdateApi: https://admin.khelojeetogame.com/api/winner-hotlist-posts

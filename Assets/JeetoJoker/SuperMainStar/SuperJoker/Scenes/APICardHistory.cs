@@ -13,6 +13,7 @@ public class ApiData
     public string game_name;
     public string created_at;
     public string updated_at;
+    public string bonous_spin;
 }
 
 [System.Serializable]
@@ -36,6 +37,7 @@ public class APICardHistory : MonoBehaviour
     public SpriteRenderer s4;
     public List<string> WinNumber;
     public List<string> Timer;
+    public List<GameObject> nullImage;
     public List<Image> cardimage;
     public List<Image> suiteimage;
 
@@ -154,9 +156,9 @@ public IEnumerator setResultRequest(string result)
             foreach (ApiData data in dataList)
             {
                 WinNumber.Add(data.win_card);
-                DateTime dateTime = DateTime.Parse(data.created_at);
-                string formattedTime = dateTime.ToString("h:mm");
-                Timer.Add(formattedTime);
+                //DateTime dateTime = DateTime.Parse(data.bonous_spin);
+                //string formattedTime = dateTime.ToString("h:mm");
+                Timer.Add(data.bonous_spin);
             }
 
             
@@ -170,9 +172,16 @@ public IEnumerator setResultRequest(string result)
     private void MapWinNumbersToSprites()
     {
       
-        for (int i = 0; i < WinNumber.Count; i++)
+        for (int i = 0; i < nullImage.Count; i++)
         {
+            if (Timer[i] == "1x" || Timer[i]== null) {
+                nullImage[i].SetActive(true);
+        }else { 
+        
+             nullImage[i].SetActive(false);
             HistoryCardTimer[i].text = Timer[i];
+
+        }
             string winNum = WinNumber[i];
             if (winNum == "C_1,S_1")
             {

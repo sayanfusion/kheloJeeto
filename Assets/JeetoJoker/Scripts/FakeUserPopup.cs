@@ -150,7 +150,8 @@ public class FakeUserPopup : MonoBehaviour
                 {
                     int.TryParse(loginData.walletBlance, out int coins);
                       Debug.Log("join room aUTO login");
-                    if (SocketController.Instance.JoinRoom(loginData.userDetails.id.ToString(), loginData.userDetails.user_name, coins))
+                    bool statusRoom = SocketController.Instance.JoinRoom(loginData.userDetails.id.ToString(), loginData.userDetails.user_name, coins);
+                    if (statusRoom)
                     {
                         JeetoJokerManager.instance.Initialize(loginData.userDetails.user_name, coins);
                         gameObject.SetActive(false);

@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class Foo : MonoBehaviour
 {
-    [SerializeField] private SpinWheelnew outerSpinWheel, innerSpinWheel;
+    [SerializeField] internal SpinWheelnew outerSpinWheel, innerSpinWheel;
     [SerializeField] private int totalSlots = 0;
 
     public AudioSource audiostop;
@@ -22,7 +23,8 @@ public class Foo : MonoBehaviour
     Action onAssignSlotId;
     [SerializeField] GameObject winHighlighter;
 
-    
+    [SerializeField] Transform scroll;
+
     //public void StartSpinningWithData(int cardID, int suitID)
     //{
     //    if (cardID == 0)
@@ -129,6 +131,7 @@ public class Foo : MonoBehaviour
         winHighlighter.SetActive(false);
         outerSpinWheel.audioSourcerunning.Play();
         innerSpinWheel.audioSourcerunning.Stop();
+        scrollAnimationStart();
         outerSpinWheel.SpinTheWheel(totalSlots, onOuterWheelSpinComplete);
         innerSpinWheel.SpinTheWheel(totalSlots, onInnerWheelSpinComplete);
     }
@@ -137,7 +140,8 @@ public class Foo : MonoBehaviour
     {
         Debug.Log("first");
         outerSpinWheel.audioSourcerunning.Stop();
-       
+        ScrollAnimationStop();
+
         //Debug.Log($"Outer Winning Slot: {a_WinningSlot}");
         outerSpinWheel.WheelSpinStoppped();       
        // anim.A();
@@ -156,6 +160,17 @@ public class Foo : MonoBehaviour
         //anim.B();
     }
 
+    void scrollAnimationStart()
+    {
+        scroll.DOLocalMoveX(-6.5f, 1.5f).SetLoops(-1, LoopType.Restart);
+
+    }
+
+    void ScrollAnimationStop() {
+
+        DOTween.Kill(scroll);
+        scroll.transform.localPosition = new Vector3(6.5f, 0, 0);
+    }
     public void restarttt()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

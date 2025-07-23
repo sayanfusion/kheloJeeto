@@ -80,7 +80,6 @@ namespace khelojeetonew
                         stopBetting = true;
                         // UIManager.inst.StopTheWonCorutine();
                         //SoundController.instance.PlayAudio(SoundController.ClipType.NO_MORE_BET);
-                        timerText.color = Color.red;
                         placeyourbet.text = "NO MORE PLAY!";
                         placeyourbet.fontSize = 30;
                         TimeUp?.Invoke();
@@ -138,7 +137,6 @@ namespace khelojeetonew
             canStart = false;
             timeSpend = 90f;
             timerText.text = "90";
-            timerText.color = Color.red;
             placeyourbet.text = "NO MORE PLAY!";
             placeyourbet.fontSize = 30;
         }

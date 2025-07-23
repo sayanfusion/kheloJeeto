@@ -5,13 +5,15 @@ using System.Linq;
 using UnityEngine.Events;
 using khelojeetonew;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class SpinWheelnew : MonoBehaviour
 {
     [SerializeField] private Transform wheel;
     [SerializeField] public float spinSpeed = 400;
     [SerializeField] private float minSpinSpeed = 40f;
-
+    [SerializeField] private Transform[] scroll;
+    [SerializeField] private GameObject blast;
     //[Range(1, 50)]
     [SerializeField] private int spinRounds = 7;
     [SerializeField] private bool clockwiseRotation = true;
@@ -38,6 +40,8 @@ public class SpinWheelnew : MonoBehaviour
         innerwheel,
         outerwheel
     }
+
+
 
     public type wheeltype;
     public void DirectlySetDestination(int a_TotalSlots, int a_WinningSlot)
@@ -253,9 +257,17 @@ public class SpinWheelnew : MonoBehaviour
         else
             sixteencard_Timer.inst.isWheelRunning = false;
 
+        if (wheeltype == type.outerwheel)
+        {
+            
+
+        }
 
         OnWheelStop?.Invoke();
     }
+
+
+
 
     public void StopInnerWheel()
     {
@@ -270,9 +282,15 @@ public class SpinWheelnew : MonoBehaviour
         else
             sixteencard_Timer.inst.isWheelRunning = false;
 
+        if (wheeltype == type.outerwheel) {
+            //scroll.gameObject.SetActive(true);
+            
+        }
 
             
         OnWheelStart?.Invoke();
     }
+
+
 }
 
