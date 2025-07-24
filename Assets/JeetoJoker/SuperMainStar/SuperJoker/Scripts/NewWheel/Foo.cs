@@ -24,6 +24,7 @@ public class Foo : MonoBehaviour
     [SerializeField] GameObject winHighlighter;
 
     [SerializeField] Transform scroll;
+    int CARDID, SUITID;
 
     //public void StartSpinningWithData(int cardID, int suitID)
     //{
@@ -67,6 +68,8 @@ public class Foo : MonoBehaviour
         int t_OuterWheelCardType = cardID - 1;
         int t_InnerWheelCardType = suitID - 1;
 
+        CARDID = cardID;
+        SUITID = suitID;
         //int t_OuterWheelCardType = UnityEngine.Random.Range(0, outerWheelDatas.Count);
         //int t_InnerWheelCardType = UnityEngine.Random.Range(0, innerWheelDatas.Count);
 
@@ -77,8 +80,9 @@ public class Foo : MonoBehaviour
         t_InnerWheelSlotId = innerWheelDatas[t_InnerWheelCardType].Segments[UnityEngine.Random.Range(0, innerWheelDatas[t_InnerWheelCardType].Segments.Count)];
         //Debug.Log($"OuterWheelSlotId: {t_OuterWheelSlotId}, InnerWheelSlotId: {t_InnerWheelSlotId}");
         //StartCoroutine(JeetoJokerManager.instance.LiveDataInsert());
-     
-        StartCoroutine(TimeDifference(cardID, suitID));
+        StartCoroutine(TimeDifference(CARDID, SUITID));
+
+
     }
 
     public void SetDirectDestination(int cardID, int suitID)
@@ -94,6 +98,7 @@ public class Foo : MonoBehaviour
         }
         //int t_OuterWheelCardType = cardID - 1;
         //int t_InnerWheelCardType = suitID - 1;
+
         int t_OuterWheelCardType = UnityEngine.Random.Range(0, outerWheelDatas.Count);
         int t_InnerWheelCardType = UnityEngine.Random.Range(0, innerWheelDatas.Count);
         t_OuterWheelSlotId = outerWheelDatas[t_OuterWheelCardType].Segments[UnityEngine.Random.Range(0, outerWheelDatas[t_OuterWheelCardType].Segments.Count)];
@@ -111,26 +116,22 @@ public class Foo : MonoBehaviour
         Debug.Log(t_OuterWheelSlotId + " TimeDifference " + t_InnerWheelSlotId + " milan " + timedifference);
         outerSpinWheel.AssignWinningSlot(t_OuterWheelSlotId);
         //yield return new WaitForSeconds(timedifference);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         innerSpinWheel.AssignWinningSlot(t_InnerWheelSlotId);
-        StartCoroutine(WaitForWinShow(cardID, suitID));
+        yield return new WaitForSeconds(1f);
+        onAssignSlotId?.Invoke();
+        yield return new WaitForSeconds(3);
+        yield return JeetoJokerManager.instance.OnWin(cardID, suitID).WaitForCompletion();
     }
 
-    private IEnumerator WaitForWinShow(int cardID, int suitID)
-    {
-        
-        yield return new WaitForSeconds(1f);
-       // onAssignSlotId?.Invoke();
-        JeetoJokerManager.instance.OnWin(cardID, suitID);
-        yield return new WaitForSeconds(2f);
-        onAssignSlotId?.Invoke();
-    }
+  
 
     public void spinWheel()
     {
         winHighlighter.SetActive(false);
         outerSpinWheel.audioSourcerunning.Play();
         innerSpinWheel.audioSourcerunning.Stop();
+        JeetoJokerManager.instance.HideMultiplierText();
         scrollAnimationStart();
         outerSpinWheel.SpinTheWheel(totalSlots, onOuterWheelSpinComplete);
         innerSpinWheel.SpinTheWheel(totalSlots, onInnerWheelSpinComplete);
@@ -153,7 +154,10 @@ public class Foo : MonoBehaviour
         //Debug.Log($"Inner Winning Slot: {a_WinningSlot}");
         winHighlighter.SetActive(true);
         innerSpinWheel.audioSourcerunning.Play();
+
+        StartCoroutine(JeetoJokerManager.instance.SetCardImage(CARDID, SUITID));
         innerSpinWheel.WheelSpinStoppped();
+
         //StartCoroutine(JeetoJokerManager.instance.startSpinWheelWithData());
         //innerSpinWheel.StopInnerWheel();       
         //LevelManager.inst.SetStopEffects();
@@ -162,7 +166,7 @@ public class Foo : MonoBehaviour
 
     void scrollAnimationStart()
     {
-        scroll.DOLocalMoveX(-6.5f, 1.5f).SetLoops(-1, LoopType.Restart);
+        scroll.DOLocalMoveX(-6.5f, 1.5f).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
 
     }
 

@@ -14,10 +14,14 @@ namespace khelojeetonew
         Sprite playSelected;
         CardSelector[] allCARDS;
         public Sprite[] chipImages;
-       
+        public CardSelect[] allCards;
+        public GroupCardSelect[] allCardsGroup;
+        public Sprite woncardSprite;
+        public Sprite defaultcardSprite;
+
         int chipSelected;
 
-        
+        CardSelect highlightCard;
 
         public Transform glowBackground;
         //color change glow effect on card after win
@@ -60,7 +64,52 @@ namespace khelojeetonew
 
         void ShowWinner()
         {
-            ShowWinningCard(2, 2);
+            ShowWinningCard("c1_1,s1");
+        }
+        public void HighlightCard(string winningcard) {
+
+            foreach (var item in allCards)
+            {
+                if (item.name == winningcard)
+                {
+
+                    item.playImage.sprite = woncardSprite;
+                    highlightCard = item;
+                    break;
+                }
+            }
+
+        }
+
+        public void RemoveHighlightCard() {
+
+            if(highlightCard!=null)
+            highlightCard.playImage.sprite = defaultcardSprite;
+
+        }
+        public void disableAllText() {
+
+            foreach (var item in allCards)
+            {
+                item.playText.SetActive(false);
+            }
+
+            foreach (var item in allCardsGroup)
+            {
+                item.playText.SetActive(false);
+            }
+
+        }
+
+        public void EnableAllText() {
+            foreach (var item in allCards)
+            {
+                item.playText.SetActive(true);
+            }
+            foreach (var item in allCardsGroup)
+            {
+                item.playText.SetActive(true);
+            }
         }
 
         public Sprite GetChipImage(int value)
@@ -136,6 +185,7 @@ namespace khelojeetonew
             foreach (Card item in deckCards)
             {
                 item.IsCleared(a_SessionCompleted);
+
             }
             //foreach (GroupCardsSelector item in groupCard)
             //{
@@ -190,8 +240,10 @@ namespace khelojeetonew
             //}
         }
 
-        public void ShowWinningCard(int cardValue, int cardSuite)
+        public void ShowWinningCard(string winngcard)
         {
+     
+
             //CardData cardData = new CardData(cardValue, cardSuite, 0, 0, 0);
             //gameObject.BroadcastMessage("SetAsWinningCard", cardData, SendMessageOptions.RequireReceiver);
         }
@@ -224,6 +276,7 @@ namespace khelojeetonew
            
         }
        
+        
         public void DisableWinningCard()
         {
             glowBackground.gameObject.SetActive(false);

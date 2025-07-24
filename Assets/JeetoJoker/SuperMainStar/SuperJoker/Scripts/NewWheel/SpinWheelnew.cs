@@ -150,7 +150,7 @@ public class SpinWheelnew : MonoBehaviour
 
             if (clockwiseRotation)
             {
-                rotationSpin -= (finalSpinSpeed * Time.deltaTime);
+                rotationSpin -= (finalSpinSpeed*1.5f * Time.deltaTime);
                 if (spinCount < spinRounds)
                 {
                     if (rotationSpin <= -360f)
@@ -171,7 +171,7 @@ public class SpinWheelnew : MonoBehaviour
             }
             else
             {
-                rotationSpin += (finalSpinSpeed * Time.deltaTime);
+                rotationSpin += (finalSpinSpeed * 1.5f * Time.deltaTime);
                 if (spinCount < spinRounds)
                 {
                     if (rotationSpin >= 360f)

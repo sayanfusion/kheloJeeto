@@ -41,6 +41,7 @@ public class APICardHistory : MonoBehaviour
     public List<Image> cardimage;
     public List<Image> suiteimage;
 
+    public List<Sprite> multiplierImages;
     public List<Text> HistoryCardTimer;
     public string apiUrl;
     public string livedatasapi;
@@ -174,14 +175,8 @@ public IEnumerator setResultRequest(string result)
       
         for (int i = 0; i < nullImage.Count; i++)
         {
-            if (Timer[i] == "1x" || Timer[i]== null) {
-                nullImage[i].SetActive(true);
-        }else { 
-        
-             nullImage[i].SetActive(false);
-            HistoryCardTimer[i].text = Timer[i];
-
-        }
+            int index = GetImageIndex(Timer[i]);
+            nullImage[i].GetComponent<Image>().sprite = multiplierImages[index];
             string winNum = WinNumber[i];
             if (winNum == "C_1,S_1")
             {
@@ -251,6 +246,23 @@ public IEnumerator setResultRequest(string result)
                 suiteimage[i].sprite = s4.sprite;
             }
         }
+    }
+
+    public int GetImageIndex(string mult) {
+
+        if (mult == "1x") return 0;
+        else if (mult == "2x") return 1;
+        else if (mult == "3x") return 2;
+        else if (mult == "4x") return 3;
+        else if (mult == "5x") return 4;
+        else if (mult == "6x") return 5;
+        else if (mult == "7x") return 6;
+        else if (mult == "8x") return 7;
+        else if (mult == "9x") return 8;
+        else if (mult == "10x") return 9;
+        else return 0;
+
+
     }
 
 }

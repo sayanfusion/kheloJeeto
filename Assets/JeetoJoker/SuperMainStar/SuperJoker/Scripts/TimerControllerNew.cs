@@ -36,6 +36,8 @@ namespace khelojeetonew
 
         public SpinWheelnew innerSpinWheel;
 
+        [SerializeField] private GameObject noMoreBetPlease;
+
         private void Awake()
         {
             inst = this;
@@ -67,13 +69,26 @@ namespace khelojeetonew
 
         public void UpdateTimer(float time)
         {
+            if (time == 90f) {
+                StartTimer(time);
+
+            }
+
             if ( innerSpinWheel != null && !innerSpinWheel.isWheelSpinning())
             {
                 timerText.text = time.ToString();
-                if (time == 15) JeetoJoker.SoundController.Instance.PlayLastchance();
-                if (time == 10) JeetoJoker.SoundController.Instance.PlayNoMoreBet();
-                if (time <= 10)
+                if (time == 25) JeetoJoker.SoundController.Instance.PlayLastchance();
+                if (time == 5) { 
+                JeetoJoker.SoundController.Instance.PlayNoMoreBet();
+                    ShowNoMoreBetPlease();
+                    Invoke(nameof(HideNoMoreBetPlease), 2f);
+
+
+
+                }
+                if (time <= 5)
                 {
+                    CardDeck.instance.disableAllText();
                     _inputBlocker.SetActive(true);
                     if (!stopBetting)
                     {
@@ -113,6 +128,11 @@ namespace khelojeetonew
             canStart = true;
             // timerText.color = cDefaultCol;
             JeetoJoker.SoundController.Instance.PlayPlaceyourChips();
+            CardDeck.instance.EnableAllText();
+            CardDeck.instance.RemoveHighlightCard();
+            //yield return new WaitForSeconds(10f);
+            JeetoJokerManager.instance.Clear();
+            JeetoJokerManager.instance.SelectBet(0);
             //UIManager.inst.SetWinAmount();
             if (totalTime >20)
             {
@@ -129,6 +149,20 @@ namespace khelojeetonew
             // timerText.color = cDefaultCol;
         }
 
+
+        void ShowNoMoreBetPlease() {
+
+            noMoreBetPlease.SetActive(true);
+
+
+        }
+
+        void HideNoMoreBetPlease() { 
+        
+            noMoreBetPlease.SetActive(false);
+
+
+        }
 
         public void StopTimer()
         {

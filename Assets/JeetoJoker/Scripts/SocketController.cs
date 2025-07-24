@@ -15,12 +15,13 @@ using System.Text;
 using JeetoJoker;
 using SocketManager = BestHTTP.SocketIO.SocketManager;
 using SoundControllerJeeto = JeetoJoker.SoundController;
+using TMPro;
 public class SocketController : Singleton<SocketController>
 {
 
     [SerializeField] private string address;
-     
 
+    [SerializeField] private TMP_Text roomIdText;
 
     [SerializeField] private GameObject loadingPanel;
 
@@ -131,6 +132,8 @@ public class SocketController : Singleton<SocketController>
         setMode.roomId = roomData._id;
         leaveData.roomId = roomData._id;
         betData.roomId = roomData._id;
+        roomIdText.text = leaveData.roomId;
+
     }
 
     public int gameidstore;
@@ -169,7 +172,7 @@ public class SocketController : Singleton<SocketController>
     private void OnStartGame(Socket socket, Packet packet, object[] args)
     {
         Debug.LogError("OnStartGame " + packet);
-        
+        roomIdText.text = leaveData.roomId;
         SoundControllerJeeto.Instance.PlayOneShot(SoundControllerJeeto.SoundType.PlaceBet, JeetoJokerManager.instance.placeBetSoundIndex);
 
     }
@@ -377,7 +380,7 @@ public class SocketController : Singleton<SocketController>
         {
              storedPlayerId = playerId;
             // playerId = "309";
-          JeetoJokerManager.instance.Reset();  
+            JeetoJokerManager.instance.Reset();  
             //StartCoroutine(DownloadMode());
             Debug.LogError("playerId " + playerId);
             betData.playerId = playerId;
@@ -442,8 +445,11 @@ public class SocketController : Singleton<SocketController>
 
     public void Leave()
     {
-        leaveData.roomId = Constants.ROOMID;
-        leaveData.playerId = PlayerPrefs.GetInt(Constant.UID).ToString();
+        //leaveData.roomId = Constants.ROOMID;
+        //leaveData.playerId = PlayerPrefs.GetInt(Constant.UID).ToString();
+        Debug.Log("on leave +"+leaveData.roomId);
+        Debug.Log("on leave +" + leaveData.playerId);
+
         string rawJson = JsonConvert.SerializeObject(leaveData);
         Debug.LogError("leave " + rawJson);
         Dictionary<string, string> keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(rawJson);

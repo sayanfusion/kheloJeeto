@@ -119,6 +119,8 @@ public class UIHistory : MonoBehaviour
 
         string url = $"{baseUrl}?from_date={fromDate}&to_date={toDate}";
 
+
+
         foreach (var ui in allHistoryUI)
         {
             ui.gameObject.SetActive(false);

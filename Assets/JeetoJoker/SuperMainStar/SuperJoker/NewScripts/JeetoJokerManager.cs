@@ -11,6 +11,8 @@ using JeetoJoker;
 using SoundControllerJeeto = JeetoJoker.SoundController;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using TMPro;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -54,7 +56,7 @@ namespace khelojeetonew
         [SerializeField] public Button Repeatbutton;
         [SerializeField] private SpriteRenderer cardImage;
         [SerializeField] private SpriteRenderer suiteImage;
-        [SerializeField] private Text multiplierText;
+        [SerializeField] private TMP_Text multiplierText;
         [SerializeField] private GameObject multiplierObject;
 
 
@@ -526,11 +528,12 @@ namespace khelojeetonew
             if (string.IsNullOrEmpty(multiplier) || multiplier == "1x")
             {
                 multiplierObject.SetActive(true);
+
                 multiplierText.gameObject.SetActive(false);
             }
             else
             {
-                multiplierObject.SetActive(false);
+                //multiplierObject.SetActive(false);
                 multiplierText.gameObject.SetActive(true);
                 multiplierText.text = multiplier;
                 StartCoroutine(WinnerHotlistUpdate());
@@ -538,7 +541,7 @@ namespace khelojeetonew
             }
         }
 
-        public void OnWin(int outerId, int innerId)
+        public Sequence OnWin(int outerId, int innerId)
         {
             Debug.Log("inside jjm onwin");
             // string multiplier = "";
@@ -575,8 +578,8 @@ namespace khelojeetonew
                      StartCoroutine(GameDataInsert(0, "loose"));
                        Debug.Log("game 2");
                    }*/
-
-                cardHistoryDeck.PushCardData(outerId, innerId);
+                //cardHistoryDeck.PushCardData(outerId, innerId);
+                APICardHistory.Instance.CardHistory();
                 StartCoroutine(GetUserDetails(seq));
 
                 canBet = true;
@@ -591,15 +594,17 @@ namespace khelojeetonew
                 canBet = true;
                 SoundControllerJeeto.Instance.PlayOneShot(SoundControllerJeeto.SoundType.PlaceBet, placeBetSoundIndex);
             });
-            seq.AppendCallback(() => Clear());
+            //seq.AppendCallback(() => Clear());
             seq.AppendCallback(() => totalWinText.text = "0");
             Debug.Log("win here..");
-            seq.AppendCallback(() => SelectBet(0));
-            seq.AppendCallback(() => TimerControllerNew.inst.StartTimer(90f));
+            //seq.AppendCallback(() => SelectBet(0));
+           
 
             Debug.Log("draw time reset");
             isSpining = false;
             Debug.Log("timer start from jeeto joker");
+
+            return seq;
         }
 
         private IEnumerator GetUserDetails(Sequence seq)
@@ -717,7 +722,7 @@ namespace khelojeetonew
             }
             else
             {
-                StartCoroutine(ShowWinPopupCoroutine(5.5f));
+                StartCoroutine(ShowWinPopupCoroutine(7f));
             }
         }
         private IEnumerator ShowCoinEffectAndPopup(float coinEffectDuration, float popupDuration)
@@ -1095,14 +1100,13 @@ Debug.Log("win amount greater then 1000");
             suiteImage.gameObject.SetActive(false);
             Xanimation.SetActive(true);
             WheelSpinFoo.spinWheel();
-            Debug.Log("spin wheel with data kjgbfgbfdjg");
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(2f);
             //
             WheelSpinFoo.faaa(cardIdLive, suitIDLive, () =>
             {
 
-                StartCoroutine(SetCardImage(cardIdLive, suitIDLive));
+                //StartCoroutine(SetCardImage(cardIdLive, suitIDLive));
             });
             // JeetoJokerManager.instance.ShowWinAmount(CardSelect.instance.totalbetdata);
             Debug.Log("winning data");
@@ -1112,14 +1116,15 @@ Debug.Log("win amount greater then 1000");
         {
             string itemCard = SuperJokerConstants.CARDNAMEPREFIX + cardIdLive;
             string itemSuite = SuperJokerConstants.SUITENAMEPREFIX + suitIDLive;
-            yield return new WaitForSeconds(4.2f);
+            yield return null;
             Xanimation.SetActive(false);
             ShowXMultiplierText();
             cardImage.sprite = Resources.Load<Sprite>("SJ_Resources/" + itemCard);
             suiteImage.sprite = Resources.Load<Sprite>("SJ_Resources/" + itemSuite);
-            
+            CardDeck.instance.HighlightCard(itemCard+itemSuite);
             cardImage.gameObject.SetActive(true);
             suiteImage.gameObject.SetActive(true);
+            yield return new WaitForSeconds(1f);
             blast.SetActive(true);
             Invoke(nameof(stopBlast),3f);
         }
@@ -1138,16 +1143,24 @@ Debug.Log("win amount greater then 1000");
             if (string.IsNullOrEmpty(multiplier) || multiplier == "1x")
             {
                 multiplierObject.SetActive(true);
-                multiplierText.gameObject.SetActive(false);
+                int index =APICardHistory.Instance.GetImageIndex(multiplier);
+                multiplierObject.GetComponent<Image>().sprite = APICardHistory.Instance.multiplierImages[index];
+                //multiplierText.gameObject.SetActive(false);
             }
             else
             {
-                multiplierObject.SetActive(false);
-                multiplierText.gameObject.SetActive(true);
+                multiplierObject.SetActive(true);
+                int index = APICardHistory.Instance.GetImageIndex(multiplier);
+                multiplierObject.GetComponent<Image>().sprite = APICardHistory.Instance.multiplierImages[index];
                 multiplierText.text = multiplier;
                 if (totalBetAmount == 0)
                     StartCoroutine(WinnerHotlistUpdate());
             }
+        }
+
+        public void HideMultiplierText() {
+            multiplierObject.SetActive(true);
+            multiplierText.gameObject.SetActive(false);
         }
         public void SetCenterWheelAnimation(bool state)
         {

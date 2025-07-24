@@ -10,7 +10,7 @@ namespace khelojeetonew
     {
         [SerializeField] private Image chipImage;
         [SerializeField] private Text chipText;
-        // [SerializeField] private Text playText;
+        [SerializeField] internal GameObject playText;
 
         [SerializeField] private List<CardSelect> cardSelects;
 
@@ -60,7 +60,7 @@ namespace khelojeetonew
         public override void LeftClick(bool ignoreStack = false)
         {
             base.LeftClick();
-
+            playText.SetActive(false);
             BetButtons bet = JeetoJokerManager.instance.SelectedBetbutton;
             int amt = bet.amount * cardSelects.Count;
 
@@ -93,6 +93,7 @@ namespace khelojeetonew
         public override void RightClick(bool ignoreStack = false)
         {
             base.RightClick();
+
             if (!JeetoJokerManager.instance.canBet)
                 return;
 
@@ -112,6 +113,8 @@ namespace khelojeetonew
                 if (totalBets.Count == 0)
                 {
                     ToggleChipVisibility(false);
+                    playText.SetActive(true);
+
                     // TogglePlayTextVisibility(true);
                 }
 
@@ -131,9 +134,14 @@ namespace khelojeetonew
                         JeetoJokerManager.instance.removeCount -= 1;
                         IRemoveHandler.refresh?.Invoke(currentIndex);
                     }
-                   
-                   
+
+
                 }
+            }
+            else { 
+            playText.SetActive(true);
+
+
             }
         }
 
@@ -151,7 +159,7 @@ namespace khelojeetonew
         {
             totalBets.Clear();
             removeCount.Clear();
-
+            playText.SetActive(true);
             ToggleChipVisibility(false);
             // TogglePlayTextVisibility(true);
         }
@@ -176,6 +184,8 @@ namespace khelojeetonew
                 if (totalBets.Count == 0)
                 {
                     ToggleChipVisibility(false);
+                    playText.SetActive(true);
+
                     // TogglePlayTextVisibility(true);
                 }
 

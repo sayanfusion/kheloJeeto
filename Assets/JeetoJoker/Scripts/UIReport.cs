@@ -65,7 +65,7 @@ namespace khelojeetonew
                 url = $"{baseUrl}";
             }
             else
-                url = $"{baseUrl}?start_date={_fromDate}&end_date={_toDate}&player_id={SocketController.Instance.joinRoomData.playerId}";
+                url = $"{baseUrl}?start_date={_fromDate}&end_date={_toDate}";
 
             loadingPanel.SetActive(true);
             yield return new WaitForSeconds(0.1f);

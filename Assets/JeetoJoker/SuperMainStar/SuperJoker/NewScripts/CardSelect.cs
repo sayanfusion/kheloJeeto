@@ -22,8 +22,10 @@ namespace khelojeetonew
         public int cardNumber;
         public int groupcardNumber;
 
-        [SerializeField] private Image playImage;
+        [SerializeField] internal Image playImage;
         [SerializeField] private Image chipImage;
+        [SerializeField] internal GameObject playText;
+        
         public Animator anim;
         //[SerializeField] public Text chipText;
 [SerializeField] public TextMeshProUGUI chipText;
@@ -56,7 +58,6 @@ namespace khelojeetonew
 
         public void ToggleChipVisibility(bool a_State)
         {
-            Debug.Log("entered chip visibility");
             chipImage.gameObject.SetActive(a_State);
             chipText.gameObject.SetActive(a_State);
         }
@@ -66,9 +67,12 @@ namespace khelojeetonew
             if (a_State)
             {
                 playImage.sprite = JeetoJokerManager.instance.CardSelected;
+                playText.gameObject.SetActive(false);
             }
             else
             {
+
+                playText.gameObject.SetActive(true);
                 playImage.sprite = JeetoJokerManager.instance.CardDiselect;
             }
         }
