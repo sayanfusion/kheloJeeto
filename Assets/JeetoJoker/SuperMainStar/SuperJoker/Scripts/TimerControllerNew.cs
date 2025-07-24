@@ -114,7 +114,7 @@ namespace khelojeetonew
             // timerText.color = cDefaultCol;
             JeetoJoker.SoundController.Instance.PlayPlaceyourChips();
             //UIManager.inst.SetWinAmount();
-            if (totalTime == 87)
+            if (totalTime >20)
             {
                 placeyourbet.text = "PLACE YOUR CHIPS!";
             }

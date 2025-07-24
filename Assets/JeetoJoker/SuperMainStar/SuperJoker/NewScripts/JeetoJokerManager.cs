@@ -558,7 +558,7 @@ namespace khelojeetonew
             ButtonHandlers.ForEach(x => x.SavePrevRound());
             Debug.LogError("AllBetData() " + AllBetData());
             Sequence seq = DOTween.Sequence();
-            seq.AppendInterval(4f);
+            // seq.AppendInterval(4f);
             seq.AppendCallback(() =>
             {
                 int count = winHandlers.Count;
@@ -577,7 +577,7 @@ namespace khelojeetonew
                    }*/
 
                 cardHistoryDeck.PushCardData(outerId, innerId);
-                StartCoroutine(GetUserDetails());
+                StartCoroutine(GetUserDetails(seq));
 
                 canBet = true;
                 //Reset();
@@ -585,7 +585,7 @@ namespace khelojeetonew
                 //winHandlers.ForEach(x => x.OnWin(outerId, innerId));
             }
             );
-            seq.AppendInterval(10f);
+            // seq.AppendInterval(10f);
             seq.AppendCallback(() =>
             {
                 canBet = true;
@@ -602,9 +602,10 @@ namespace khelojeetonew
             Debug.Log("timer start from jeeto joker");
         }
 
-        private IEnumerator GetUserDetails()
+        private IEnumerator GetUserDetails(Sequence seq)
         {
             //loadingPanel.SetActive(true);
+            seq.Pause();
             yield return new WaitForSeconds(2);
             UnityWebRequest unityWebRequest = UnityWebRequest.Get(JeetoJokerManager.instance.apiData.userDetailsApi);
             unityWebRequest.SetRequestHeader(Constants.authorization, "Bearer " + _token);
@@ -628,6 +629,8 @@ namespace khelojeetonew
                     Debug.LogError(e.ToString());
                 }
             }
+            seq.Play();
+
         }
 
 
@@ -697,7 +700,7 @@ namespace khelojeetonew
             StartCoroutine(GameDataInsert(winAmount, "win"));
 
             WinAmount.text = winAmount.ToString();
-            totalBetAmountText.text =totalBet.ToString();
+            totalBetAmountText.text =totalBetAmount.ToString();
             totalWinText.text = winAmount.ToString();
             totalUserCoins += winAmount;
             userCoinsText.text = totalUserCoins.ToString("#0.00");
@@ -714,7 +717,7 @@ namespace khelojeetonew
             }
             else
             {
-                StartCoroutine(ShowWinPopupCoroutine(10f));
+                StartCoroutine(ShowWinPopupCoroutine(5.5f));
             }
         }
         private IEnumerator ShowCoinEffectAndPopup(float coinEffectDuration, float popupDuration)
@@ -734,7 +737,7 @@ namespace khelojeetonew
             yield return new WaitForSeconds(delay);
             Winsound12.Play();
             WinPopUp.SetActive(true);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(5f);
             WinPopUp.SetActive(false);
             // }
             // else
