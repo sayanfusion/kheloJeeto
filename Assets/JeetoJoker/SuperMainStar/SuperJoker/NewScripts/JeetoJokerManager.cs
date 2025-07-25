@@ -566,6 +566,7 @@ namespace khelojeetonew
             {
                 int count = winHandlers.Count;
 
+                Debug.Log("win count :" + count);
                 for (int i = 0; i < count; i++)
                 {
                     if (winHandlers[i].OnWin(outerId, innerId))
@@ -682,7 +683,7 @@ namespace khelojeetonew
         {
             if (winCount <= 0)
                 return;
-            long winAmount = amount * 10;
+            long winAmount = amount * 11;
             if (winAmount == 0)
             {
                 Debug.Log("bet insert but not win user losse......");
@@ -710,11 +711,13 @@ namespace khelojeetonew
             totalUserCoins += winAmount;
             userCoinsText.text = totalUserCoins.ToString("#0.00");
             UserCoins = totalUserCoins;
-            if (winAmount == 0)
-            {
-                Debug.Log("bet insert but not win user losse......");
-                StartCoroutine(GameDataInsert(0, "loose"));
-            }
+
+            //if (winAmount == 0)
+            //{
+            //    Debug.Log("bet insert but not win user losse......");
+            //    StartCoroutine(GameDataInsert(0, "loose"));
+            //}
+
             if (winAmount >= 1000)
             {
                 Debug.Log("Win animation added for win amount: " + winAmount);
@@ -722,7 +725,7 @@ namespace khelojeetonew
             }
             else
             {
-                StartCoroutine(ShowWinPopupCoroutine(7f));
+                StartCoroutine(ShowWinPopupCoroutine(2f));
             }
         }
         private IEnumerator ShowCoinEffectAndPopup(float coinEffectDuration, float popupDuration)
@@ -740,7 +743,13 @@ namespace khelojeetonew
         {
             Debug.Log("win popup showing after win");
             yield return new WaitForSeconds(delay);
-            Winsound12.Play();
+            //yield return new WaitForSeconds(1f);
+            WheelSpinFoo.innerSpinWheel.audioSourcerunning.Play();
+            blast.SetActive(true);
+            Invoke(nameof(stopBlast), 3f);
+            yield return new WaitForSeconds(2f);
+
+            //Winsound12.Play();
             WinPopUp.SetActive(true);
             yield return new WaitForSeconds(5f);
             WinPopUp.SetActive(false);
@@ -885,6 +894,8 @@ Debug.Log("win amount greater then 1000");
             // Send the request
             yield return unityWebRequest.SendWebRequest();
             // Handle response
+
+            Debug.Log("in game data insert");
             if (unityWebRequest.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("Request Successful");
@@ -1124,9 +1135,7 @@ Debug.Log("win amount greater then 1000");
             CardDeck.instance.HighlightCard(itemCard+itemSuite);
             cardImage.gameObject.SetActive(true);
             suiteImage.gameObject.SetActive(true);
-            yield return new WaitForSeconds(1f);
-            blast.SetActive(true);
-            Invoke(nameof(stopBlast),3f);
+
         }
 
         void stopBlast() {

@@ -12,6 +12,7 @@ namespace SuperJoker
         public Text winAmount;
         public Text multiplier;
 
+        public Text Name;
         public float blinkRate = 1.5f;
         string tempMultiText;
         bool toggleText;

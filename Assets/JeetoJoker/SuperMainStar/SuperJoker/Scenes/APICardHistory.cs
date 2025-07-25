@@ -260,6 +260,17 @@ public IEnumerator setResultRequest(string result)
         else if (mult == "8x") return 7;
         else if (mult == "9x") return 8;
         else if (mult == "10x") return 9;
+        else if (mult == "11x") return 10;
+        else if (mult == "12x") return 11;
+        else if (mult == "13x") return 12;
+        else if (mult == "14x") return 13;
+        else if (mult == "15x") return 14;
+        else if (mult == "16x") return 15;
+        else if (mult == "17x") return 16;
+        else if (mult == "18x") return 17;
+        else if (mult == "19x") return 18;
+        else if (mult == "20x") return 19;
+
         else return 0;
 
 

@@ -120,8 +120,8 @@ public class Foo : MonoBehaviour
         innerSpinWheel.AssignWinningSlot(t_InnerWheelSlotId);
         yield return new WaitForSeconds(1f);
         onAssignSlotId?.Invoke();
-        yield return new WaitForSeconds(3);
         yield return JeetoJokerManager.instance.OnWin(cardID, suitID).WaitForCompletion();
+        yield return new WaitForSeconds(3);
     }
 
   
@@ -153,7 +153,7 @@ public class Foo : MonoBehaviour
         // audiostop.Play();
         //Debug.Log($"Inner Winning Slot: {a_WinningSlot}");
         winHighlighter.SetActive(true);
-        innerSpinWheel.audioSourcerunning.Play();
+ 
 
         StartCoroutine(JeetoJokerManager.instance.SetCardImage(CARDID, SUITID));
         innerSpinWheel.WheelSpinStoppped();
@@ -166,7 +166,7 @@ public class Foo : MonoBehaviour
 
     void scrollAnimationStart()
     {
-        scroll.DOLocalMoveX(-6.5f, 1.5f).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+        scroll.DOLocalMoveX(-4.7f, 2.5f).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
 
     }
 

@@ -33,13 +33,15 @@ namespace khelojeetonew
 
         [HideInInspector] public List<GroupCardSelect> groupCardSelect;
 
-        private List<BetButtons> totalBets = new List<BetButtons>();
+        public List<BetButtons> totalBets = new List<BetButtons>();
 
         private List<BetButtons> prevRoundTotalBets = new List<BetButtons>();
 
         private List<int> removeCount = new List<int>();
 
         private static int zero = 0;
+
+        public Action onrightCLick;
         private void Awake()
         {
             instance=this;
@@ -105,18 +107,23 @@ namespace khelojeetonew
         public override  void LeftClick(bool ignoreStack = false)
         {
             base.LeftClick();
-     JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
+            OnLeftClick();
+        }
 
-            BetButtons bet = JeetoJokerManager.instance.SelectedBetbutton;
+        public void OnLeftClick()
+        {
+            JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
+            BetButtons bet= JeetoJokerManager.instance.SelectedBetbutton;
 
-            if(!JeetoJokerManager.instance.Bet(bet.amount))
+            Debug.Log("clicked twice");
+            if (!JeetoJokerManager.instance.Bet(bet.amount))
             {
                 return;
             }
 
             totalBets.Add(bet);
 
-            long totalBet = GetTotalBetSum() + GetTotalGroupBetSum();
+            long totalBet = GetTotalBetSum();
             UpdateChipVisualData(totalBet);
 
             if (totalBets.Count == 1 || groupCardSelect.Find(x => x.TotalGrpBetsCount == 1) != null)
@@ -136,12 +143,23 @@ namespace khelojeetonew
         public override  void RightClick(bool ignoreStack = false)
         {
             base.RightClick();
-           // JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.unselectSound);
+            OnRightClick();
+        }
 
+        public void OnRightClick()
+        {
+            JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
+            // JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.unselectSound);
+            Debug.Log(" entered uppr levl");
             if (!JeetoJokerManager.instance.canBet)
                 return;
+
+            Debug.Log(" crossed return");
+
             if (totalBets.Count > zero)
             {
+                Debug.Log(" ttotal bet count >0");
+
                 BetButtons bet = totalBets[totalBets.Count - 1];
                 totalBets.RemoveAt(totalBets.Count - 1);
 
@@ -149,31 +167,38 @@ namespace khelojeetonew
 
                 long totalBet = GetTotalBetSum() + GetTotalGroupBetSum();
                 UpdateChipVisualData(totalBet);
+                onrightCLick?.Invoke();
 
                 if (totalBets.Count == zero && groupCardSelect.TrueForAll(x => x.TotalGrpBetsCount == zero))
                 {
+                    Debug.Log(" ttotal bet count = 0");
+
                     ToggleChipVisibility(false);
                     ToggleBlueRibbonVisibility(false);
                     // TogglePlayTextVisibility(true);
+
                 }
 
                 JeetoJokerManager.instance.CheckForRepeatButton();
 
                 if (removeCount.Count > zero)
                 {
+                    Debug.Log(" remove count > 0");
+
                     int currentIndex = removeCount[removeCount.Count - 1];
-                   // Debug.LogError(currentIndex + "/"+ JeetoJokerManager.instance.removeHandlers.Count);
+                    // Debug.LogError(currentIndex + "/"+ JeetoJokerManager.instance.removeHandlers.Count);
                     List<IRemoveHandler> n = JeetoJokerManager.instance.removeHandlers[currentIndex];
                     n.Remove(this);
                     removeCount.RemoveAt(removeCount.Count - 1);
 
                     if (n.Count == zero)
                     {
-                        JeetoJokerManager.instance.removeHandlers.RemoveAt(currentIndex);                       
+
+                        JeetoJokerManager.instance.removeHandlers.RemoveAt(currentIndex);
                         JeetoJokerManager.instance.removeCount -= 1;
                         IRemoveHandler.refresh?.Invoke(currentIndex);
                     }
-                   
+
                 }
             }
         }
@@ -188,11 +213,11 @@ namespace khelojeetonew
             }
         }
 
-        public void OnClickGroupLeftClick()
+        public void OnClickGroupLeftClick(BetButtons bet=null)
         {
             Debug.Log("entered OnClickGroupLeftClick");
             long totalBet = GetTotalBetSum() + GetTotalGroupBetSum();
-
+            if (bet != null) totalBets.Add(bet);
             UpdateChipVisualData(totalBet);
 
             // if (totalBets.Count == 1 || groupCardSelect.Find(x => x.TotalGrpBetsCount == 1) != null)

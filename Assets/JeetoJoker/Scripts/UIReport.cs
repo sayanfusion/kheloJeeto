@@ -20,6 +20,7 @@ namespace khelojeetonew
         [SerializeField] private Text endPoint;
         [SerializeField] private Text txtCommiPoint;
         [SerializeField] private Text txtNtpPoint;
+        [SerializeField] private Text name;
         [SerializeField] private TMP_InputField fromDate;
         [SerializeField] private TMP_InputField toDate;
         [SerializeField] private GameObject loadingPanel;
@@ -30,6 +31,14 @@ namespace khelojeetonew
 
         private void Start()
         {
+            System.DateTime today = System.DateTime.Today;
+
+            // Set the date in the date picker
+
+            // Optional: Set selected date too
+            fromDatePicker.SelectedDate = today;
+            toDatePicker.SelectedDate = today;
+
             fromDatePicker.Config.Events.OnDaySelected.AddListener(OnFromDateSelected);
             toDatePicker.Config.Events.OnDaySelected.AddListener(OnToDateSelected);
         }
@@ -99,6 +108,7 @@ namespace khelojeetonew
                     #endregion
                     if (reportData.status == 200)
                     {
+                        name.text= SocketController.Instance.joinRoomData.name;
                         txtSalePoint.text = reportData.bet_amount.ToString();
                         txtWinPoint.text = reportData.win_amount.ToString();
                         txtCommiPoint.text = reportData.com_pt.ToString();

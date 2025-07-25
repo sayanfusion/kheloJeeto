@@ -38,6 +38,8 @@ namespace khelojeetonew
 
         [SerializeField] private GameObject noMoreBetPlease;
 
+        internal bool timerrunning;
+
         private void Awake()
         {
             inst = this;
@@ -57,8 +59,8 @@ namespace khelojeetonew
             placeyourbet.fontSize = 30;
             //timeLeft = timeLeft - Constant.TimerForGame;
            
-            if (timeLeft > 0)
-                StartTimer(timeLeft);
+            //if (timeLeft > 0)
+            //    StartTimer(timeLeft);
 
             isWheelRunning = false;
             ststuc.text = "void";
@@ -69,10 +71,11 @@ namespace khelojeetonew
 
         public void UpdateTimer(float time)
         {
-            if (time == 90f) {
+            if(!timerrunning)
                 StartTimer(time);
+            //if (time == 90f) {
 
-            }
+            //}
 
             if ( innerSpinWheel != null && !innerSpinWheel.isWheelSpinning())
             {
@@ -110,6 +113,7 @@ namespace khelojeetonew
                     time = 0;
                     //JeetoJokerManager.instance.StartSpinning();
                     canStart = false;
+                    timerrunning = false;
                     // WheelSpinTime?.Invoke();
                 }
             }
@@ -120,6 +124,9 @@ namespace khelojeetonew
 
         public void StartTimer(float totalTime)
         {
+            if (timerrunning) return;
+
+            timerrunning=true;
             _inputBlocker.SetActive(false);
             stopBetting = false;
             Debug.Log("Timer start");

@@ -1,6 +1,9 @@
 using khelojeetonew;
+using SuperJoker;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,12 +12,14 @@ namespace khelojeetonew
     public class GroupCardSelect : InputDetection, ButtonHandlers, IRemoveHandler
     {
         [SerializeField] private Image chipImage;
-        [SerializeField] private Text chipText;
+        [SerializeField] private TMP_Text chipText;
         [SerializeField] internal GameObject playText;
 
         [SerializeField] private List<CardSelect> cardSelects;
 
-        private List<BetButtons> totalBets = new List<BetButtons>();
+        public List<BetButtons> totalBets = new List<BetButtons>();
+
+        public List<BetButtons> totalBets2= new List<BetButtons>();
 
         public int TotalGrpBetsCount { get => totalBets.Count; }
 
@@ -22,6 +27,7 @@ namespace khelojeetonew
 
         private List<int> removeCount = new List<int>();
 
+        public int cardSelected = 0;
         private void Start()
         {
             cardSelects.ForEach(x => x.groupCardSelect.Add(this));
@@ -53,7 +59,7 @@ namespace khelojeetonew
         public long GetTotalBetSum()
         {
             long sum = 0;
-            totalBets.ForEach(x => sum = x.amount + sum);
+            totalBets2.ForEach(x => sum = x.amount + sum);
             return sum;
         }
 
@@ -62,26 +68,47 @@ namespace khelojeetonew
             base.LeftClick();
             playText.SetActive(false);
             BetButtons bet = JeetoJokerManager.instance.SelectedBetbutton;
+            Debug.Log("bet name "+bet.buttonTransfrom.name);
             int amt = bet.amount * cardSelects.Count;
 
-            if (!JeetoJokerManager.instance.Bet(amt))
-            {
-                return;
-            }
+            //if (!JeetoJokerManager.instance.Bet(amt))
+            //{
+            //    return;
+            //}
 
-            totalBets.Add(bet);
+            //totalBets2.Add(bet);
+            totalBets2.Add(bet);
+            //cardSelected = 3;
 
             long totalBet = GetTotalBetSum();
+            foreach (var item in cardSelects)
+            {
+                item.onrightCLick += () =>
+                {
+
+                    cardSelected = 0;
+                    this.totalBets2.Clear();
+                    //totalBets2.RemoveAt(totalBets2.Count - 1);
+                    Debug.Log("count"+cardSelected);
+                    if (totalBets2.Count <= 0)
+                    {
+                        ToggleChipVisibility(false);
+                        playText.SetActive(true);
+
+                    }
+
+                };
+            }
+            cardSelects.ForEach(x => x.OnLeftClick());
+
 
             UpdateChipVisualData(totalBet);
 
-            if (totalBets.Count == 1)
-            {
                 ToggleChipVisibility(true);
-                // TogglePlayTextVisibility(false);
-            }
+            //if (totalBets.Count == 1)
+            //{
+            //}
 
-            cardSelects.ForEach(x => x.OnClickGroupLeftClick());
 
             JeetoJokerManager.instance.CheckForRepeatButton();
 
@@ -96,21 +123,22 @@ namespace khelojeetonew
 
             if (!JeetoJokerManager.instance.canBet)
                 return;
+            JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
 
-            if (totalBets.Count > 0)
+            //cardSelects.ForEach(x => x.OnRightClick());
+
+            if (totalBets2.Count > 0)
             {
-                BetButtons bet = totalBets[totalBets.Count - 1];
-                totalBets.RemoveAt(totalBets.Count - 1);
+                BetButtons bet = totalBets2[totalBets2.Count - 1];
+                totalBets2.RemoveAt(totalBets2.Count - 1);
 
-                int amt = bet.amount * cardSelects.Count;
 
-                JeetoJokerManager.instance.RemoveBet(amt);
 
                 long totalBet = GetTotalBetSum();
 
                 UpdateChipVisualData(totalBet);
 
-                if (totalBets.Count == 0)
+                if (totalBets2.Count == 0)
                 {
                     ToggleChipVisibility(false);
                     playText.SetActive(true);
@@ -119,6 +147,7 @@ namespace khelojeetonew
                 }
 
                 cardSelects.ForEach(x => x.OnClickGroupRightClick());
+                //cardSelects.ForEach(x => x.OnRightClick());
 
                 JeetoJokerManager.instance.CheckForRepeatButton();
 
