@@ -78,23 +78,19 @@ namespace khelojeetonew
 
             //totalBets2.Add(bet);
             totalBets2.Add(bet);
-            //cardSelected = 3;
 
-            long totalBet = GetTotalBetSum();
+            long _LtotalBet = GetTotalBetSum();
             foreach (var item in cardSelects)
             {
                 item.onrightCLick += () =>
                 {
 
-                    cardSelected = 0;
                     this.totalBets2.Clear();
-                    //totalBets2.RemoveAt(totalBets2.Count - 1);
-                    Debug.Log("count"+cardSelected);
+
                     if (totalBets2.Count <= 0)
                     {
                         ToggleChipVisibility(false);
                         playText.SetActive(true);
-
                     }
 
                 };
@@ -102,7 +98,7 @@ namespace khelojeetonew
             cardSelects.ForEach(x => x.OnLeftClick());
 
 
-            UpdateChipVisualData(totalBet);
+            UpdateChipVisualData(_LtotalBet);
 
                 ToggleChipVisibility(true);
             //if (totalBets.Count == 1)
@@ -125,18 +121,17 @@ namespace khelojeetonew
                 return;
             JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
 
-            //cardSelects.ForEach(x => x.OnRightClick());
+            Debug.Log("entered here for right click");
+            Debug.Log("totalbets2 count"+totalBets2.Count);
 
             if (totalBets2.Count > 0)
             {
                 BetButtons bet = totalBets2[totalBets2.Count - 1];
                 totalBets2.RemoveAt(totalBets2.Count - 1);
 
+                long _RtotalBet = GetTotalBetSum();
 
-
-                long totalBet = GetTotalBetSum();
-
-                UpdateChipVisualData(totalBet);
+                UpdateChipVisualData(_RtotalBet);
 
                 if (totalBets2.Count == 0)
                 {
@@ -146,8 +141,8 @@ namespace khelojeetonew
                     // TogglePlayTextVisibility(true);
                 }
 
-                cardSelects.ForEach(x => x.OnClickGroupRightClick());
-                //cardSelects.ForEach(x => x.OnRightClick());
+                // cardSelects.ForEach(x => x.OnClickGroupRightClick());
+                cardSelects.ForEach(x => x.OnRightClick());
 
                 JeetoJokerManager.instance.CheckForRepeatButton();
 

@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/jokerScenePC.unity
     guid: 3cac13285e2b21843955c4128a612c4e
-  - enabled: 1
+  - enabled: 0
     path: Assets/16cards.unity
     guid: 47354616e0a0b4b41a339636a5b1e6f5
   - enabled: 1

@@ -93,7 +93,7 @@ namespace khelojeetonew
         private long GetTotalBetSum()
         {
             long sum = zero;
-            totalBets.ForEach(x => sum = x.amount + sum);
+            this.totalBets.ForEach(x => sum = x.amount + sum);
             return sum;
         }
 
@@ -101,7 +101,8 @@ namespace khelojeetonew
         {
             long sum = zero;
             groupCardSelect.ForEach(x => sum = sum + x.GetTotalBetSum());
-            return sum;
+            return 0;
+            // return sum;
         }
 
         public override  void LeftClick(bool ignoreStack = false)
@@ -387,33 +388,34 @@ namespace khelojeetonew
             JeetoJokerManager.instance.removeHandlers[removeCountIndex].Add(this);
             removeCount.Add(JeetoJokerManager.instance.removeCount);
         }
-public long totalbetdata;
-        public bool OnWin(int outerId, int innerId)
+        // public long totalbetdata;
+        public long OnWin(int outerId, int innerId)
         {       
             Debug.Log("enter in show winamount function");
             Debug.Log("outer id"+outerId);  
-              Debug.Log("outer id"+innerId);    
-            if(outerId == id && innerId == suiteID)
+              Debug.Log("outer id"+innerId);
+
+            if (outerId == id && innerId == suiteID)
             {
-                long totalBet = GetTotalBetSum() + GetTotalGroupBetSum();
-                totalbetdata=totalBet;
-                Debug.Log("total bet for winpopup"+totalBet);
-                Sequence seq = DOTween.Sequence();
+                long totalBet = GetTotalBetSum();
+                // totalbetdata=totalBet;
+                Debug.Log("total bet for winpopup" + totalBet);
                 Debug.Log("inside win data card select.....");
-                seq.AppendCallback(() => JeetoJokerManager.instance.ShowWinAmount(totalBet));
-                
-Debug.Log("win update by this..");
-               /* for (int i = zero; i < 20; i++)
-                {
-                    seq.AppendCallback(() => ToggleBlueRibbonVisibility(true));
-                    seq.AppendInterval(0.2f);
-                    seq.AppendCallback(() => ToggleBlueRibbonVisibility(false));
-                    seq.AppendInterval(0.2f);
-                }*/
-                if (totalBet > zero)
-                    return true;
+                // seq.AppendCallback(() => JeetoJokerManager.instance.ShowWinAmount(totalBet));
+
+                /* for (int i = zero; i < 20; i++)
+                 {
+                     seq.AppendCallback(() => ToggleBlueRibbonVisibility(true));
+                     seq.AppendInterval(0.2f);
+                     seq.AppendCallback(() => ToggleBlueRibbonVisibility(false));
+                     seq.AppendInterval(0.2f);
+                 }*/
+
+                    return totalBet;
+
             }
-            return false;
+            else
+                return 0;
         }
 
         public BetDataHandler GetBetData()

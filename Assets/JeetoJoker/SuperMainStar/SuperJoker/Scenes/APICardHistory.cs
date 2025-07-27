@@ -112,7 +112,7 @@ public IEnumerator setResultRequest(string result)
     {
         StartCoroutine(PostRequest());
     }
-    IEnumerator PostRequest()
+    public IEnumerator PostRequest()
     {
         Debug.Log(PlayerPrefs.GetInt(Constant.STOKIESID.ToString()).ToString() + "CardHistoryLive");
 

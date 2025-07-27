@@ -23,15 +23,29 @@ public class UIHistory : MonoBehaviour
     private string _previousPageUrl;
     private string _nextPageUrl;
 
-    private string _fromDate = "23-12-2024"; // Default "From Date"
-    private string _toDate = "26-12-2024";   // Default "To Date"
+    private string _fromDate = ""; // Default "From Date"
+    private string _toDate = "";   // Default "To Date"
 
-    private void OnEnable() {
-        StartCoroutine(GetHistoryData(Constant.KIBaseURL + "jeetojoker-history"));
+
+    private void OnEnable()
+    {
+         System.DateTime today = System.DateTime.Today;
+         _toDate = today.ToString("yyyy-MM-dd");
+         _fromDate=today.ToString("yyyy-MM-dd");
+        StartCoroutine(DownloadViewResult(Constant.KIBaseURL + "jeetojoker-history", _fromDate, _toDate));
+        // StartCoroutine(GetHistoryData(Constant.KIBaseURL + "jeetojoker-history"));
     }
 
-    private void Start() {
-        // Bind button events
+    private void Start()
+    {
+        System.DateTime today = System.DateTime.Today;
+
+        // Set the date in the date picker
+
+        // Optional: Set selected date too
+        fromDatePicker.SelectedDate = today;
+        toDatePicker.SelectedDate = today;
+
         previous.onClick.AddListener(PreviousDatahistory);
         next.onClick.AddListener(Nextpageurlbtncall);
 
@@ -40,24 +54,28 @@ public class UIHistory : MonoBehaviour
         toDatePicker.Config.Events.OnDaySelected.AddListener(OnToDateSelected);
     }
 
-    private void OnFromDateSelected(DateTime date) {
-        _fromDate = date.ToString("dd-MM-yyyy");
+    private void OnFromDateSelected(DateTime date)
+    {
+        _fromDate =date.ToString("yyyy-MM-dd");
         Debug.Log($"From Date selected: {_fromDate}");
     }
 
-    private void OnToDateSelected(DateTime date) {
-        _toDate = date.ToString("dd-MM-yyyy");
+    private void OnToDateSelected(DateTime date)
+    {
+        _toDate = date.ToString("yyyy-MM-dd");
         Debug.Log($"To Date selected: {_toDate}");
     }
 
-    private IEnumerator GetHistoryData(string url) {
+    private IEnumerator GetHistoryData(string url)
+    {
         // Deactivate all existing history UI elements
-        foreach (var ui in allHistoryUI) {
+        foreach (var ui in allHistoryUI)
+        {
             ui.gameObject.SetActive(false);
         }
 
         loadingPanel.SetActive(true);
-        yield return new WaitForSeconds(0.2f);
+        // yield return new WaitForSeconds(0.2f);
 
         UnityWebRequest unityWebRequest = UnityWebRequest.Get(url);
         unityWebRequest.SetRequestHeader(Constants.authorization, "Bearer " + PlayerPrefs.GetString(Constants.token));
@@ -65,19 +83,24 @@ public class UIHistory : MonoBehaviour
 
         loadingPanel.SetActive(false);
 
-        if (unityWebRequest.result != UnityWebRequest.Result.Success) {
+        if (unityWebRequest.result != UnityWebRequest.Result.Success)
+        {
             Debug.LogError(unityWebRequest.error);
             JeetoJokerManager.instance.ShowMessage(unityWebRequest.error);
         }
-        else {
-            try {
+        else
+        {
+            try
+            {
                 Debug.Log("Response Initial: " + unityWebRequest.downloadHandler.text);
                 GameHistoryJeeto historyDataStatus = JsonConvert.DeserializeObject<GameHistoryJeeto>(unityWebRequest.downloadHandler.text);
 
-                if (historyDataStatus.status == 200) {
+                if (historyDataStatus.status == 200)
+                {
                     int length = historyDataStatus.list.data.Count;
 
-                    for (int i = 0; i < length; i++) {
+                    for (int i = 0; i < length; i++)
+                    {
                         UIHistoryContent uIHistoryContent = Instantiate(historyContentPrefab, contentHolder);
                         allHistoryUI.Add(uIHistoryContent);
                         allHistoryUI[i].gameObject.SetActive(true);
@@ -88,11 +111,13 @@ public class UIHistory : MonoBehaviour
                     _nextPageUrl = historyDataStatus.list.next_page_url;
                     Debug.Log($"previous url: {_previousPageUrl}, next url: {_nextPageUrl}");
                 }
-                else {
+                else
+                {
                     JeetoJokerManager.instance.ShowMessage($"History data error status: {historyDataStatus.status}");
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 JeetoJokerManager.instance.ShowMessage(e.ToString());
                 Debug.LogError($"Exception caught: {e}");
             }
@@ -103,8 +128,8 @@ public class UIHistory : MonoBehaviour
     /// <summary>
     /// Gets game history data within a range of _fromDate to _toDate
     /// </summary>
-    public void GetHistoryInRange() {
-        Debug.Log("View button clicked.");
+    public void GetHistoryInRange()
+    {
         StartCoroutine(DownloadViewResult(Constant.KIBaseURL + "jeetojoker-history", _fromDate, _toDate));
     }
 
@@ -127,7 +152,7 @@ public class UIHistory : MonoBehaviour
         }
 
         loadingPanel.SetActive(true);
-        yield return new WaitForSeconds(2);
+        // yield return new WaitForSeconds(2);
 
         UnityWebRequest unityWebRequest = UnityWebRequest.Get(url);
         unityWebRequest.SetRequestHeader(Constants.authorization, "Bearer " + PlayerPrefs.GetString(Constants.token));
@@ -146,7 +171,6 @@ public class UIHistory : MonoBehaviour
             {
                 Debug.Log($"Response: {unityWebRequest.downloadHandler.text}");
                 GameHistoryJeeto historyDataStatus = JsonConvert.DeserializeObject<GameHistoryJeeto>(unityWebRequest.downloadHandler.text);
-        // q       Debug.Log($"Total records: {historyDataStatus.list.}")
                 if (historyDataStatus.status == 200)
                 {
                     foreach (var item in historyDataStatus.list.data)
@@ -176,10 +200,12 @@ public class UIHistory : MonoBehaviour
 
     public void PreviousDatahistory()
     {
-       if (!string.IsNullOrEmpty(_previousPageUrl)) {
+        if (!string.IsNullOrEmpty(_previousPageUrl))
+        {
             StartCoroutine(DownloadHistory(_previousPageUrl));
         }
-        else {
+        else
+        {
             Debug.Log("No previous page available.");
         }
     }
@@ -188,7 +214,7 @@ public class UIHistory : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(_nextPageUrl))
         {
-            StartCoroutine(DownloadHistory("https://ad.playsmartgame.in/api/jeetojoker-history?page=2"));
+            StartCoroutine(DownloadHistory(_nextPageUrl));
         }
         else
         {

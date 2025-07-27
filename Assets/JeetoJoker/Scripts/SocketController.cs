@@ -132,7 +132,7 @@ public class SocketController : Singleton<SocketController>
         setMode.roomId = roomData._id;
         leaveData.roomId = roomData._id;
         betData.roomId = roomData._id;
-        roomIdText.text = leaveData.roomId;
+        // roomIdText.text = leaveData.roomId;
 
     }
 
@@ -145,6 +145,7 @@ public class SocketController : Singleton<SocketController>
     string eventName = dataArray[0].ToString(); // "GameId"
     int gameId = dataArray[1].ToObject<int>();  // 1725528573
     gameidstore=gameId;
+        roomIdText.text = gameidstore.ToString();
     Debug.Log("Game id:"+gameidstore);
     Debug.Log($"Event: {eventName}, Game ID: {gameId}");
     }
@@ -164,7 +165,7 @@ public class SocketController : Singleton<SocketController>
     private void OnTimer(Socket socket, Packet packet, object[] args)
     {
         string json = packet.RemoveEventName(true);
-         Debug.LogError("OnTimer " + packet);
+         Debug.Log("OnTimer " + packet);
         json = json.Replace("\"", "");
         TimerControllerNew.inst.UpdateTimer(int.Parse(json));
     }
@@ -172,7 +173,7 @@ public class SocketController : Singleton<SocketController>
     private void OnStartGame(Socket socket, Packet packet, object[] args)
     {
         Debug.LogError("OnStartGame " + packet);
-        roomIdText.text = leaveData.roomId;
+        // roomIdText.text = leaveData.roomId;
         SoundControllerJeeto.Instance.PlayOneShot(SoundControllerJeeto.SoundType.PlaceBet, JeetoJokerManager.instance.placeBetSoundIndex);
 
     }
@@ -404,7 +405,9 @@ public class SocketController : Singleton<SocketController>
 
    public void Bet()
     {
-        SetMode();
+        //[commented on 26-7-2025]
+        //SetMode();
+
         JeetoJokerManager.instance.SetBetData(betData.cardValueSet);
         string rawJson = JsonConvert.SerializeObject(betData);
         // Dictionary<string, object> keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, object>>(rawJson);

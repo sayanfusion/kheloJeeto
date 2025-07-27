@@ -120,8 +120,8 @@ public class Foo : MonoBehaviour
         innerSpinWheel.AssignWinningSlot(t_InnerWheelSlotId);
         yield return new WaitForSeconds(1f);
         onAssignSlotId?.Invoke();
-        yield return JeetoJokerManager.instance.OnWin(cardID, suitID).WaitForCompletion();
         yield return new WaitForSeconds(3);
+        yield return JeetoJokerManager.instance.OnWin(cardID, suitID);
     }
 
   

@@ -12,6 +12,8 @@ using SoundControllerJeeto = JeetoJoker.SoundController;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using TMPro;
+using DevCommon;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -65,7 +67,7 @@ namespace khelojeetonew
 
         [HideInInspector] public List<ButtonHandlers> ButtonHandlers = new List<ButtonHandlers>();
         [HideInInspector] public List<List<IRemoveHandler>> removeHandlers = new List<List<IRemoveHandler>>();
-        [HideInInspector] public List<IWinHandler> winHandlers = new List<IWinHandler>();
+        public List<IWinHandler> winHandlers = new List<IWinHandler>();
 
         [HideInInspector] public bool canBet = false;
 
@@ -92,7 +94,6 @@ namespace khelojeetonew
         public Sprite CardSelected { get => cardSelected; }
         public Sprite CardDiselect { get => cardDiselect; }
         public BetButtons SelectedBetbutton { get => selectedBetbutton; }
-
         public static JeetoJokerManager instance;
         private bool isSpining = false;
         public Foo WheelSpinFoo;
@@ -107,7 +108,6 @@ namespace khelojeetonew
         public Text drawTime;
 
         private string _token;
-
         private int noBetSoundIndex;
         public int placeBetSoundIndex { get; private set; }
         public Text dateTimeText;
@@ -120,6 +120,7 @@ namespace khelojeetonew
         public AudioSource Winsound12;
 
         public GameObject blast;
+
         private void Awake()
         {
             if (instance == null)
@@ -268,7 +269,6 @@ namespace khelojeetonew
             totalBetAmount = 50;
             SocketController.Instance.roomIdData.roomId = "roomfake";
             Debug.Log("game 1");
-            // StartCoroutine(GameDataInsert(50000, "win"));
         }
 
         public void ShowMessage(string message)
@@ -282,9 +282,12 @@ namespace khelojeetonew
         public void SelectBet(int id)
         {
             betButtons.ForEach(x => x.buttonTransfrom.localScale = Vector2.one);
-
+            foreach (var item in betButtons)
+            {
+                item.buttonTransfrom.GetChild(0).SetActive(false);
+            }
             selectedBetbutton = betButtons.Find(x => x.id == id);
-
+            selectedBetbutton.buttonTransfrom.GetChild(0).SetActive(true);
             // selectedBetbutton.buttonTransfrom.localScale =coinbutton.transform.localScale; //Vector2.one * 1.0f;
             if (coinbutton != null)
             {
@@ -541,9 +544,9 @@ namespace khelojeetonew
             }
         }
 
-        public Sequence OnWin(int outerId, int innerId)
+        public IEnumerator OnWin(int outerId, int innerId)
         {
-            Debug.Log("inside jjm onwin");
+            List<Coroutine> coroutines = new List<Coroutine>();
             // string multiplier = "";
             // if (SocketController.Instance.is_x_excuted.Equals(Constants.zero)) 
             // {
@@ -560,58 +563,85 @@ namespace khelojeetonew
             // }
             ButtonHandlers.ForEach(x => x.SavePrevRound());
             Debug.LogError("AllBetData() " + AllBetData());
-            Sequence seq = DOTween.Sequence();
-            // seq.AppendInterval(4f);
-            seq.AppendCallback(() =>
+
+
+            long _totalbet = 0;
+            int count = 0;
+            for (int i = 0; i < winHandlers.Count; i++)
             {
-                int count = winHandlers.Count;
+                _totalbet = winHandlers[i].OnWin(outerId, innerId);
+                if (_totalbet > 0) break;
+                else count++;
 
-                Debug.Log("win count :" + count);
-                for (int i = 0; i < count; i++)
-                {
-                    if (winHandlers[i].OnWin(outerId, innerId))
-                        winCount++;
-                }
-
-                Debug.Log("win o and bet emited but not winuser...");
-                /*  if (winCount == 0 && totalBet > 0)
-                   {
-                     StartCoroutine(GameDataInsert(0, "loose"));
-                       Debug.Log("game 2");
-                   }*/
-                //cardHistoryDeck.PushCardData(outerId, innerId);
-                APICardHistory.Instance.CardHistory();
-                StartCoroutine(GetUserDetails(seq));
-
-                canBet = true;
-                //Reset();
-                canBet = false;
-                //winHandlers.ForEach(x => x.OnWin(outerId, innerId));
             }
-            );
-            // seq.AppendInterval(10f);
-            seq.AppendCallback(() =>
-            {
-                canBet = true;
-                SoundControllerJeeto.Instance.PlayOneShot(SoundControllerJeeto.SoundType.PlaceBet, placeBetSoundIndex);
-            });
-            //seq.AppendCallback(() => Clear());
-            seq.AppendCallback(() => totalWinText.text = "0");
-            Debug.Log("win here..");
-            //seq.AppendCallback(() => SelectBet(0));
-           
+            Debug.Log("count" + count);
+            Debug.Log("totalBet" + totalBet);
 
-            Debug.Log("draw time reset");
+            coroutines.Add(StartCoroutine(ShowWinAmount(_totalbet)));
+
+            coroutines.Add(StartCoroutine(APICardHistory.Instance.PostRequest()));
+            coroutines.Add(StartCoroutine(GetUserDetails(null)));
+            canBet = true;
+            totalWinText.text = "0";
             isSpining = false;
-            Debug.Log("timer start from jeeto joker");
 
-            return seq;
+            foreach (Coroutine item in coroutines)
+            {
+                yield return item;
+            }
+            //[commented on 26-7-2025]
+            // Sequence seq = DOTween.Sequence();
+            // // seq.AppendInterval(4f);
+            // seq.AppendCallback(() =>
+            // {
+            //     int count = winHandlers.Count;
+
+            //     Debug.Log("win count :" + count);
+            //     for (int i = 0; i < count; i++)
+            //     {
+            //         if (winHandlers[i].OnWin(outerId, innerId))
+            //             winCount++;
+
+
+            //     }
+            //     /*  if (winCount == 0 && totalBet > 0)
+            //        {
+            //          StartCoroutine(GameDataInsert(0, "loose"));
+            //            Debug.Log("game 2");
+            //        }*/
+            //     //cardHistoryDeck.PushCardData(outerId, innerId);
+            //     APICardHistory.Instance.CardHistory();
+            //     StartCoroutine(GetUserDetails(seq));
+
+            //     canBet = true;
+            //     //Reset();
+            //     canBet = false;
+            //     //winHandlers.ForEach(x => x.OnWin(outerId, innerId));
+            // }
+            // );
+            // // seq.AppendInterval(10f);
+            // seq.AppendCallback(() =>
+            // {
+            //     canBet = true;
+            //     SoundControllerJeeto.Instance.PlayOneShot(SoundControllerJeeto.SoundType.PlaceBet, placeBetSoundIndex);
+            // });
+            // //seq.AppendCallback(() => Clear());
+            // seq.AppendCallback(() => totalWinText.text = "0");
+            // Debug.Log("win here..");
+            // //seq.AppendCallback(() => SelectBet(0));
+
+
+            // Debug.Log("draw time reset");
+            // isSpining = false;
+            // Debug.Log("timer start from jeeto joker");
+
+            // return seq;
         }
 
         private IEnumerator GetUserDetails(Sequence seq)
         {
             //loadingPanel.SetActive(true);
-            seq.Pause();
+            // seq.Pause();
             yield return new WaitForSeconds(2);
             UnityWebRequest unityWebRequest = UnityWebRequest.Get(JeetoJokerManager.instance.apiData.userDetailsApi);
             unityWebRequest.SetRequestHeader(Constants.authorization, "Bearer " + _token);
@@ -635,60 +665,28 @@ namespace khelojeetonew
                     Debug.LogError(e.ToString());
                 }
             }
-            seq.Play();
+            // seq.Play();
 
         }
 
 
-        /*public void ShowWinAmount(long amount)
-          {
-              if (winCount <= 0)
-                  return;
-              long winAmount = 0;
-              winAmount = amount * 10;
-              if(winAmount == 0)
-                  return;
-              if (SocketController.Instance.is_x_excuted.Equals(Constants.zero))
-              {
-                  try
-                  {
-                      int x = int.Parse(SocketController.Instance.win_price.Replace("x", ""));
-                      winAmount *= x;
-                      StartCoroutine(WinnerHotlistUpdate());
-                  }
-                  catch (Exception e)
-                  {
-                      Debug.LogError(e.ToString());
-                  }
-              }
-              StartCoroutine(GameDataInsert(winAmount, "win"));
-              WinAmount.text = winAmount.ToString();
-              totalWinText.text = winAmount.ToString();
-              totalUserCoins = totalUserCoins + winAmount;
-              userCoinsText.text = totalUserCoins.ToString();
-              UserCoins = totalUserCoins;
-              if(winAmount>=1000) {
-                  Debug.Log("Winanimation added on win amount"+winAmount);
-                  StartCoroutine(winEffect12card(0.8f));
-              }
-              else
-                  StartCoroutine(ShowWinPopupCoroutine());
-              if (winAmount > 1 || winAmount < 999)
-              {
-                  //SoundController.Instance.PlayWinClickSound();
-                  StartCoroutine(ShowWinPopupCoroutine());
-              }
-          }*/
-        public void ShowWinAmount(long amount)
+        public IEnumerator ShowWinAmount(long amount)
         {
-            if (winCount <= 0)
-                return;
+            Debug.Log("win count in manager :" + winCount);
+            // if (winCount <= 0)
+            //     return;
             long winAmount = amount * 11;
+            Coroutine insertcoroutine = null;
+            Coroutine hotlistUpdate = null;
+            Coroutine winpopUproutine;
+
             if (winAmount == 0)
             {
                 Debug.Log("bet insert but not win user losse......");
-                StartCoroutine(GameDataInsert(0, "loose"));
-                return;
+                insertcoroutine = StartCoroutine(GameDataInsert(0, "loose"));
+
+                yield return insertcoroutine;
+                yield break;
             }
             if (SocketController.Instance.is_x_excuted.Equals(Constants.zero))
             {
@@ -696,17 +694,18 @@ namespace khelojeetonew
                 {
                     int x = int.Parse(SocketController.Instance.win_price.Replace("x", ""));
                     winAmount *= x;
-                    StartCoroutine(WinnerHotlistUpdate());
+                    hotlistUpdate = StartCoroutine(WinnerHotlistUpdate());
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError(e.ToString());
+                    Debug.LogError("parsing x error: " + e.ToString());
                 }
             }
-            StartCoroutine(GameDataInsert(winAmount, "win"));
+
+            insertcoroutine = StartCoroutine(GameDataInsert(winAmount, "win"));
 
             WinAmount.text = winAmount.ToString();
-            totalBetAmountText.text =totalBetAmount.ToString();
+            totalBetAmountText.text = totalBetAmount.ToString();
             totalWinText.text = winAmount.ToString();
             totalUserCoins += winAmount;
             userCoinsText.text = totalUserCoins.ToString("#0.00");
@@ -721,12 +720,18 @@ namespace khelojeetonew
             if (winAmount >= 1000)
             {
                 Debug.Log("Win animation added for win amount: " + winAmount);
-                StartCoroutine(ShowCoinEffectAndPopup(3.5f, 0.2f)); // 7s coin effect, 4s popup
+                winpopUproutine = StartCoroutine(ShowCoinEffectAndPopup(3.5f, 0.2f)); // 7s coin effect, 4s popup
             }
             else
             {
-                StartCoroutine(ShowWinPopupCoroutine(2f));
+                winpopUproutine = StartCoroutine(ShowWinPopupCoroutine(2f));
             }
+
+            yield return insertcoroutine;
+            yield return hotlistUpdate;
+            yield return winpopUproutine;
+
+
         }
         private IEnumerator ShowCoinEffectAndPopup(float coinEffectDuration, float popupDuration)
         {
@@ -835,65 +840,38 @@ Debug.Log("win amount greater then 1000");
                 gameData = SocketController.Instance.betData.cardValueSet, // Already structured list of CardValueSelect
                 bet_ammount = totalBet.ToString(),//betamontwithoutbet,   //totalBetAmount.ToString(), // Corrected spelling to 'bet_amount'
             };
-            Debug.Log("bonusspindata 12 card:" + data.bonus_spin);
-            Debug.Log("claim status 12 card:" + data.claim_status);
-            /*List<CardValueSelect> gameData =  SocketController.Instance.betData.cardValueSet;
-            // Debugging gameData structure
-            if (gameData != null && gameData.Count > 0)
-            {
-                Debug.Log("GameData contains the following entries:");
-                foreach (var cardValue in gameData)
-                {
-                    Debug.Log("Card: " + cardValue.card + ", Value: " + cardValue.value);
-                }
-            }
-            else
-            {
-                Debug.LogError("GameData is either null or empty.");
-            }*/
-            List<CardValueSelect> gameData = SocketController.Instance.betData.cardValueSet;
-            for (int i = 0; i < gameData.Count; i++)
-            {
-                // Convert the integer to a string to check its length
-                string cardString = gameData[i].card.ToString();
-                // If the card has 3 digits, reduce it to the last 2 digits
-                if (cardString.Length > 2)
-                {
-                    // Keep only the last 2 digits and update the card value
-                    gameData[i].card = int.Parse(cardString.Substring(1));
-                }
-                Debug.Log("Corrected Card Data: Card " + gameData[i].card + ", Value: " + gameData[i].value);
-            }
-            // Populate gameData with default values if needed
-            // for (int i = 0; i <= 9; i++)
+
+            //[ commented on 26-7-2025]
+            // List<CardValueSelect> gameData = SocketController.Instance.betData.cardValueSet;
+            // for (int i = 0; i < gameData.Count; i++)
             // {
-            //      gameData.Add(new CardValueSelect { card = i.ToString().PadLeft(2, '0'), value = 2 });
-            //  }
-            // Update gameData with actual bet amounts using winHandlers
-            foreach (var gameDataEntry in gameData)
-            {
-                // Assuming winHandlers contains the relevant win data
-                IWinHandler winHandler = winHandlers.Find(x => (x as CardSelect).groupcardNumber == gameDataEntry.card);
-                if (winHandler != null)
-                {
-                    long betAmount = (winHandler as CardSelect).GetTotalBetAmount();
-                    gameDataEntry.value = (int)betAmount; // Update the value with the bet amount
-                }
-                Debug.Log("Data GameData: Card " + gameDataEntry.card + ", Value: " + gameDataEntry.value);
-            }
-            // Serialize to JSON using Newtonsoft.Json instead of JsonUtility
-            // string jsonData = JsonUtility.ToJson(data);
-            string jsonData = JsonConvert.SerializeObject(data); // More robust serialization
-            Debug.Log("Serialized JSON: " + jsonData);
-            // Prepare the request
+            //     // Convert the integer to a string to check its length
+            //     string cardString = gameData[i].card.ToString();
+            //     // If the card has 3 digits, reduce it to the last 2 digits
+            //     if (cardString.Length > 2)
+            //     {
+            //         gameData[i].card = int.Parse(cardString.Substring(1));
+            //     }
+            // }
+
+            // foreach (var gameDataEntry in gameData)
+            // {
+            //     IWinHandler winHandler = winHandlers.Find(x => (x as CardSelect).groupcardNumber == gameDataEntry.card);
+            //     if (winHandler != null)
+            //     {
+            //         long betAmount = (winHandler as CardSelect).GetTotalBetAmount();
+            //         gameDataEntry.value = (int)betAmount; // Update the value with the bet amount
+            //     }
+            // }
+
+            string jsonData = JsonConvert.SerializeObject(data);
+            Debug.Log("Serialized JSON for saving: " + jsonData);
             UnityWebRequest unityWebRequest = new UnityWebRequest(Constant.KIBaseURL + "game_data_insert", "POST");
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonData);
             unityWebRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);
             unityWebRequest.downloadHandler = new DownloadHandlerBuffer();
             unityWebRequest.SetRequestHeader("Content-Type", "application/json");
-            // Send the request
             yield return unityWebRequest.SendWebRequest();
-            // Handle response
 
             Debug.Log("in game data insert");
             if (unityWebRequest.result == UnityWebRequest.Result.Success)
@@ -982,7 +960,7 @@ Debug.Log("win amount greater then 1000");
         }
         private void FixedUpdate()
         {
-            AllBetData();
+            // AllBetData();
         }
 
         public string AllBetData()
@@ -1132,13 +1110,14 @@ Debug.Log("win amount greater then 1000");
             ShowXMultiplierText();
             cardImage.sprite = Resources.Load<Sprite>("SJ_Resources/" + itemCard);
             suiteImage.sprite = Resources.Load<Sprite>("SJ_Resources/" + itemSuite);
-            CardDeck.instance.HighlightCard(itemCard+itemSuite);
+            CardDeck.instance.HighlightCard(itemCard + itemSuite);
             cardImage.gameObject.SetActive(true);
             suiteImage.gameObject.SetActive(true);
 
         }
 
-        void stopBlast() {
+        void stopBlast()
+        {
 
             blast.SetActive(false);
         }
@@ -1152,7 +1131,7 @@ Debug.Log("win amount greater then 1000");
             if (string.IsNullOrEmpty(multiplier) || multiplier == "1x")
             {
                 multiplierObject.SetActive(true);
-                int index =APICardHistory.Instance.GetImageIndex(multiplier);
+                int index = APICardHistory.Instance.GetImageIndex(multiplier);
                 multiplierObject.GetComponent<Image>().sprite = APICardHistory.Instance.multiplierImages[index];
                 //multiplierText.gameObject.SetActive(false);
             }
@@ -1167,7 +1146,8 @@ Debug.Log("win amount greater then 1000");
             }
         }
 
-        public void HideMultiplierText() {
+        public void HideMultiplierText()
+        {
             multiplierObject.SetActive(true);
             multiplierText.gameObject.SetActive(false);
         }
@@ -1226,7 +1206,7 @@ Debug.Log("win amount greater then 1000");
 
     public interface IWinHandler
     {
-        public bool OnWin(int outerId, int innerId);
+        public long OnWin(int outerId, int innerId);
         public BetDataHandler GetBetData();
     }
 
