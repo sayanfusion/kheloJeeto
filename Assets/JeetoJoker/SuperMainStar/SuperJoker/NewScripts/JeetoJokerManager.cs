@@ -73,13 +73,9 @@ namespace khelojeetonew
 
         [SerializeField] private GameObject loadingPanel;
         [SerializeField] private GameObject fakeUserPopup;
-
         [SerializeField] private APIData _apiData;
-
         [SerializeField] private CardHistoryDeck cardHistoryDeck;
-
         public APIData apiData => _apiData;
-
         public GameType gameType => _gameType;
 
         public int removeCount = 0;
@@ -89,7 +85,7 @@ namespace khelojeetonew
 
         private BetButtons selectedBetbutton;
         public long totalBet = 0;
-        private long totalUserCoins = 0;
+        internal long totalUserCoins = 0;
 
         public Sprite CardSelected { get => cardSelected; }
         public Sprite CardDiselect { get => cardDiselect; }

@@ -66,11 +66,11 @@ namespace khelojeetonew
         public override void LeftClick(bool ignoreStack = false)
         {
             base.LeftClick();
+            if (JeetoJokerManager.instance.totalUserCoins <= 0) return;
             playText.SetActive(false);
             BetButtons bet = JeetoJokerManager.instance.SelectedBetbutton;
             Debug.Log("bet name "+bet.buttonTransfrom.name);
             int amt = bet.amount * cardSelects.Count;
-
             //if (!JeetoJokerManager.instance.Bet(amt))
             //{
             //    return;
@@ -142,7 +142,7 @@ namespace khelojeetonew
                 }
 
                 // cardSelects.ForEach(x => x.OnClickGroupRightClick());
-                cardSelects.ForEach(x => x.OnRightClick());
+                cardSelects.ForEach(x => x.OnRightClick(bet,false));
 
                 JeetoJokerManager.instance.CheckForRepeatButton();
 

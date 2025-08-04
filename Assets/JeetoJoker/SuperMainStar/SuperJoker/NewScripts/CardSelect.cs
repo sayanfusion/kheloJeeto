@@ -147,7 +147,7 @@ namespace khelojeetonew
             OnRightClick();
         }
 
-        public void OnRightClick()
+        public void OnRightClick(BetButtons betArg=null, bool invokeRightChik=true)
         {
             JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
             // JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.unselectSound);
@@ -161,13 +161,25 @@ namespace khelojeetonew
             {
                 Debug.Log(" ttotal bet count >0");
 
-                BetButtons bet = totalBets[totalBets.Count - 1];
-                totalBets.RemoveAt(totalBets.Count - 1);
+                if (betArg != null)
+                {
+                    totalBets.Remove(betArg);
+                    JeetoJokerManager.instance.RemoveBet(betArg.amount);
 
-                JeetoJokerManager.instance.RemoveBet(bet.amount);
+                }
+                else
+                {
 
-                long totalBet = GetTotalBetSum() + GetTotalGroupBetSum();
+                    BetButtons bet = totalBets[totalBets.Count - 1];
+                    totalBets.RemoveAt(totalBets.Count - 1);
+                    JeetoJokerManager.instance.RemoveBet(bet.amount);
+
+                }
+
+
+            long totalBet = GetTotalBetSum() + GetTotalGroupBetSum();
                 UpdateChipVisualData(totalBet);
+                if(invokeRightChik)
                 onrightCLick?.Invoke();
 
                 if (totalBets.Count == zero && groupCardSelect.TrueForAll(x => x.TotalGrpBetsCount == zero))
