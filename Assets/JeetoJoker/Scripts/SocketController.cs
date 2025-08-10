@@ -52,10 +52,10 @@ public class SocketController : Singleton<SocketController>
 
     public string win_price { get; private set; }
     public string gameIdjson;
-      public string pID;
-      public string storedPlayerId;
-      public string jsonWinslot;
-        public string Windatax;
+    public string pID;
+    public string storedPlayerId;
+    public string jsonWinslot;
+    public string Windatax;
 
     protected override void Awake()
     {
@@ -65,15 +65,15 @@ public class SocketController : Singleton<SocketController>
 
     private void Start()
     {
-       
+
         loadingPanel.SetActive(true);
         StartCoroutine(DownloadIPAndPort());
     }
-   /*  public void StoreContinuousBetData(string jsonData)
-    {
-        storedContinuousBetData = jsonData;  // Store the continuous bet data here
-          Debug.Log("Storing continuous bet data: " + jsonData);
-    }*/
+    /*  public void StoreContinuousBetData(string jsonData)
+     {
+         storedContinuousBetData = jsonData;  // Store the continuous bet data here
+           Debug.Log("Storing continuous bet data: " + jsonData);
+     }*/
 
     public void Initialize()
     {
@@ -84,7 +84,7 @@ public class SocketController : Singleton<SocketController>
         builder.Append(address.EndsWith("/") ? "socket.io/" : "/socket.io/");
         SocketOptions option = new SocketOptions();
 
-        Debug.Log("url _socket: "+builder.ToString());
+        Debug.Log("url _socket: " + builder.ToString());
         Core = new BestHTTP.SocketIO.SocketManager(new Uri(builder.ToString()));
         Core.Socket.AutoDecodePayload = false;
         Core.Socket.On(SocketIOEventTypes.Connect, OnConnected);
@@ -103,8 +103,8 @@ public class SocketController : Singleton<SocketController>
         Core.Socket.On(Constants.updatedPlayer, OnUpdatedPlayer);
         Core.Socket.On(Constants.updatedPlayers, OnUpdatedPlayers);
         Core.Socket.On(Constants.updatedRoom, OnUpdatedRoom);
-         //added listerner for game id changes by shivamfusion07
-         Core.Socket.On(Constants.gameId,GameIddata);
+        //added listerner for game id changes by shivamfusion07
+        Core.Socket.On(Constants.gameId, GameIddata);
 
 
         /*  _SocketManager = new SocketManager(new Uri(address));
@@ -138,16 +138,16 @@ public class SocketController : Singleton<SocketController>
 
     public int gameidstore;
     //for game id response recieved data
-  private void GameIddata(Socket socket, Packet packet, object[] args)
+    private void GameIddata(Socket socket, Packet packet, object[] args)
     {
         Debug.LogError("Game id data: " + packet);
-         JArray dataArray = JArray.Parse(packet.ToString()); // Convert the packet to a JSON array
-    string eventName = dataArray[0].ToString(); // "GameId"
-    int gameId = dataArray[1].ToObject<int>();  // 1725528573
-    gameidstore=gameId;
+        JArray dataArray = JArray.Parse(packet.ToString()); // Convert the packet to a JSON array
+        string eventName = dataArray[0].ToString(); // "GameId"
+        int gameId = dataArray[1].ToObject<int>();  // 1725528573
+        gameidstore = gameId;
         roomIdText.text = gameidstore.ToString();
-    Debug.Log("Game id:"+gameidstore);
-    Debug.Log($"Event: {eventName}, Game ID: {gameId}");
+        Debug.Log("Game id:" + gameidstore);
+        Debug.Log($"Event: {eventName}, Game ID: {gameId}");
     }
 
     private void OnUpdatedPlayers(Socket socket, Packet packet, object[] args)
@@ -165,7 +165,7 @@ public class SocketController : Singleton<SocketController>
     private void OnTimer(Socket socket, Packet packet, object[] args)
     {
         string json = packet.RemoveEventName(true);
-         Debug.Log("OnTimer " + packet);
+        Debug.Log("OnTimer " + packet);
         json = json.Replace("\"", "");
         TimerControllerNew.inst.UpdateTimer(int.Parse(json));
     }
@@ -184,7 +184,7 @@ public class SocketController : Singleton<SocketController>
         Debug.LogError("OnSlot " + packet);
         json = json.Replace("\"", "");
         JeetoJokerManager.instance.StartSpinning(int.Parse(json));
-       
+
         Debug.Log("whel spining from heree..1111");
         StartCoroutine(DownloadMode());
         StartCoroutine(APICardHistory.Instance.setResultRequest(json));
@@ -379,9 +379,9 @@ public class SocketController : Singleton<SocketController>
     {
         if (isConnected)
         {
-             storedPlayerId = playerId;
+            storedPlayerId = playerId;
             // playerId = "309";
-            JeetoJokerManager.instance.Reset();  
+            JeetoJokerManager.instance.Reset();
             //StartCoroutine(DownloadMode());
             Debug.LogError("playerId " + playerId);
             betData.playerId = playerId;
@@ -403,7 +403,7 @@ public class SocketController : Singleton<SocketController>
         return isConnected;
     }
 
-   public void Bet()
+    public void Bet()
     {
         //[commented on 26-7-2025]
         //SetMode();
@@ -411,7 +411,7 @@ public class SocketController : Singleton<SocketController>
         JeetoJokerManager.instance.SetBetData(betData.cardValueSet);
         string rawJson = JsonConvert.SerializeObject(betData);
         // Dictionary<string, object> keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, object>>(rawJson);
-        Debug.Log("showing row json data after 7 seconds:"+ rawJson);
+        Debug.Log("showing row json data after 7 seconds:" + rawJson);
         Core.Socket.Emit(Constants.bet, rawJson);
         // Dictionary<string, object> keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, object>>(rawJson);
     }
@@ -431,7 +431,7 @@ public class SocketController : Singleton<SocketController>
         // Emit the serialized bet data to the server
         Core.Socket.Emit(Constants.bet, rawJson);
     }*/
- 
+
 
     public void SetMode()
     {
@@ -450,7 +450,7 @@ public class SocketController : Singleton<SocketController>
     {
         //leaveData.roomId = Constants.ROOMID;
         //leaveData.playerId = PlayerPrefs.GetInt(Constant.UID).ToString();
-        Debug.Log("on leave +"+leaveData.roomId);
+        Debug.Log("on leave +" + leaveData.roomId);
         Debug.Log("on leave +" + leaveData.playerId);
 
         string rawJson = JsonConvert.SerializeObject(leaveData);
@@ -476,7 +476,7 @@ public class SocketController : Singleton<SocketController>
             try
             {
                 Debug.LogError(unityWebRequest.downloadHandler.text);
-               khelojeetonew.IPAndPortStatus iPAndPortStatus = JsonConvert.DeserializeObject<khelojeetonew.IPAndPortStatus>(unityWebRequest.downloadHandler.text);
+                khelojeetonew.IPAndPortStatus iPAndPortStatus = JsonConvert.DeserializeObject<khelojeetonew.IPAndPortStatus>(unityWebRequest.downloadHandler.text);
                 if (iPAndPortStatus.status == 200)
                 {
                     //address = $"{iPAndPortStatus.port.ip}:{iPAndPortStatus.port.port}";
@@ -498,34 +498,34 @@ public class SocketController : Singleton<SocketController>
     }
     //changes by shivamfusion07
     public void SetCompleteData(List<khelojeetonew.CardValueSelect> cardValueSet)
-        {
-            //BetData bd = new BetData();
-            //bd.roomId = setMode.roomId;
-            //bd.playerId = pID;
-            //bd.cardValueSet = cardValueSet;
-            //string rawJson = JsonConvert.SerializeObject(bd);
-            //Debug.LogError("SetCompleteData " + rawJson);
-            //Dictionary<string, string> keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(rawJson);
-            //Core.Socket.Emit(Constants.bet, keyValuePairs);
-            SetMode();
-            khelojeetonew.BetData bd = new khelojeetonew.BetData();
-            bd.roomId = setMode.roomId;
-            bd.playerId = storedPlayerId; 
-            Debug.Log("player id:"+bd.playerId);  //pID;
-            bd.cardValueSet = cardValueSet;
+    {
+        //BetData bd = new BetData();
+        //bd.roomId = setMode.roomId;
+        //bd.playerId = pID;
+        //bd.cardValueSet = cardValueSet;
+        //string rawJson = JsonConvert.SerializeObject(bd);
+        //Debug.LogError("SetCompleteData " + rawJson);
+        //Dictionary<string, string> keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(rawJson);
+        //Core.Socket.Emit(Constants.bet, keyValuePairs);
+        SetMode();
+        khelojeetonew.BetData bd = new khelojeetonew.BetData();
+        bd.roomId = setMode.roomId;
+        bd.playerId = storedPlayerId;
+        Debug.Log("player id:" + bd.playerId);  //pID;
+        bd.cardValueSet = cardValueSet;
 
-            // Serialize the BetData object to JSON
-            string rawJson = JsonConvert.SerializeObject(bd);
-            Debug.Log("bet emit data"+rawJson);
-            Debug.LogError("SetCompleteData " + rawJson);
+        // Serialize the BetData object to JSON
+        string rawJson = JsonConvert.SerializeObject(bd);
+        Debug.Log("bet emit data" + rawJson);
+        Debug.LogError("SetCompleteData " + rawJson);
 
-            // Deserialize the JSON back into a BetData object
-            //string deserializedData = JsonConvert.DeserializeObject<string>(rawJson);
+        // Deserialize the JSON back into a BetData object
+        //string deserializedData = JsonConvert.DeserializeObject<string>(rawJson);
 
-            // Now you can emit deserializedData to your socket
+        // Now you can emit deserializedData to your socket
         Debug.Log("bet 12 card on bet emit card:" + rawJson);
-            Core.Socket.Emit(Constants.bet, rawJson);
-        }
+        Core.Socket.Emit(Constants.bet, rawJson);
+    }
 
 
     private IEnumerator DownloadMode()
@@ -534,7 +534,7 @@ public class SocketController : Singleton<SocketController>
         win_price = "";
         is_x_excuted = "";
         WWWForm wWWForm = new WWWForm();
-        Debug.Log("player id before download mode call:"+joinRoomData.playerId);
+        Debug.Log("player id before download mode call:" + joinRoomData.playerId);
         //wWWForm.AddField("player_id", joinRoomData.playerId);
         UnityWebRequest unityWebRequest = UnityWebRequest.Get(Constant.KIBaseURL + "winning-hotlist?game_name=jeetojoker");
         yield return unityWebRequest.SendWebRequest();
@@ -547,11 +547,11 @@ public class SocketController : Singleton<SocketController>
         {
             try
             {
-                Debug.LogError("Winning Hotlist : "+unityWebRequest.downloadHandler.text);
-               khelojeetonew.HotListStatus hotListStatus = JsonConvert.DeserializeObject<khelojeetonew.HotListStatus>(unityWebRequest.downloadHandler.text);
+                Debug.LogError("Winning Hotlist : " + unityWebRequest.downloadHandler.text);
+                khelojeetonew.HotListStatus hotListStatus = JsonConvert.DeserializeObject<khelojeetonew.HotListStatus>(unityWebRequest.downloadHandler.text);
                 if (hotListStatus.status == 200)
                 {
-                  khelojeetonew.HotList hotList = hotListStatus.list[0];
+                    khelojeetonew.HotList hotList = hotListStatus.list[0];
                     /*#if JeetoJoker || Cards16
                                         HotList hotList = hotListStatus.list;
                     #elif Cards12_IPL
@@ -561,23 +561,23 @@ public class SocketController : Singleton<SocketController>
                     if (hotList != null)
                     {
                         // Debug.LogError("Player Id : " + hotList.player_id + " Mode : " + hotList.win_type);
-                       // if (hotList.player_id == joinRoomData.playerId)
-                       // {
-                       //     setMode.mode = hotList.win_type;
-                       //     win_price = hotList.win_price;
-                       //     is_x_excuted = hotList.is_x_executed;
-                       //       Windatax = win_price;
-                       //       Debug.Log("win data X:"+Windatax);
-                       //Debug.Log(setMode.mode + " " + win_price + " " + is_x_excuted + "abcde");
-                       // }
+                        // if (hotList.player_id == joinRoomData.playerId)
+                        // {
+                        //     setMode.mode = hotList.win_type;
+                        //     win_price = hotList.win_price;
+                        //     is_x_excuted = hotList.is_x_executed;
+                        //       Windatax = win_price;
+                        //       Debug.Log("win data X:"+Windatax);
+                        //Debug.Log(setMode.mode + " " + win_price + " " + is_x_excuted + "abcde");
+                        // }
                         if (hotList.game_name == "jeetojoker")
                         {
                             setMode.mode = hotList.win_type;
                             win_price = hotList.win_price;
                             is_x_excuted = hotList.is_x_executed;
-                              Windatax = win_price;
-                              Debug.Log("win data X:"+Windatax);
-                       Debug.Log(setMode.mode + " " + win_price + " " + is_x_excuted + "abcde");
+                            Windatax = win_price;
+                            Debug.Log("win data X:" + Windatax);
+                            Debug.Log(setMode.mode + " " + win_price + " " + is_x_excuted + "abcde");
                         }
                     }
 
@@ -593,4 +593,36 @@ public class SocketController : Singleton<SocketController>
             }
         }
     }
+
+    private void OnDestroy()
+    {
+        if (Core != null && Core.Socket != null)
+        {
+            Core.Socket.Off(SocketIOEventTypes.Connect, OnConnected);
+            Core.Socket.Off(SocketIOEventTypes.Disconnect, OnDisconnected);
+            Core.Socket.Off(SocketIOEventTypes.Error, OnConnectedError);
+            Core.Socket.Off(SocketIOEventTypes.Unknown, OnUnknownError);
+            Core.Socket.Off(Constants.betting, OnBetting);
+            Core.Socket.Off(Constants.createRoomSuccess, OnCreateRoomeSuccess);
+            Core.Socket.Off(Constants.errorOccured, OnErrorOccured);
+            Core.Socket.Off(Constants.mode, OnMode);
+            Core.Socket.Off(Constants.roomData, OnRoomData);
+            Core.Socket.Off(Constants.roomMessage, OnRoomMessage);
+            Core.Socket.Off(Constants.slot, OnSlot);
+            Core.Socket.Off(Constants.startGame, OnStartGame);
+            Core.Socket.Off(Constants.timer, OnTimer);
+            Core.Socket.Off(Constants.updatedPlayer, OnUpdatedPlayer);
+            Core.Socket.Off(Constants.updatedPlayers, OnUpdatedPlayers);
+            Core.Socket.Off(Constants.updatedRoom, OnUpdatedRoom);
+            Core.Socket.Off(Constants.gameId, GameIddata);
+            Core.Close();
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
 }
+

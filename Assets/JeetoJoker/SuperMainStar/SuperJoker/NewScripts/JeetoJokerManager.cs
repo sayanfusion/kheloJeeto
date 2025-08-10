@@ -578,13 +578,14 @@ namespace khelojeetonew
             coroutines.Add(StartCoroutine(APICardHistory.Instance.PostRequest()));
             coroutines.Add(StartCoroutine(GetUserDetails(null)));
             canBet = true;
-            totalWinText.text = "0";
             isSpining = false;
 
             foreach (Coroutine item in coroutines)
             {
                 yield return item;
             }
+            currentTotalBetText.text = "0";
+            totalWinText.text = "0";
             //[commented on 26-7-2025]
             // Sequence seq = DOTween.Sequence();
             // // seq.AppendInterval(4f);

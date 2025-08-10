@@ -111,7 +111,7 @@ namespace tripplechance
 
 
 
-        
+
         private void EmmiteJoinRoom()
         {
             Debug.Log("EMITE JOIN ROOM");
@@ -124,9 +124,9 @@ namespace tripplechance
             Debug.LogError(rawJson);
             Dictionary<string, object> keyValuePairs = JsonConvert.DeserializeObject<Dictionary<string, object>>(rawJson);
             Core.Socket.Emit("joinRoom", keyValuePairs);
-           
+
         }
-        
+
         private void EmmiteStartGame()
         {
             SendData.Start startgame = new SendData.Start();
@@ -144,7 +144,7 @@ namespace tripplechance
             bet.playerId = PlayerPrefs.GetInt(Constant.UID).ToString();
             bet.start_point = Convert.ToInt32(gamePlay.IPointBalance);
             bet.playerBetSum = gamePlay.playValue.ToString();
-            Debug.Log("player bet sum:"+ bet.playerBetSum);
+            Debug.Log("player bet sum:" + bet.playerBetSum);
 
             // Initialize the cardValueSet list
             bet.cardValueSet = new List<SendData.CardValueSet>();
@@ -188,7 +188,7 @@ namespace tripplechance
             }
             string rawJson = JsonConvert.SerializeObject(bet);
             Debug.LogError(rawJson);
-            Debug.Log("bet emitted data triplechance timer shivamfusion07"+rawJson);
+            Debug.Log("bet emitted data triplechance timer shivamfusion07" + rawJson);
             Core.Socket.Emit("bet", rawJson);
             Debug.LogError("Bet event emitted successfully.");
         }
@@ -239,12 +239,12 @@ namespace tripplechance
             ResponseData.CreateRoomSuccess createRomm = JsonUtility.FromJson<ResponseData.CreateRoomSuccess>(s);
             Constants.ROOMID = createRomm._id;
         }
-        
+
         private void StartGame(Socket socket, Packet packet, params object[] args)
         {
             string s = packet.RemoveEventName(true);
             Debug.Log("StartGame : " + s);
-            EmmiteStartGame();      
+            EmmiteStartGame();
         }
         private void UpdatedPlayers(Socket socket, Packet packet, params object[] args)
         {
@@ -280,8 +280,8 @@ namespace tripplechance
         public bool isGameStart;
         private void Timer(Socket socket, Packet packet, params object[] args)
         {
-            if(loadingPanel)
-            loadingPanel.SetActive(false);
+            if (loadingPanel)
+                loadingPanel.SetActive(false);
 
             string s = packet.RemoveEventName(true);
             Debug.Log("timer :" + int.Parse(s));
@@ -300,7 +300,7 @@ namespace tripplechance
             {
                 isGameStart = false;
             }
-             if(int.Parse(s) == 8)
+            if (int.Parse(s) == 8)
             {
                 gamePlay.GETbetData();
             }
@@ -333,15 +333,15 @@ namespace tripplechance
             if (number != null)
             {
                 Constant.ResultNumber = number;
-               
-               // GamePlay.instance.StartSpinning();
-                if ( GamePlay.instance.timerScript.timeLeft <= 0)
-              {
-               {
-                GamePlay.instance.StartSpinning();
-                Debug.Log("Spin triggered when timer is 00");
-            }
-        }
+
+                // GamePlay.instance.StartSpinning();
+                if (GamePlay.instance.timerScript.timeLeft <= 0)
+                {
+                    {
+                        GamePlay.instance.StartSpinning();
+                        Debug.Log("Spin triggered when timer is 00");
+                    }
+                }
 
                 DataClass gameWinTripleDataClass = gamePlay.allDatas.tripleDatas.Find(x => x.card.Equals(number));
                 if (gameWinTripleDataClass != null)
@@ -382,7 +382,7 @@ namespace tripplechance
                     string win_number = number;
                     string Game_Id = gamePlay.gameId;
                     long win_Amount = totalWinAmount;
-                    long bet_amount =   (long)gamePlay.playValue;
+                    long bet_amount = (long)gamePlay.playValue;
                     List<DataClass> betData = new List<DataClass>();
 
                     foreach (var data in gamePlay.allDatas.singleDatas)
@@ -460,9 +460,9 @@ namespace tripplechance
                 start_point = start_point,
                 game_id = GameID,
                 win_Amount = win_amount,
-                draw_time ="",
-                bonus_spin="",
-                claim_status=1,
+                draw_time = "",
+                bonus_spin = "",
+                claim_status = 1,
                 gameData = gameData,
                 bet_ammount = bet_amount
             };
@@ -549,6 +549,35 @@ namespace tripplechance
         //         }
         //     }
         // }
+
+        private void OnDestroy()
+        {
+            if (Core != null && Core.Socket != null)
+            {
+
+                Core.Socket.Off("createRoomSuccess", CreateRoomSuccess);
+                Core.Socket.Off("startGame", StartGame);
+                Core.Socket.Off("updatedPlayers", UpdatedPlayers);
+                Core.Socket.Off("updatedRoom", UpdatedRoom);
+                Core.Socket.Off("roomMessage", RoomMessage);
+                Core.Socket.Off("updatedPlayer", UpdatedPlayer);
+                Core.Socket.Off("errorOccured", ErrorOccured);
+                Core.Socket.Off("timer", Timer);
+                Core.Socket.Off("roomData", RoomData);
+                Core.Socket.Off("betting", Betting);
+                Core.Socket.Off("slot", Slot);
+                Core.Socket.Off("mode", Mode);
+                Core.Socket.Off("playersBetInfo", PlayersBetInfo);
+                Core.Socket.Off("gameId", SetGameId);
+            Core.Close();
+
+            }
+        }
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+        }
     }
 
     internal class GameDataInsertClass
