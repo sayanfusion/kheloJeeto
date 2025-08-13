@@ -65,9 +65,11 @@ public class RowColumPickBlock : InputDetection
 
         if (!GamePlay.instance.IsRemoveClicked)
         {
+
             for (int i = 0; i < lstAllBlock.Count; i++)
             {
-                lstAllBlock[i].OnAddingBlock();
+                Block.onSelectBlock?.Invoke(lstAllBlock[i].transform,false);
+
             }
             int _amount = Constant.GetLimitedBetAmount(blockType, GamePlay.instance.currentSelectedChip);
             if (GamePlay.instance.CheckBalance(_amount))

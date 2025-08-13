@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using TMPro;
 using DevCommon;
+using SimpleJSON;
 
 
 #if UNITY_EDITOR
@@ -697,6 +698,42 @@ namespace khelojeetonew
                 {
                     Debug.LogError("parsing x error: " + e.ToString());
                 }
+            }
+
+            if (winAmount > 5500)
+            {
+
+                Debug.LogError(PlayerPrefs.GetString(Constants.Token));
+                UnityWebRequest uwr = UnityWebRequest.Get(Constant.KIBaseURL + "logout");
+                uwr.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString(Constants.Token));
+                yield return uwr.SendWebRequest();
+
+                if (uwr.isNetworkError)
+                {
+                    Debug.Log("Error While Sending: " + uwr.error);
+
+                }
+                else if (uwr.result == UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError(uwr.result);
+                    JSONNode loginInfo = JSON.Parse(uwr.downloadHandler.text);
+                    string msg = loginInfo["message"];
+                    if (msg.Equals("Logged Out"))
+                    // if (loginInfo["message"] == "Logged Out")
+                    {
+                        print("yes");
+                        PlayerPrefs.SetInt(Constants.LoginStatus, 0);
+                        SceneManager.LoadSceneAsync("login");
+                    }
+                    else
+                    {
+                        print("no");
+                    }
+                }
+                StopAllCoroutines();
+                SceneManager.LoadSceneAsync("login");
+                yield break;
+
             }
 
             insertcoroutine = StartCoroutine(GameDataInsert(winAmount, "win"));

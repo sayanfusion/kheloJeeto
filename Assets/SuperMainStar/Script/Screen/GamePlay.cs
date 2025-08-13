@@ -117,7 +117,7 @@ public class GamePlay : UIPage
     public double playValue;
     public long totalbetamountget = 0;
 
-
+    public List<RandomClickParent> parents;
     public double IPointBalance
     {
         get
@@ -225,7 +225,7 @@ public class GamePlay : UIPage
     public GameObject alertPanel;
     public Text singlePlayText, doublePlayText, TriplePlayText;
     public Text singleWinText, doubleWinText, TripleWinText;
-    private int singlePlayValue, doublePlayValue, triplePlayValue;
+    public int singlePlayValue, doublePlayValue, triplePlayValue;
     //added by shivamfusion07 to check bet button click
     public static bool isbetclicked = false;
 
@@ -408,7 +408,7 @@ public class GamePlay : UIPage
         for (int i = 0; i < lstAllBlockData.Count; i++)
         {
             lstAllBlockData[i].game_amount = 0;
-            AddToBalance(lstAllBlockData[i].game_amount);
+            AddToBalance(lstAllBlockData[i].game_amount,lstAllBlockData[i].block.blockType);
             lstAllBlockData[i].block.OnDeselectSuccess(0);
         }
 
@@ -1096,6 +1096,13 @@ public class GamePlay : UIPage
         //#endif
         Debug.Log("Reset All data started");
         ClearAllBlock();
+        singlePlayValue = 0;
+        doublePlayValue = 0;
+        triplePlayValue = 0;
+        foreach (var item in parents)
+        {
+            item.prevSelected.Clear();
+        }
         for (int i = 0; i < lstResultBlock.Count; i++)
         {
             lstResultBlock[i].OnDeselectSuccess(0);
@@ -1106,10 +1113,7 @@ public class GamePlay : UIPage
                bRepeat.interactable = false;*/
         gWinData.SetActive(false);
         tPlayValue.text = 0.ToString();
-        // totalbetamountget= Convert.ToDouble(tPlayValue.text);;
-        // Debug.Log("tplay valu5566:"+ totalbetamountget);
-        //OnStartAllWheel();
-        // ShowMessage("Place your chip");// close by prabir
+
 
         //added by shivamfusion07
         ResetPlayValue();
@@ -1131,7 +1135,7 @@ public class GamePlay : UIPage
     }
 
 
-    void ResetPlayValue()
+    public void ResetPlayValue()
     {
         for (int i = 0; i < allBlockDetails.Count; i++)
         {
@@ -1152,7 +1156,7 @@ public class GamePlay : UIPage
         TriplePlayText.text = triplePlayValue.ToString();
 #endif
     }
-    void OnSelectBlock(Transform _trans)
+    void OnSelectBlock(Transform _trans, bool showPopup=true)
     {
         if (timerScript.timeLeft > 6f)
         {
@@ -1179,8 +1183,19 @@ public class GamePlay : UIPage
 
                     if (Constant.GetMaximumBetAmount(_block.blockType) >= (_block.iBetAmount + _amount))
                     {
+
+
+                        bool check = ChekForMaxBetByBlockType(_block, _amount);
+
+                        if (!check)
+                        {
+                            ShowMessage("Maximum Bet Limit Exceed");
+                            ShowAlertPanel();
+                            return;
+                        }
                         IPointBalance -= _amount;
                         AddDataToList(_trans, _amount);
+                        if(showPopup)
                         EnablePopupForBlock(_trans);
 
                     }
@@ -1202,6 +1217,40 @@ public class GamePlay : UIPage
         }
 
     }
+
+    bool ChekForMaxBetByBlockType(Block _block, int amount)
+    {
+        bool check = true;
+        if (_block.blockType == Block.BlockType.SINGLE)
+        {
+            singlePlayValue += amount;
+            if (singlePlayValue > 1000)
+            {
+                check = false;
+                singlePlayValue-=amount;
+            }
+        }
+        else if (_block.blockType == Block.BlockType.DOUBLE)
+        {
+            doublePlayValue += amount;
+            if (doublePlayValue > 50)
+            {
+                check = false;
+                doublePlayValue -= amount;
+            }
+        }
+        else if (_block.blockType == Block.BlockType.TRIPLE)
+        {
+            triplePlayValue += amount;
+            if (triplePlayValue > 10)
+            {
+                check = false;
+                triplePlayValue -= amount;
+            }
+        }
+
+        return check;
+    }
     public void ShowAlertPanel()
     {
 #if UNITY_ANDROID
@@ -1221,7 +1270,7 @@ public class GamePlay : UIPage
         if (_blockData != null)
         {
 
-            AddToBalance(_blockData.allGameAmount.Last());
+            AddToBalance(_blockData.allGameAmount.Last(),_blockData.block.blockType);
             bool _isLast = _blockData.RemoveLastAmount();
             _block.OnDeselectSuccess(_blockData.game_amount);
             if (_isLast)
@@ -1257,8 +1306,18 @@ public class GamePlay : UIPage
 
         if (CheckBalance(_amount) && Constant.GetMaximumBetAmount(_block.blockType) >= (_block.iBetAmount + _amount))
         {
+            bool check = ChekForMaxBetByBlockType(_block, _amount);
+            if (!check)
+            {
+                ShowMessage("Maximum Bet Limit Exceed");
+                ShowAlertPanel();
+                Debug.Log("did not added");
+                return;
+            }
             IPointBalance -= _amount;
             AddDataToList(_trans, _amount);
+                Debug.Log(" added"+check);
+
 
         }
         else
@@ -1371,13 +1430,15 @@ public class GamePlay : UIPage
         _allBlockData = lstAllBlockData.FindAll((BlockData obj) => (obj.game_number[0] == name[0] && obj.block.blockType == Block.BlockType.TRIPLE));
         return _allBlockData;
     }
-    void RemovePreviousSelectedBlock(Block.BlockType _blockType)
+    internal void RemovePreviousSelectedBlock(Block.BlockType _blockType)
     {
         List<BlockData> _blockData = lstAllBlockData.FindAll((BlockData obj) => (obj.block.blockType == _blockType));
         for (int i = 0; i < _blockData.Count; i++)
         {
-            _blockData[i].block.OnDeselectSuccess(0);
+            // _blockData[i].block.RightClick();
+            Debug.Log("DESelected");
             RemoveBlockData(_blockData[i], _blockType);
+            RemoveBetByBloctype(_blockData[i].block.blockType, _blockData[i].game_amount);
         }
     }
 
@@ -1387,7 +1448,6 @@ public class GamePlay : UIPage
 
         for (int i = 0; i < _blockData.Count; i++)
         {
-            _blockData[i].block.OnDeselectSuccess(0);
             RemoveBlockData(_blockData[i], Block.BlockType.TRIPLE);
         }
     }
@@ -1408,7 +1468,8 @@ public class GamePlay : UIPage
     void RemoveBlockData(BlockData _blockData, Block.BlockType _blockType, bool _deductbalance = true)
     {
         if (_deductbalance)
-            AddToBalance(_blockData.game_amount);
+            AddToBalance(_blockData.game_amount,_blockData.block.blockType);
+
         lstAllBlockData.Remove(_blockData);
         if (lstAllBlockData.Count == 0)
         {
@@ -1465,11 +1526,11 @@ public class GamePlay : UIPage
 
     }
 
-    public void EnablePopupForBlock(Transform _trans,bool win=false)
+    public void EnablePopupForBlock(Transform _trans, bool win = false)
     {
 
 #if !UNITY_ANDROID
-        int popup=SetPositionOfPopUp(_trans,win);
+        int popup = SetPositionOfPopUp(_trans, win);
 
         Block _block = _trans.GetComponent<Block>();
         clickPopUp[popup].GetComponent<PopUp>().SetBlockData(_block.blockType, _block.normalStateNum.text, _block.iBetAmount);
@@ -1481,7 +1542,7 @@ public class GamePlay : UIPage
     {
 
 #if !UNITY_ANDROID
-        int popup=SetPositionOfPopUp(_trans);
+        int popup = SetPositionOfPopUp(_trans);
         clickPopUp[popup].GetComponent<PopUp>().SetBlockDataForRow(_trans.GetComponent<RowColumPickBlock>().blockType, _betAmount);
 #endif
     }
@@ -1490,7 +1551,7 @@ public class GamePlay : UIPage
     public void EnablePopUpForInsufficient(Transform _trans, Block.BlockType _blockType, PopUp.ERROR _error)
     {
 #if !UNITY_ANDROID
-        int popup=SetPositionOfPopUp(_trans);
+        int popup = SetPositionOfPopUp(_trans);
         clickPopUp[popup].GetComponent<PopUp>().ShowInsufficientPopUp(_blockType, _error);
         // alertPanel.SetActive(true);
 #else
@@ -1541,7 +1602,8 @@ public class GamePlay : UIPage
             trippleBlocker[1].SetActive(true);
 
         }
-        else {
+        else
+        {
 
             trippleBlocker[0].SetActive(false);
             trippleBlocker[1].SetActive(false);
@@ -1581,11 +1643,27 @@ public class GamePlay : UIPage
 
 
 
-    public void AddToBalance(int _iBalance)
+    public void AddToBalance(int _iBalance, BlockType blockType)
     {
         IPointBalance += _iBalance;
+        RemoveBetByBloctype(blockType,_iBalance);
+
     }
 
+    void RemoveBetByBloctype(BlockType blockType, int _iBalance) { 
+        if (blockType == Block.BlockType.SINGLE)
+        {
+            singlePlayValue -= _iBalance;
+        }
+        else if (blockType == Block.BlockType.DOUBLE)
+        {
+            doublePlayValue -= _iBalance;
+        }
+        else if (blockType == Block.BlockType.TRIPLE)
+        {
+            triplePlayValue -= _iBalance;
+        }
+    }
     public float startSpinningTime = 0;
 
     public void StartSpinning()
@@ -1897,18 +1975,7 @@ public class GamePlay : UIPage
     public void ClearClicked()
     {
         //SoundController.instance.PlayAudio (SoundController.ClipType.CHIP);
-        for (int i = 0; i < lstAllBlockData.Count; i++)
-        {
-            AddToBalance(lstAllBlockData[i].game_amount);
-            lstAllBlockData[i].block.OnDeselectSuccess(0);
-        }
-        allDatas.ClearAllData();
-        foreach (var tab in lstAllTab)
-        {
-            tab.TurnSelectedTabGreen(false);
-            tab.ResetTab();
-        }
-        lstAllBlockData.Clear();
+        ClearData();
         bClear.interactable = false;
         bDoubleUp.interactable = false;
         //#if UNITY_ANDROID
@@ -1928,6 +1995,26 @@ public class GamePlay : UIPage
         ResetPlayValue();
         playValue = 0;
     }
+
+    public void ClearData()
+    {
+        for (int i = 0; i < lstAllBlockData.Count; i++)
+        {
+            AddToBalance(lstAllBlockData[i].game_amount,lstAllBlockData[i].block.blockType);
+            lstAllBlockData[i].block.OnDeselectSuccess(0);
+        }
+        allDatas.ClearAllData();
+        foreach (var tab in lstAllTab)
+        {
+            tab.TurnSelectedTabGreen(false);
+            tab.ResetTab();
+        }
+        lstAllBlockData.Clear();
+        triplePlayValue = 0;
+        doublePlayValue = 0;
+        singlePlayValue = 0;
+    }
+
     public void ClearClickedfrprinttriplechance()
     {
         Debug.Log("clear clicked for print works");
@@ -2003,9 +2090,14 @@ public class GamePlay : UIPage
             {
                 if (CheckBalance(lstAllBlockData[i].game_amount))
                 {
-                    IPointBalance -= (lstAllBlockData[i].game_amount);
+                    bool check = ChekForMaxBetByBlockType(lstAllBlockData[i].block, lstAllBlockData[i].game_amount);
+                    if (check)
+                    {
+                        IPointBalance -= (lstAllBlockData[i].game_amount);
 
-                    AddDataToListForDoubleUp(lstAllBlockData[i]);
+                        AddDataToListForDoubleUp(lstAllBlockData[i]);
+                    }
+
                 }
                 else
                 {

@@ -4256,7 +4256,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 30.174015}
+  m_AnchoredPosition: {x: 0, y: 28.6}
   m_SizeDelta: {x: 0, y: 60.347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &57521534
@@ -13651,7 +13651,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.4765625, y: -55.999878}
+  m_AnchoredPosition: {x: -10.476624, y: -55.999878}
   m_SizeDelta: {x: 499.05, y: 263}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &209467442
@@ -20720,7 +20720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.4765625, y: -55.999878}
+  m_AnchoredPosition: {x: -10.476624, y: -55.999878}
   m_SizeDelta: {x: 499.05, y: 263}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &286581963
@@ -33005,19 +33005,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 456556570}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &456556570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42117,7 +42105,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 30.174015}
+  m_AnchoredPosition: {x: 0, y: 28.83}
   m_SizeDelta: {x: 0, y: 60.347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &606661110
@@ -42575,7 +42563,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 30.174015}
+  m_AnchoredPosition: {x: 0, y: 28.4}
   m_SizeDelta: {x: 0, y: 60.347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &620745345
@@ -70412,19 +70400,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1020405901}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1020405901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79307,19 +79283,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1132028917}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1132028917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92760,19 +92724,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1250274589}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1250274589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93367,19 +93319,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1262473579}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1262473579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98753,7 +98693,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 30.174015}
+  m_AnchoredPosition: {x: 0, y: 28.6}
   m_SizeDelta: {x: 0, y: 60.347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1353024416
@@ -106861,19 +106801,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1464668360}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1464668360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111231,19 +111159,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1530519684}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1530519684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114875,19 +114791,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1586374169}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1586374169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115924,19 +115828,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1607095618}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1607095618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117741,19 +117633,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1632908599}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1632908599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125506,19 +125386,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1728051090}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1728051090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136821,7 +136689,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 30.174015}
+  m_AnchoredPosition: {x: 0, y: 28.6}
   m_SizeDelta: {x: 0, y: 60.347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1884959524
@@ -148505,19 +148373,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2045571319}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485540133}
-        m_TargetAssemblyTypeName: JeetoJoker.SoundController, Assembly-CSharp
-        m_MethodName: PlayAudiojeetojoker
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 6453a86ebc59ded458bfb2a6edfec3e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2045571319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152120,7 +151976,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 30.174015}
+  m_AnchoredPosition: {x: 0, y: 28.6}
   m_SizeDelta: {x: 0, y: 60.347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2104491128

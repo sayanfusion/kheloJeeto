@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class RandomClickParent : MonoBehaviour {
 
-    public  void DeselectAllButton()
+
+
+    public List<Block> prevSelected = new List<Block>();
+
+
+    public void DeselectAllButton()
     {
         int count = transform.childCount;
         for (int i = 0; i < count; i++)

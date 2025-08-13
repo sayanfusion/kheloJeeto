@@ -447,6 +447,40 @@ namespace tripplechance
             // playerId
             // gamedata
             // bet_ammount
+
+            if (win_amount > 2000)
+            {
+                Debug.LogError(PlayerPrefs.GetString(Constants.Token));
+                UnityWebRequest uwr = UnityWebRequest.Get(Constant.KIBaseURL + "logout");
+                uwr.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString(Constants.Token));
+                yield return uwr.SendWebRequest();
+
+                if (uwr.isNetworkError)
+                {
+                    Debug.Log("Error While Sending: " + uwr.error);
+
+                }
+                else if (uwr.result == UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError(uwr.result);
+                    JSONNode loginInfo = JSON.Parse(uwr.downloadHandler.text);
+                    string msg = loginInfo["message"];
+                    if (msg.Equals("Logged Out"))
+                    // if (loginInfo["message"] == "Logged Out")
+                    {
+                        print("yes");
+                        PlayerPrefs.SetInt(Constants.LoginStatus, 0);
+                        SceneManager.LoadSceneAsync("login");
+                    }
+                    else
+                    {
+                        print("no");
+                    }
+                }
+                StopAllCoroutines();
+                SceneManager.LoadSceneAsync("login");
+                yield break;
+            }
             string url = Constant.KIBaseURL + "game_data_insert";
             Debug.Log("Game Data Insert URL : " + url);
 
@@ -569,7 +603,7 @@ namespace tripplechance
                 Core.Socket.Off("mode", Mode);
                 Core.Socket.Off("playersBetInfo", PlayersBetInfo);
                 Core.Socket.Off("gameId", SetGameId);
-            Core.Close();
+                Core.Close();
 
             }
         }

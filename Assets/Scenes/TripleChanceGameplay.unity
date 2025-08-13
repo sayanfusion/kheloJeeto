@@ -35802,9 +35802,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 4f82a31ef4489ea4498690b5a26ccaf6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.12
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -56379,9 +56379,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab33cb3450a0a5844a53907abe65785e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
-  prefab: {fileID: 0}
-  pink: {fileID: 0}
 --- !u!1 &1662663182
 GameObject:
   m_ObjectHideFlags: 0
@@ -74942,11 +74939,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -76527,6 +76524,7 @@ MonoBehaviour:
   pickBlockType: 2
   tButtonParent: {fileID: 224586515736208611}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &114166737787041795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77612,6 +77610,7 @@ MonoBehaviour:
   pickBlockType: 2
   tButtonParent: {fileID: 224586515736208611}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &114278521453129331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79959,11 +79958,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -80228,6 +80227,7 @@ MonoBehaviour:
   pickBlockType: 2
   tButtonParent: {fileID: 224586515736208611}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &114478352405374181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81469,11 +81469,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -83213,11 +83213,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -83712,6 +83712,7 @@ MonoBehaviour:
   pickBlockType: 2
   tButtonParent: {fileID: 224586515736208611}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &114758807279543925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83817,6 +83818,7 @@ MonoBehaviour:
   pickBlockType: 2
   tButtonParent: {fileID: 224586515736208611}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &114765942624806363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84923,6 +84925,7 @@ MonoBehaviour:
   pickBlockType: 2
   tButtonParent: {fileID: 224586515736208611}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &114859263588528381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85386,6 +85389,7 @@ MonoBehaviour:
   pickBlockType: 2
   tButtonParent: {fileID: 224586515736208611}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &114886068504264869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85945,11 +85949,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -86016,11 +86020,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -86882,11 +86886,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -100678,6 +100682,9 @@ MonoBehaviour:
   tabParent: {fileID: 224285093374517712}
   playValue: 0
   totalbetamountget: 0
+  parents:
+  - {fileID: 224729494390037918}
+  - {fileID: 6085049482007062097}
   lstAllWheel:
   - {fileID: 114754656069816203}
   - {fileID: 114463034571731805}
@@ -100737,6 +100744,9 @@ MonoBehaviour:
   singleWinText: {fileID: 114674096172268051}
   doubleWinText: {fileID: 114165039172929231}
   TripleWinText: {fileID: 114044261763408503}
+  singlePlayValue: 0
+  doublePlayValue: 0
+  triplePlayValue: 0
   trippleBlocker:
   - {fileID: 2112547403}
   - {fileID: 954167284}
@@ -101856,9 +101866,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab33cb3450a0a5844a53907abe65785e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
-  prefab: {fileID: 0}
-  pink: {fileID: 0}
 --- !u!224 &224588656700960679
 RectTransform:
   m_ObjectHideFlags: 0
@@ -102599,9 +102606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab33cb3450a0a5844a53907abe65785e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
-  prefab: {fileID: 0}
-  pink: {fileID: 0}
 --- !u!224 &224715655280508945
 RectTransform:
   m_ObjectHideFlags: 0
@@ -102724,6 +102728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b212cf68d76497ab42546209b8c083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prevSelected: []
 --- !u!224 &224738673893960069
 RectTransform:
   m_ObjectHideFlags: 0
@@ -104825,6 +104830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b212cf68d76497ab42546209b8c083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prevSelected: []
 --- !u!114 &6085068917522871289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104871,11 +104877,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -104927,11 +104933,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -104986,6 +104992,7 @@ MonoBehaviour:
   pickBlockType: 1
   tButtonParent: {fileID: 224715206593458789}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &6085183547216417489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105065,6 +105072,7 @@ MonoBehaviour:
   pickBlockType: 1
   tButtonParent: {fileID: 224715206593458789}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &6087904544214756743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105080,6 +105088,7 @@ MonoBehaviour:
   pickBlockType: 1
   tButtonParent: {fileID: 224715206593458789}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &6087949242985106629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105160,11 +105169,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -105262,11 +105271,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -105287,6 +105296,7 @@ MonoBehaviour:
   pickBlockType: 1
   tButtonParent: {fileID: 224715206593458789}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &6088229466342522943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105367,11 +105377,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -105517,11 +105527,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -105573,11 +105583,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1080659506}
         m_TargetAssemblyTypeName: Audio_Manager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 2
+        m_MethodName: PlayCLickAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 38128a0924a10044a80a61fa827e915f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -105598,6 +105608,7 @@ MonoBehaviour:
   pickBlockType: 1
   tButtonParent: {fileID: 224715206593458789}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &6088645963108028699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105639,6 +105650,7 @@ MonoBehaviour:
   pickBlockType: 1
   tButtonParent: {fileID: 224715206593458789}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &6088709039436609287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105654,6 +105666,7 @@ MonoBehaviour:
   pickBlockType: 1
   tButtonParent: {fileID: 224715206593458789}
   sHighliteSprite: {fileID: 21300000, guid: 1137c6530cb5e2b4c9a517e416c75500, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &6088724286895168145
 MonoBehaviour:
   m_ObjectHideFlags: 0

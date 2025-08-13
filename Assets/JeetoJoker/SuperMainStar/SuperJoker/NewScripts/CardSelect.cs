@@ -113,8 +113,10 @@ namespace khelojeetonew
 
         public void OnLeftClick()
         {
-            JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
             BetButtons bet= JeetoJokerManager.instance.SelectedBetbutton;
+            if (JeetoJokerManager.instance.totalBet+bet.amount > 500) return;
+            
+            JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
 
             Debug.Log("clicked twice");
             if (!JeetoJokerManager.instance.Bet(bet.amount))

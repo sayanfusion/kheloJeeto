@@ -54,7 +54,7 @@ public class Block : InputDetection
 
     #region All Delegates
 
-    public delegate void OnSelectBlock(Transform transform);
+    public delegate void OnSelectBlock(Transform transform,bool showPopup=true);
     public static OnSelectBlock onSelectBlock;
 
     public delegate void OnDeSelectBlock(Block block);
@@ -186,9 +186,9 @@ public class Block : InputDetection
         {
             image.sprite = sDefaultSprite;
             blockState = BlockState.NORMAL;
-
             gNormalButton.SetActive(true);
             gClickedButton.SetActive(false);
+
         }
         else
         {
@@ -249,14 +249,14 @@ public class Block : InputDetection
             instantiatedWinEffectObject.transform.SetAsLastSibling();
             Debug.Log("Instantiated winEffect Object");
         }
-        GamePlay.instance.EnablePopupForBlock(this.transform,true);
-        Invoke(nameof(disablePopup),2);
+        GamePlay.instance.EnablePopupForBlock(this.transform, true);
+        Invoke(nameof(disablePopup), 2);
     }
 
     void disablePopup()
-    { 
+    {
         GamePlay.instance.DisablePopUp();
-        
+
     }
     public void OnDecideResult(string _sNum)
     {
