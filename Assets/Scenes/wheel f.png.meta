@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,7 +121,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: wheel f_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 12
+        width: 1303
+        height: 1303
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29cc002bb7b644343a11e3e3cb578a12
+      internalID: -1811198374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +153,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      wheel f_0: -1291761083
+      wheel f_1: -1085633964
+      wheel f_2: -1811198374
+      wheel f_3: -719875221
+      wheel f_4: 2030406289
+      wheel f_5: -428386324
+      wheel f_6: -937375328
+      wheel f_7: -965072569
+      wheel f_8: -1871028885
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
