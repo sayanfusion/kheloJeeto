@@ -163,6 +163,8 @@ public class GamePlay : UIPage
         }
     }
 
+    public bool gameStarted = false;
+
     private string sResultNumber = "000";
     private string singleWinAmount;
     private string doubleWinAmount;
@@ -229,7 +231,8 @@ public class GamePlay : UIPage
     //added by shivamfusion07 to check bet button click
     public static bool isbetclicked = false;
 
-    public GameObject[] trippleBlocker;
+
+    public Button[] buttonsToEnableAfetrConnection;
     private void Awake()
     {
         getResultHistory = false;
@@ -312,6 +315,18 @@ public class GamePlay : UIPage
         {
             GetAllResults(true);
         }
+    }
+
+    public void CheckButtons() {
+
+        if (!gameStarted)
+        {
+
+            gameStarted = true;
+
+        }
+
+
     }
     public void Betdata()
     {
@@ -1224,7 +1239,7 @@ public class GamePlay : UIPage
         if (_block.blockType == Block.BlockType.SINGLE)
         {
             singlePlayValue += amount;
-            if (singlePlayValue > 1000)
+            if (singlePlayValue > 10000)
             {
                 check = false;
                 singlePlayValue-=amount;
@@ -1233,7 +1248,7 @@ public class GamePlay : UIPage
         else if (_block.blockType == Block.BlockType.DOUBLE)
         {
             doublePlayValue += amount;
-            if (doublePlayValue > 50)
+            if (doublePlayValue > 5000)
             {
                 check = false;
                 doublePlayValue -= amount;
@@ -1242,7 +1257,7 @@ public class GamePlay : UIPage
         else if (_block.blockType == Block.BlockType.TRIPLE)
         {
             triplePlayValue += amount;
-            if (triplePlayValue > 10)
+            if (triplePlayValue > 10000)
             {
                 check = false;
                 triplePlayValue -= amount;
@@ -1596,19 +1611,7 @@ public class GamePlay : UIPage
         lastSelectedChip = chip;
         currentSelectedChip = int.Parse(chipName);
 
-        if (currentSelectedChip == 500 || currentSelectedChip == 1000)
-        {
-            trippleBlocker[0].SetActive(true);
-            trippleBlocker[1].SetActive(true);
 
-        }
-        else
-        {
-
-            trippleBlocker[0].SetActive(false);
-            trippleBlocker[1].SetActive(false);
-
-        }
         Debug.LogError("currentSelectedChip " + currentSelectedChip);
         IsRemoveClicked = false;
 
@@ -3008,8 +3011,13 @@ public class GamePlay : UIPage
 
     public void BackToDashBoard()
     {
-        tripplechance.TripleChanceSocketManager.tripleChanceSocketManager.EmmiteLeave();
-        SceneManager.LoadScene("DashBoard");
+        if (gameStarted) {
+
+            tripplechance.TripleChanceSocketManager.tripleChanceSocketManager.EmmiteLeave();
+            SceneManager.LoadScene("DashBoard");
+
+        }
+
     }
 
     void SetResults(string sin, string dou, string tri)

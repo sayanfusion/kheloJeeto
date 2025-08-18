@@ -3039,6 +3039,7 @@ MonoBehaviour:
   loadingPanel: {fileID: 624770517}
   gamePlay: {fileID: 224441997090270452}
   timer: {fileID: 114365391960866913}
+  gameStarted: 0
   isGameStart: 0
 --- !u!1 &94596870
 GameObject:
@@ -56379,6 +56380,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab33cb3450a0a5844a53907abe65785e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  prefab: {fileID: 0}
+  pink: {fileID: 0}
 --- !u!1 &1662663182
 GameObject:
   m_ObjectHideFlags: 0
@@ -100685,6 +100689,7 @@ MonoBehaviour:
   parents:
   - {fileID: 224729494390037918}
   - {fileID: 6085049482007062097}
+  gameStarted: 0
   lstAllWheel:
   - {fileID: 114754656069816203}
   - {fileID: 114463034571731805}
@@ -100747,9 +100752,10 @@ MonoBehaviour:
   singlePlayValue: 0
   doublePlayValue: 0
   triplePlayValue: 0
-  trippleBlocker:
-  - {fileID: 2112547403}
-  - {fileID: 954167284}
+  buttonsToEnableAfetrConnection:
+  - {fileID: 114617627330396443}
+  - {fileID: 114052671338434985}
+  - {fileID: 114380134799237319}
   startSpinningTime: 0
   speed: 100
   isOpen: 0
@@ -101866,6 +101872,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab33cb3450a0a5844a53907abe65785e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  prefab: {fileID: 0}
+  pink: {fileID: 0}
 --- !u!224 &224588656700960679
 RectTransform:
   m_ObjectHideFlags: 0
@@ -102606,6 +102615,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab33cb3450a0a5844a53907abe65785e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  prefab: {fileID: 0}
+  pink: {fileID: 0}
 --- !u!224 &224715655280508945
 RectTransform:
   m_ObjectHideFlags: 0

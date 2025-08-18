@@ -106,7 +106,6 @@ public class SocketController : Singleton<SocketController>
         //added listerner for game id changes by shivamfusion07
         Core.Socket.On(Constants.gameId, GameIddata);
 
-        Core.Socket.On("pong", OnPong);
 
         /*  _SocketManager = new SocketManager(new Uri(address));
           _SocketManager.Socket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
@@ -125,16 +124,8 @@ public class SocketController : Singleton<SocketController>
           _SocketManager.Socket.On<RoomData>(Constants.updatedRoom, OnUpdatedRoom);*/
     }
 
-    void OnPong(Socket socket, Packet packet, object[] args) {
 
-        Debug.Log("ON Pong");
 
-    }
-
-    void Ping() {
-
-        Core.Socket.Emit("ping", new { playerId = leaveData.playerId, roomId = leaveData.roomId });
-    }
     private void OnUpdatedRoom(Socket socket, Packet packet, object[] args)
     {
         Debug.LogError("OnUpdatedRoom " + packet);
@@ -184,7 +175,9 @@ public class SocketController : Singleton<SocketController>
     private void OnStartGame(Socket socket, Packet packet, object[] args)
     {
         Debug.LogError("OnStartGame " + packet);
-        Ping();
+       
+
+
         // roomIdText.text = leaveData.roomId;
         SoundControllerJeeto.Instance.PlayOneShot(SoundControllerJeeto.SoundType.PlaceBet, JeetoJokerManager.instance.placeBetSoundIndex);
 
@@ -205,6 +198,7 @@ public class SocketController : Singleton<SocketController>
     private void OnRoomMessage(Socket socket, Packet packet, object[] args)
     {
         Debug.LogError("OnRoomMessage " + packet);
+
 
     }
 
@@ -239,6 +233,7 @@ public class SocketController : Singleton<SocketController>
             leaveData.roomId = roomData._id;
             betData.roomId = roomData._id;
             StartGame(roomData._id);
+
         }
         catch (Exception e)
         {
@@ -273,7 +268,9 @@ public class SocketController : Singleton<SocketController>
     private void OnConnected(Socket socket, Packet packet, object[] args)
     {
         Debug.Log("socket connected! " + packet);
-        isConnected = true;
+        isConnected = true; 
+
+
     }
     /*
     private void OnUpdatedRoom(RoomData data)
@@ -627,7 +624,6 @@ public class SocketController : Singleton<SocketController>
             Core.Socket.Off(Constants.updatedPlayers, OnUpdatedPlayers);
             Core.Socket.Off(Constants.updatedRoom, OnUpdatedRoom);
             Core.Socket.Off(Constants.gameId, GameIddata);
-            Core.Socket.On("pong", OnPong);
             Core.Close();
         }
     }

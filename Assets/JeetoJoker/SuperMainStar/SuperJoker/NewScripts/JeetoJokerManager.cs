@@ -107,6 +107,8 @@ namespace khelojeetonew
         private string _token;
         private int noBetSoundIndex;
         public int placeBetSoundIndex { get; private set; }
+        public bool gameStarted = false;
+
         public Text dateTimeText;
 
         int winCount = 0;
@@ -118,6 +120,7 @@ namespace khelojeetonew
 
         public GameObject blast;
 
+        public Button[] buttonsToDisable;
         private void Awake()
         {
             if (instance == null)
@@ -201,8 +204,13 @@ namespace khelojeetonew
         }
         public void Logout()
         {
+
+            if (gameStarted) { 
+
             SocketController.Instance.Leave();
             SceneManager.LoadSceneAsync("DashBoard");
+            
+            }
             // StartCoroutine(LogOutRutine(PlayerPrefs.GetString(Constants.token),false));
         }
 
@@ -1155,6 +1163,16 @@ Debug.Log("win amount greater then 1000");
 
             blast.SetActive(false);
         }
+
+        public void EnableButtonsAfterSocketConnection()
+        {
+            if (!gameStarted)
+            {
+                gameStarted = true;
+
+            }
+        }
+
         private void ShowXMultiplierText()
         {
             string multiplier = "";

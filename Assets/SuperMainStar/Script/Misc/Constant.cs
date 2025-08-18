@@ -159,13 +159,13 @@ public static class Constant
         switch (_blockType)
         {
             case Block.BlockType.SINGLE:
-                _fAmount = 50000;
+                _fAmount = 1000;
                 break;
             case Block.BlockType.DOUBLE:
-                _fAmount = 30000;
+                _fAmount = 50;
                 break;
             case Block.BlockType.TRIPLE:
-                _fAmount = 5000;
+                _fAmount = 10;
                 break;
         }
         return _fAmount;

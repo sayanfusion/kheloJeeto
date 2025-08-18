@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using khelojeetonew;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class Timer : MonoBehaviour
 
     public Sprite[] yellow0_10;
     // public Sprite[] digits;
+    bool gameStarted;
     private void OnEnable()
     {
         cDefaultCol = timerText.color;
@@ -87,9 +89,14 @@ public class Timer : MonoBehaviour
 
         int ones = timeValue % 10;
         int tens = (timeValue / 10) % 10;
-        
-        if(timeValue>10) zeroth.transform.localPosition=new Vector2(35, zeroth.transform.localPosition.y);
+
+        GamePlay.instance.CheckButtons();
+
+        if (timeValue>10) zeroth.transform.localPosition=new Vector2(35, zeroth.transform.localPosition.y);
         else zeroth.transform.localPosition = new Vector2(38, zeroth.transform.localPosition.y);
+
+
+
 
         if(timeValue==15) Audio_Manager.instance.PLayLastChance();
 

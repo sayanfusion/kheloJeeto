@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 using khelojeetonew;
+using System.Reflection;
 [System.Serializable]
 public class ApiData
 {
@@ -48,6 +49,12 @@ public class APICardHistory : MonoBehaviour
 
     public string gameName = "jeetoJoker";
 
+    public SpriteRenderer cardImageWheel;
+    public SpriteRenderer suitImageWheel;
+    public Image multiplierImageWheel;
+    public Transform outerWheel;
+    public Transform innerWheel;
+
     private void Awake()
     {
         Instance = this;
@@ -55,7 +62,7 @@ public class APICardHistory : MonoBehaviour
     }
     private void Start()
     {
-        CardHistory();
+        CardHistory(true);
     }
 public IEnumerator setResultRequest(string result)
 {
@@ -108,11 +115,11 @@ public IEnumerator setResultRequest(string result)
         Debug.Log("delay in showing card histroy live 12 seconds");
         CardHistory();
     }
-    public void CardHistory()
+    public void CardHistory(bool firstCall=false)
     {
-        StartCoroutine(PostRequest());
+        StartCoroutine(PostRequest(firstCall));
     }
-    public IEnumerator PostRequest()
+    public IEnumerator PostRequest(bool firstCall=false)
     {
         Debug.Log(PlayerPrefs.GetInt(Constant.STOKIESID.ToString()).ToString() + "CardHistoryLive");
 
@@ -164,13 +171,14 @@ public IEnumerator setResultRequest(string result)
 
             
 
-            MapWinNumbersToSprites();
+            MapWinNumbersToSprites(firstCall);
+
 
             Debug.Log(WinNumber.Count + "xyzz");
         }
 
     }
-    private void MapWinNumbersToSprites()
+    private void MapWinNumbersToSprites(bool firstCall=false)
     {
       
         for (int i = 0; i < nullImage.Count; i++)
@@ -246,6 +254,65 @@ public IEnumerator setResultRequest(string result)
                 suiteimage[i].sprite = s4.sprite;
             }
         }
+
+        if (firstCall) {
+
+            SetWheel();
+
+        }
+
+    }
+
+    void SetWheel() {
+
+        //jqk
+        //heart,spade,diamond,club
+        string card = WinNumber[0].Split(",")[0];
+        string suit = WinNumber[0].Split(",")[1];
+        float innerangle = 0;
+        float outerangle = 0;
+
+        if (card == "C_1")
+        {
+            outerangle = 45;
+        }
+        else if (card == "C_2")
+        {
+            outerangle = 15;
+        }
+        else if (card == "C_3")
+        {
+            outerangle = 75;
+        }
+
+        if (suit == "S_1")
+        {
+            innerangle = 15;
+        }
+        else if (suit == "S_2")
+        {
+            innerangle = 45;
+        }
+        else if (suit == "S_3")
+        {
+            innerangle = 75;
+        }
+        else if (suit == "S_4")
+        {
+            innerangle = 105;
+        }
+
+
+        cardImageWheel.sprite = Resources.Load<Sprite>("SJ_Resources/" + card);
+        suitImageWheel.sprite = Resources.Load<Sprite>("SJ_Resources/" + suit);
+        multiplierImageWheel.sprite = nullImage[0].GetComponent<Image>().sprite;
+
+
+        innerWheel.localEulerAngles = new Vector3(0, 0, innerangle);
+        outerWheel.localEulerAngles = new Vector3(0, 0, outerangle);
+
+
+
     }
 
     public int GetImageIndex(string mult) {

@@ -1007,7 +1007,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPersistent: 0
-  address: https://nsmk2s42-5000.inc1.devtunnels.ms/
+  address: http://13.233.60.85:3007
   roomIdText: {fileID: 49039078}
   loadingPanel: {fileID: 809717674}
   isLogEnabled: 1
@@ -12428,11 +12428,15 @@ MonoBehaviour:
   wheelLights: {fileID: 12298217}
   Xanimation: {fileID: 224861177}
   drawTime: {fileID: 0}
+  gameStarted: 0
   dateTimeText: {fileID: 240328630}
   _heavyCoinsWinEffect: {fileID: 1733149540}
   _heavyWinAnimation: {fileID: 1427334932}
   Winsound12: {fileID: 1245538489}
   blast: {fileID: 1858383646}
+  buttonsToDisable:
+  - {fileID: 1781424974}
+  - {fileID: 388446048}
   coinbutton: {fileID: 0}
   coinswithamt: []
 --- !u!4 &203903735
@@ -130748,7 +130752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheel: {fileID: 4299648050124185}
   spinSpeed: 280
-  minSpinSpeed: 13.5
+  minSpinSpeed: 15
   scroll:
   - {fileID: 317611958}
   - {fileID: 0}
@@ -156175,14 +156179,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1991482386491493}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.13052616, w: 0.9914449}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7933534, w: 0.6087614}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8801778, y: 0.8801778, z: 0.8801778}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4299648050124185}
   m_Father: {fileID: 1328258259}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 15}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 105}
 --- !u!222 &11354285339918399
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -166730,6 +166734,11 @@ MonoBehaviour:
   apiUrl: https://admin.khelojeetogame.com/api/live-data-history
   livedatasapi: https://admin.khelojeetogame.com/api/live-data-history
   gameName: jeetoJoker
+  cardImageWheel: {fileID: 1111745158}
+  suitImageWheel: {fileID: 825769257}
+  multiplierImageWheel: {fileID: 1595093631}
+  outerWheel: {fileID: 4141959938070831}
+  innerWheel: {fileID: 4844437532381085}
 --- !u!114 &3034924287082662849
 MonoBehaviour:
   m_ObjectHideFlags: 0

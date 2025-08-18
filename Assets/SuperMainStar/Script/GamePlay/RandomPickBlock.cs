@@ -85,8 +85,8 @@ public class RandomPickBlock : InputDetection
             Block b = tButtonParent.GetChild(randomNumbers[i]).GetComponent<Block>();
             Block.onSelectBlock?.Invoke(b.transform,false);
             parent.prevSelected.Add(b);
-            if (pickBlockType == Block.BlockType.DOUBLE && GamePlay.instance.doublePlayValue >= 50) break;
-            if (pickBlockType == Block.BlockType.TRIPLE && GamePlay.instance.triplePlayValue >= 10) break;
+            if (pickBlockType == Block.BlockType.DOUBLE && GamePlay.instance.doublePlayValue >= 5000) break;
+            if (pickBlockType == Block.BlockType.TRIPLE && GamePlay.instance.triplePlayValue >= 10000) break;
         }
 
 

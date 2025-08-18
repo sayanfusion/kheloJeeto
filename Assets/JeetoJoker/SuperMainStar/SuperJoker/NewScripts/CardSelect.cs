@@ -111,22 +111,29 @@ namespace khelojeetonew
             OnLeftClick();
         }
 
-        public void OnLeftClick()
+        public bool OnLeftClick()
         {
             BetButtons bet= JeetoJokerManager.instance.SelectedBetbutton;
-            if (JeetoJokerManager.instance.totalBet+bet.amount > 500) return;
-            
-            JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
 
             Debug.Log("clicked twice");
-            if (!JeetoJokerManager.instance.Bet(bet.amount))
-            {
-                return;
-            }
 
             totalBets.Add(bet);
 
             long totalBet = GetTotalBetSum();
+
+            if (totalBet > 500) {
+
+                totalBets.Remove(bet);
+                return false;
+            }
+            if (!JeetoJokerManager.instance.Bet(bet.amount))
+            {
+                return false;
+            }
+            
+            JeetoJoker.SoundController.Instance.PlayAudiojeetojoker(JeetoJoker.SoundController.Instance.clickSound);
+
+
             UpdateChipVisualData(totalBet);
 
             if (totalBets.Count == 1 || groupCardSelect.Find(x => x.TotalGrpBetsCount == 1) != null)
@@ -141,6 +148,7 @@ namespace khelojeetonew
             JeetoJokerManager.instance.removeHandlers.Add(new List<IRemoveHandler>() { this });
             removeCount.Add(JeetoJokerManager.instance.removeCount);
             JeetoJokerManager.instance.removeCount += 1;
+            return true;
         }
 
         public override  void RightClick(bool ignoreStack = false)

@@ -40,6 +40,7 @@ namespace khelojeetonew
 
         internal bool timerrunning;
 
+        bool gameStarted = false;
         private void Awake()
         {
             inst = this;
@@ -71,18 +72,20 @@ namespace khelojeetonew
 
         public void UpdateTimer(float time)
         {
-            if(!timerrunning)
+            if (!timerrunning)
                 StartTimer(time);
             //if (time == 90f) {
 
             //}
+            JeetoJokerManager.instance.EnableButtonsAfterSocketConnection();
 
-            if ( innerSpinWheel != null && !innerSpinWheel.isWheelSpinning())
+            if (innerSpinWheel != null && !innerSpinWheel.isWheelSpinning())
             {
                 timerText.text = time.ToString();
                 if (time == 25) JeetoJoker.SoundController.Instance.PlayLastchance();
-                if (time == 5) { 
-                JeetoJoker.SoundController.Instance.PlayNoMoreBet();
+                if (time == 5)
+                {
+                    JeetoJoker.SoundController.Instance.PlayNoMoreBet();
                     ShowNoMoreBetPlease();
                     Invoke(nameof(HideNoMoreBetPlease), 2f);
 
@@ -118,8 +121,9 @@ namespace khelojeetonew
                 }
             }
 
-            
+
         }
+
 
 
         public void StartTimer(float totalTime)

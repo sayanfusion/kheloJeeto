@@ -68,35 +68,43 @@ namespace khelojeetonew
             base.LeftClick();
             if (JeetoJokerManager.instance.totalUserCoins <= 0) return;
             BetButtons bet = JeetoJokerManager.instance.SelectedBetbutton;
-            Debug.Log("bet name "+bet.buttonTransfrom.name);
+            Debug.Log("bet name " + bet.buttonTransfrom.name);
             // int amt = bet.amount * cardSelects.Count;
-      
+
             totalBets2.Add(bet);
 
             long _LtotalBet = GetTotalBetSum();
-            if (JeetoJokerManager.instance.totalBet + _LtotalBet > 500)
-            {
+
+            if (_LtotalBet > 500) {
                 totalBets2.Remove(bet);
                 return;
+            
             }
             playText.SetActive(false);
 
+
             foreach (var item in cardSelects)
             {
-                item.onrightCLick += () =>
+                bool added = item.OnLeftClick();
+                if (added)
                 {
 
-                    this.totalBets2.Clear();
-
-                    if (totalBets2.Count <= 0)
+                    item.onrightCLick += () =>
                     {
-                        ToggleChipVisibility(false);
-                        playText.SetActive(true);
-                    }
 
-                };
+                        this.totalBets2.Clear();
+
+                        if (totalBets2.Count <= 0)
+                        {
+                            ToggleChipVisibility(false);
+                            playText.SetActive(true);
+                        }
+
+                    };
+
+                }
+
             }
-            cardSelects.ForEach(x => x.OnLeftClick());
 
 
             UpdateChipVisualData(_LtotalBet);
